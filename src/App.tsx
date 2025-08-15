@@ -6,7 +6,7 @@ import { HabitsTracker } from './components/HabitsTracker';
 import { WellnessCheck } from './components/WellnessCheck';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { StatsDisplay } from './components/StatsDisplay';
-import { Profile } from './components/Profile';
+
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { Task, Habit, WellnessEntry, PomodoroSession, UserStats } from './types';
 
@@ -194,12 +194,7 @@ function App() {
             pomodoroSessions={pomodoroSessions}
           />
         );
-      case 'profile':
-        return (
-          <Profile
-            stats={userStats}
-          />
-        );
+
       default:
         return null;
     }

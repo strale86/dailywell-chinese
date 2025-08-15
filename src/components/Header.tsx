@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { User, Award } from 'lucide-react';
 import { UserStats } from '../types';
 import { Logo } from './Logo';
+import { ProfileModal } from './ProfileModal';
 
 interface HeaderProps {
   stats: UserStats;
 }
 
 export const Header: React.FC<HeaderProps> = ({ stats }) => {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const progressToNextLevel = ((stats.totalPoints % 1000) / 1000) * 100;
 
   return (
@@ -42,12 +44,21 @@ export const Header: React.FC<HeaderProps> = ({ stats }) => {
               </div>
             </div>
             
-            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+            <button
+              onClick={() => setIsProfileOpen(true)}
+              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
+            >
               <User className="w-5 h-5 text-gray-600" />
-            </div>
+            </button>
           </div>
         </div>
       </div>
+      
+      <ProfileModal 
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        stats={stats}
+      />
     </header>
   );
 };

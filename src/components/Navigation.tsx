@@ -13,7 +13,6 @@ const tabs = [
   { id: 'wellness', label: 'Wellness', icon: Heart, color: 'text-red-500' },
   { id: 'focus', label: 'Focus', icon: Timer, color: 'text-yellow-500' },
   { id: 'stats', label: 'Stats', icon: BarChart3, color: 'text-blue-500' },
-  { id: 'profile', label: 'Profile', icon: User, color: 'text-gray-500' },
 ];
 
 export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
