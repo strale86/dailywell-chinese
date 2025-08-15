@@ -44,12 +44,12 @@ export const Header: React.FC<HeaderProps> = ({ stats }) => {
               </div>
             </div>
             
-            <button
+            <div 
               onClick={() => setIsProfileOpen(true)}
-              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
+              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center cursor-pointer"
             >
               <User className="w-5 h-5 text-gray-600" />
-            </button>
+            </div>
           </div>
         </div>
       </div>

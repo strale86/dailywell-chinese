@@ -21,11 +21,12 @@ interface ProfileModalProps {
     pomodoroSessions: number;
     currentStreak: number;
   };
+  onLogout: () => void;
 }
 
-export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, stats }) => {
+export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, stats, onLogout }) => {
   const [profile, setProfile] = useState<UserProfile>(() => {
-    const saved = localStorage.getItem('dailywell-profile');
+    const saved = localStorage.getItem('userProfile');
     return saved ? JSON.parse(saved) : {
       firstName: '',
       lastName: '',
@@ -40,7 +41,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, sta
 
   const handleSave = () => {
     setIsEditing(false);
-    localStorage.setItem('dailywell-profile', JSON.stringify(profile));
+    localStorage.setItem('userProfile', JSON.stringify(profile));
   };
 
   if (!isOpen) return null;
@@ -67,6 +68,12 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, sta
                 <span>Save</span>
               </button>
             )}
+            <button
+              onClick={onLogout}
+              className="px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm mr-2"
+            >
+              Logout
+            </button>
             <button
               onClick={onClose}
               className="p-1 hover:bg-gray-100 rounded-full transition-colors"
