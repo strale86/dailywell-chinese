@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent blue square issues */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f9fafb;
+}
+
 /* Mobile-friendly touch targets */
 @media (max-width: 640px) {
   button, input, select, textarea {
@@ -23,4 +34,15 @@ html {
 button:focus, input:focus, select:focus, textarea:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
+}
+
+/* Prevent any blue backgrounds */
+.blue-square {
+  display: none !important;
+}
+
+/* Ensure proper rendering */
+#root {
+  min-height: 100vh;
+  background-color: #f9fafb;
 }

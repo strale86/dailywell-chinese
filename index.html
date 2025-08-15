@@ -2,25 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DailyWell - Daily Planning &amp; Wellness App</title>
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#3b82f6" />
-    <meta name="description" content="Your daily wellness companion for tasks, habits, and mindfulness" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="DailyWell" />
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" />
-    
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="/icon.svg" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/icon.svg" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/icon.svg" />
-    <link rel="apple-touch-icon" sizes="167x167" href="/icon.svg" />
+    <title>DailyWell - Wellness & Planning App</title>
+    <script>
+      // Completely prevent share-modal.js errors
+      window.addEventListener('DOMContentLoaded', function() {
+        // Remove any existing share-modal scripts
+        const scripts = document.querySelectorAll('script[src*="share-modal"]');
+        scripts.forEach(script => script.remove());
+        
+        // Prevent future share-modal scripts
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+              if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
+                if (node.src && node.src.includes('share-modal')) {
+                  node.remove();
+                }
+              }
+            });
+          });
+        });
+        
+        observer.observe(document.head, { childList: true });
+        observer.observe(document.body, { childList: true });
+        
+        // Remove Netlify profile icon
+        const netlifyElements = document.querySelectorAll('[data-netlify], [class*="netlify"], [id*="netlify"]');
+        netlifyElements.forEach(element => element.remove());
+      });
+    </script>
+    <style>
+      /* Hide Netlify elements */
+      [data-netlify], [class*="netlify"], [id*="netlify"] {
+        display: none !important;
+      }
+      
+      /* Hide any floating profile icons */
+      .netlify-identity-widget {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

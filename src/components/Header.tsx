@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({ stats }) => {
           
           <div className="flex items-center space-x-2 sm:space-x-6">
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <div className="text-center hidden sm:block">
+              <div className="text-center">
                 <div className="flex items-center space-x-1">
                   <Award className="w-4 h-4 text-yellow-500" />
                   <span className="text-sm font-semibold text-gray-700">{stats.totalPoints}</span>
@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ stats }) => {
                   <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
                     <span className="text-xs font-bold text-white">{stats.level}</span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-700 hidden sm:inline">Level {stats.level}</span>
+                  <span className="text-sm font-semibold text-gray-700">Level {stats.level}</span>
                 </div>
                 <div className="w-16 sm:w-20 h-1 bg-gray-200 rounded-full mt-1">
                   <div 
