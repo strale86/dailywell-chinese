@@ -6,9 +6,10 @@ import { ProfileModal } from './ProfileModal';
 
 interface HeaderProps {
   stats: UserStats;
+  onLogout: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ stats }) => {
+export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const progressToNextLevel = ((stats.totalPoints % 1000) / 1000) * 100;
 
@@ -57,6 +58,7 @@ export const Header: React.FC<HeaderProps> = ({ stats }) => {
       <ProfileModal 
         isOpen={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
+        onLogout={onLogout}
         stats={stats}
       />
     </header>

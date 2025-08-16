@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AuthService, AuthUser } from '../services/authService';
 
 import { Welcome } from '../components/Welcome';
 import { Login } from '../components/Login';
@@ -8,61 +9,44 @@ import { MainApp } from '../components/MainApp';
 type Screen = 'welcome' | 'login' | 'signup' | 'main';
 
 export const AppNavigator = () => {
+  console.log('AppNavigator component rendering...');
+  
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
     checkAuthStatus();
   }, []);
 
   const checkAuthStatus = () => {
-    const token = localStorage.getItem('userToken');
-    if (token) {
+    const user = AuthService.getCurrentUser();
+    if (user && AuthService.isAuthenticated()) {
+      setCurrentUser(user);
       setIsAuthenticated(true);
       setCurrentScreen('main');
     }
   };
 
   const handleLogin = async (email: string, password: string) => {
-    // Simulate login - in real app, this would call your API
     try {
-      // Store user token
-      localStorage.setItem('userToken', 'dummy-token');
-      localStorage.setItem('userEmail', email);
-      
-      // Check if user profile exists, if not create basic one
-      const existingProfile = localStorage.getItem('userProfile');
-      if (!existingProfile) {
-        localStorage.setItem('userProfile', JSON.stringify({
-          firstName: '',
-          lastName: '',
-          email: email,
-          birthDate: '',
-          gender: '',
-          goals: []
-        }));
-      }
-      
+      console.log('AppNavigator: Starting email login...');
+      const user = await AuthService.signInWithEmail(email, password);
+      console.log('AppNavigator: Email login successful, user:', user);
+      setCurrentUser(user);
       setIsAuthenticated(true);
       setCurrentScreen('main');
+      console.log('AppNavigator: Navigated to main screen');
     } catch (error) {
-      throw error;
+      console.error('AppNavigator: Email login error:', error);
+      alert('Login failed: ' + (error as Error).message);
     }
   };
 
   const handleSignUp = async (userData: any) => {
-    // Simulate signup - in real app, this would call your API
     try {
-      // Store user token and profile data
-      localStorage.setItem('userToken', 'dummy-token');
-      localStorage.setItem('userEmail', userData.email);
-      localStorage.setItem('userProfile', JSON.stringify({
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-        birthDate: userData.birthDate,
-        goals: []
-      }));
+      const user = await AuthService.signInWithEmail(userData.email, userData.password);
+      setCurrentUser(user);
       setIsAuthenticated(true);
       setCurrentScreen('main');
     } catch (error) {
@@ -72,9 +56,8 @@ export const AppNavigator = () => {
 
   const handleLogout = async () => {
     try {
-      localStorage.removeItem('userToken');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('userProfile');
+      await AuthService.signOut();
+      setCurrentUser(null);
       setIsAuthenticated(false);
       setCurrentScreen('welcome');
     } catch (error) {
@@ -84,63 +67,33 @@ export const AppNavigator = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      // Simulate Google login - in real app, this would use Google OAuth
-      const mockGoogleUser = {
-        email: 'user@gmail.com',
-        firstName: 'Google',
-        lastName: 'User',
-        birthDate: '1990-01-01'
-      };
-      
-      localStorage.setItem('userToken', 'google-token');
-      localStorage.setItem('userEmail', mockGoogleUser.email);
-      localStorage.setItem('userProfile', JSON.stringify({
-        firstName: mockGoogleUser.firstName,
-        lastName: mockGoogleUser.lastName,
-        email: mockGoogleUser.email,
-        birthDate: mockGoogleUser.birthDate,
-        gender: '',
-        goals: []
-      }));
-      
+      console.log('AppNavigator: Starting Google login...');
+      const user = await AuthService.signInWithGoogle();
+      console.log('AppNavigator: Google login successful, user:', user);
+      setCurrentUser(user);
       setIsAuthenticated(true);
       setCurrentScreen('main');
+      console.log('AppNavigator: Navigated to main screen');
     } catch (error) {
-      alert('Google login failed. Please try again.');
+      console.error('AppNavigator: Google login error:', error);
+      alert('Google login failed: ' + (error as Error).message);
     }
   };
 
   const handleFacebookLogin = async () => {
     try {
-      // Simulate Facebook login - in real app, this would use Facebook OAuth
-      const mockFacebookUser = {
-        email: 'user@facebook.com',
-        firstName: 'Facebook',
-        lastName: 'User',
-        birthDate: '1990-01-01'
-      };
-      
-      localStorage.setItem('userToken', 'facebook-token');
-      localStorage.setItem('userEmail', mockFacebookUser.email);
-      localStorage.setItem('userProfile', JSON.stringify({
-        firstName: mockFacebookUser.firstName,
-        lastName: mockFacebookUser.lastName,
-        email: mockFacebookUser.email,
-        birthDate: mockFacebookUser.birthDate,
-        gender: '',
-        goals: []
-      }));
-      
+      const user = await AuthService.signInWithFacebook();
+      setCurrentUser(user);
       setIsAuthenticated(true);
       setCurrentScreen('main');
     } catch (error) {
-      alert('Facebook login failed. Please try again.');
+      console.error('Facebook login error:', error);
+      throw error;
     }
   };
 
   const handleForgotPassword = async (email: string) => {
     try {
-      // Simulate password reset - in real app, this would send an email
       if (!email || !email.includes('@')) {
         alert('Please enter a valid email address');
         return;
@@ -159,27 +112,27 @@ export const AppNavigator = () => {
     switch (currentScreen) {
       case 'welcome':
         return <Welcome onGetStarted={() => setCurrentScreen('login')} />;
-             case 'login':
-         return (
-           <Login
-             onLogin={handleLogin}
-             onGoogleLogin={handleGoogleLogin}
-             onFacebookLogin={handleFacebookLogin}
-             onForgotPassword={handleForgotPassword}
-             onSignUp={() => setCurrentScreen('signup')}
-             onBack={() => setCurrentScreen('welcome')}
-           />
-         );
-             case 'signup':
-         return (
-           <SignUp
-             onSignUp={handleSignUp}
-             onGoogleSignUp={handleGoogleLogin}
-             onFacebookSignUp={handleFacebookLogin}
-             onLogin={() => setCurrentScreen('login')}
-             onBack={() => setCurrentScreen('welcome')}
-           />
-         );
+      case 'login':
+        return (
+          <Login
+            onLogin={handleLogin}
+            onGoogleLogin={handleGoogleLogin}
+            onFacebookLogin={handleFacebookLogin}
+            onForgotPassword={handleForgotPassword}
+            onSignUp={() => setCurrentScreen('signup')}
+            onBack={() => setCurrentScreen('welcome')}
+          />
+        );
+      case 'signup':
+        return (
+          <SignUp
+            onSignUp={handleSignUp}
+            onGoogleSignUp={handleGoogleLogin}
+            onFacebookSignUp={handleFacebookLogin}
+            onLogin={() => setCurrentScreen('login')}
+            onBack={() => setCurrentScreen('welcome')}
+          />
+        );
       case 'main':
         return <MainApp onLogout={handleLogout} />;
       default:
