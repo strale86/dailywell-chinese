@@ -91,13 +91,56 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
   const unlockedAchievements = achievements.filter(a => a.unlocked);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pl-2 sm:pl-0">
       <div>
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Your Progress</h2>
         <p className="text-gray-600">Track your daily wellness journey</p>
       </div>
 
       {/* Overview Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Total Tasks</p>
+              <p className="text-2xl font-bold text-gray-900">{tasks.length}</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-green-500" />
+          </div>
+        </div>
+        
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Completion Rate</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0}%
+              </p>
+            </div>
+            <Target className="w-8 h-8 text-blue-500" />
+          </div>
+        </div>
+        
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Focus Sessions</p>
+              <p className="text-2xl font-bold text-gray-900">{pomodoroSessions.length}</p>
+            </div>
+            <Award className="w-8 h-8 text-purple-500" />
+          </div>
+        </div>
+        
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Avg Mood</p>
+              <p className="text-2xl font-bold text-gray-900">{averageMood}/5</p>
+            </div>
+            <Calendar className="w-8 h-8 text-orange-500" />
+          </div>
+        </div>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border">
           <div className="flex items-center justify-between mb-2">

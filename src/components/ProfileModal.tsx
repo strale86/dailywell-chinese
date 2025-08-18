@@ -8,11 +8,13 @@ interface UserProfile {
   birthDate: string;
   gender: string;
   goals: string[];
+  avatar?: string; // URL slike ili base64 string
 }
 
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onLogout: () => void;
   stats: {
     totalPoints: number;
     level: number;
@@ -21,12 +23,11 @@ interface ProfileModalProps {
     pomodoroSessions: number;
     currentStreak: number;
   };
-  onLogout: () => void;
 }
 
-export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, stats, onLogout }) => {
+export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onLogout, stats }) => {
   const [profile, setProfile] = useState<UserProfile>(() => {
-    const saved = localStorage.getItem('userProfile');
+    const saved = localStorage.getItem('dailywell-profile');
     return saved ? JSON.parse(saved) : {
       firstName: '',
       lastName: '',
@@ -34,6 +35,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, sta
       birthDate: '',
       gender: '',
       goals: [],
+      avatar: '',
     };
   });
 
@@ -41,7 +43,25 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, sta
 
   const handleSave = () => {
     setIsEditing(false);
-    localStorage.setItem('userProfile', JSON.stringify(profile));
+    localStorage.setItem('dailywell-profile', JSON.stringify(profile));
+    // Trigger storage event to update header avatar
+    window.dispatchEvent(new Event('storage'));
+  };
+
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        const updatedProfile = { ...profile, avatar: result };
+        setProfile(updatedProfile);
+        // Save immediately and update header
+        localStorage.setItem('dailywell-profile', JSON.stringify(updatedProfile));
+        window.dispatchEvent(new Event('storage'));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   if (!isOpen) return null;
@@ -69,12 +89,6 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, sta
               </button>
             )}
             <button
-              onClick={onLogout}
-              className="px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm mr-2"
-            >
-              Logout
-            </button>
-            <button
               onClick={onClose}
               className="p-1 hover:bg-gray-100 rounded-full transition-colors"
             >
@@ -84,6 +98,74 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, sta
         </div>
 
         <div className="p-6 space-y-6">
+          {/* Avatar Section */}
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <User className="w-5 h-5 mr-2 text-blue-600" />
+              Profile Picture
+            </h3>
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                {profile.avatar ? (
+                  <img
+                    src={profile.avatar}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full object-cover border-2 border-blue-200"
+                  />
+                ) : (
+                  <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold border-2 border-blue-200">
+                    {profile.firstName && profile.lastName 
+                      ? `${profile.firstName[0]}${profile.lastName[0]}`.toUpperCase()
+                      : 'U'
+                    }
+                  </div>
+                )}
+                
+                <label className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                    className="hidden"
+                  />
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </label>
+                
+                {profile.avatar && (
+                  <button
+                    onClick={() => {
+                      const updatedProfile = { ...profile, avatar: '' };
+                      setProfile(updatedProfile);
+                      localStorage.setItem('dailywell-profile', JSON.stringify(updatedProfile));
+                      window.dispatchEvent(new Event('storage'));
+                    }}
+                    className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
+                    title="Remove avatar"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+              
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900">
+                  {profile.firstName && profile.lastName 
+                    ? `${profile.firstName} ${profile.lastName}`
+                    : 'User Profile'
+                  }
+                </h4>
+                <p className="text-gray-600">{profile.email || 'No email set'}</p>
+                <p className="text-sm text-gray-500">
+                  {profile.birthDate ? `Born: ${new Date(profile.birthDate).toLocaleDateString()}` : 'Birth date not set'}
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <User className="w-5 h-5 mr-2 text-blue-600" />
@@ -244,6 +326,16 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, sta
               </div>
             </div>
           </div>
+        </div>
+        
+        {/* Logout Button */}
+        <div className="p-6 border-t border-gray-200">
+          <button
+            onClick={onLogout}
+            className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>

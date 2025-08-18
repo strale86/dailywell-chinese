@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DailyWell</string>
+    <string name="title_activity_main">DailyWell</string>
+    <string name="package_name">com.dailywell.app</string>
+    <string name="custom_url_scheme">com.dailywell.app</string>
+</resources>

@@ -5,18 +5,47 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Redirects for different markets
 [[redirects]]
-  from = "/*"
+  from = "/"
   to = "/index.html"
   status = 200
 
-[[headers]]
-  for = "/manifest.json"
-  [headers.values]
-    Content-Type = "application/manifest+json"
+# English market (default)
+[[redirects]]
+  from = "https://dailywell.com/*"
+  to = "https://your-app-name.netlify.app/:splat"
+  status = 301
 
+# Serbian market
+[[redirects]]
+  from = "https://dailywell.rs/*"
+  to = "https://your-app-name.netlify.app/:splat?lng=sr"
+  status = 301
+
+# Chinese market
+[[redirects]]
+  from = "https://dailywell.cn/*"
+  to = "https://your-app-name.netlify.app/:splat?lng=zh"
+  status = 301
+
+# Headers for PWA
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Service worker
 [[headers]]
   for = "/sw.js"
   [headers.values]
-    Content-Type = "application/javascript"
     Cache-Control = "no-cache"

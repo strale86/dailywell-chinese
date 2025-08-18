@@ -18,7 +18,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
-    priority: 'medium' as const,
+    priority: 'medium' as 'low' | 'medium' | 'high',
   });
   const [showForm, setShowForm] = useState(false);
 
@@ -38,10 +38,10 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'text-red-500';
-      case 'medium': return 'text-yellow-500';
-      case 'low': return 'text-green-500';
-      default: return 'text-gray-500';
+      case 'high': return 'text-red-400';
+      case 'medium': return 'text-yellow-400';
+      case 'low': return 'text-green-400';
+      default: return 'text-gray-400';
     }
   };
 
@@ -49,32 +49,29 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
   const pendingTasks = tasks.filter(task => !task.completed);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+    <div className="pl-2 sm:pl-0">
+      <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Today's Tasks</h2>
-          <p className="text-gray-600">
-            {completedTasks.length} of {tasks.length} completed
-          </p>
+          <h2 className="text-2xl font-bold text-gray-900">Today's Tasks</h2>
+          <p className="text-gray-600">{completedTasks.length} of {tasks.length} completed</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-3 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto justify-center"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          <Plus className="w-5 h-5" />
-          <span>Add Task</span>
+          Add Task
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-sm border space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 space-y-4">
           <div>
             <input
               type="text"
               placeholder="Task title..."
               value={newTask.title}
               onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent text-white placeholder-gray-300"
               autoFocus
             />
           </div>
@@ -83,7 +80,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               placeholder="Description (optional)..."
               value={newTask.description}
               onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              className="w-full px-3 py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent resize-none text-white placeholder-gray-300"
               rows={2}
             />
           </div>
@@ -91,7 +88,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
             <select
               value={newTask.priority}
               onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as 'low' | 'medium' | 'high' })}
-              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-auto"
+              className="px-3 py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent w-full sm:w-auto text-white"
             >
               <option value="low">Low Priority</option>
               <option value="medium">Medium Priority</option>
@@ -101,13 +98,13 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors flex-1 sm:flex-none"
+                className="px-4 py-2 text-white/80 hover:text-white transition-colors flex-1 sm:flex-none"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex-1 sm:flex-none"
+                className="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all flex-1 sm:flex-none border border-white/20"
               >
                 Add Task
               </button>
@@ -119,9 +116,9 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
       <div className="space-y-4">
         {pendingTasks.length === 0 && completedTasks.length === 0 ? (
           <div className="text-center py-12">
-            <CheckSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-gray-500 mb-2">No tasks yet</h3>
-            <p className="text-gray-400">Add your first task to get started!</p>
+            <CheckSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-gray-600 mb-2">No tasks yet</h3>
+            <p className="text-gray-500">Add your first task to get started!</p>
           </div>
         ) : (
           <>
@@ -136,8 +133,8 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
             ))}
             
             {completedTasks.length > 0 && (
-              <div className="pt-6 border-t">
-                <h3 className="text-lg font-medium text-gray-700 mb-4">Completed</h3>
+              <div className="pt-6 border-t border-white/20">
+                <h3 className="text-lg font-medium text-white/80 mb-4">Completed</h3>
                 {completedTasks.map((task) => (
                   <TaskItem
                     key={task.id}
@@ -165,7 +162,7 @@ interface TaskItemProps {
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriorityColor }) => {
   return (
-    <div className={`bg-white p-4 rounded-lg shadow-sm border transition-all hover:shadow-md ${
+    <div className={`bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 transition-all hover:bg-white/20 ${
       task.completed ? 'opacity-75' : ''
     }`}>
       <div className="flex items-start space-x-3">
@@ -173,8 +170,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
           onClick={() => onToggle(task.id)}
           className={`mt-1 w-6 h-6 sm:w-5 sm:h-5 rounded border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
             task.completed
-              ? 'bg-green-500 border-green-500 text-white'
-              : 'border-gray-300 hover:border-green-500'
+              ? 'bg-green-400 border-green-400 text-white'
+              : 'border-white/50 hover:border-green-400'
           }`}
         >
           {task.completed && <Check className="w-3 h-3 sm:w-3 sm:h-3" />}
@@ -183,7 +180,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-2">
             <h3 className={`font-medium text-sm sm:text-base ${
-              task.completed ? 'line-through text-gray-500' : 'text-gray-900'
+              task.completed ? 'line-through text-white/50' : 'text-white'
             }`}>
               {task.title}
             </h3>
@@ -191,7 +188,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
           </div>
           {task.description && (
             <p className={`text-sm mt-1 ${
-              task.completed ? 'text-gray-400' : 'text-gray-600'
+              task.completed ? 'text-white/40' : 'text-white/70'
             }`}>
               {task.description}
             </p>
@@ -200,7 +197,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
         
         <button
           onClick={() => onDelete(task.id)}
-          className="text-gray-400 hover:text-red-500 transition-colors flex-shrink-0 p-1"
+          className="text-white/50 hover:text-red-400 transition-colors flex-shrink-0 p-1"
         >
           <Trash2 className="w-5 h-5 sm:w-4 sm:h-4" />
         </button>

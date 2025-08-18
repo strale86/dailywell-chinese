@@ -112,7 +112,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
     : ((25 * 60 - timeLeft) / (25 * 60)) * 100;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pl-2 sm:pl-0">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Focus Timer</h2>
         <p className="text-gray-600">Stay focused with the Pomodoro Technique</p>

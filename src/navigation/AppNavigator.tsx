@@ -5,8 +5,9 @@ import { Welcome } from '../components/Welcome';
 import { Login } from '../components/Login';
 import { SignUp } from '../components/SignUp';
 import { MainApp } from '../components/MainApp';
+import { OAuthCallback } from '../components/OAuthCallback';
 
-type Screen = 'welcome' | 'login' | 'signup' | 'main';
+type Screen = 'welcome' | 'login' | 'signup' | 'main' | 'oauth-callback';
 
 export const AppNavigator = () => {
   console.log('AppNavigator component rendering...');
@@ -17,6 +18,20 @@ export const AppNavigator = () => {
 
   useEffect(() => {
     checkAuthStatus();
+    
+    // Handle OAuth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
+    const state = urlParams.get('state');
+    
+    if (code && state && state === 'google_login') {
+      // OAuth callback detected - handle Google login
+      handleOAuthCallback(code);
+    } else if (error) {
+      // OAuth error
+      alert(`OAuth error: ${error}`);
+    }
   }, []);
 
   const checkAuthStatus = () => {
@@ -92,6 +107,46 @@ export const AppNavigator = () => {
     }
   };
 
+  const handleAppleLogin = async () => {
+    try {
+      console.log('AppNavigator: Starting Apple login...');
+      const user = await AuthService.signInWithApple();
+      console.log('AppNavigator: Apple login successful, user:', user);
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      setCurrentScreen('main');
+      console.log('AppNavigator: Navigated to main screen');
+    } catch (error) {
+      console.error('AppNavigator: Apple login error:', error);
+      alert('Apple login failed: ' + (error as Error).message);
+    }
+  };
+
+  const handleWeChatLogin = async () => {
+    try {
+      console.log('AppNavigator: Starting WeChat login...');
+      const user = await AuthService.signInWithWeChat();
+      console.log('AppNavigator: WeChat login successful, user:', user);
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      setCurrentScreen('main');
+      console.log('AppNavigator: Navigated to main screen');
+    } catch (error) {
+      console.error('AppNavigator: WeChat login error:', error);
+      alert('WeChat login failed: ' + (error as Error).message);
+    }
+  };
+
+  const handleAlipayLogin = async () => {
+    try {
+      // Placeholder za Alipay OAuth
+      alert('Alipay OAuth not implemented yet');
+    } catch (error) {
+      console.error('Alipay login error:', error);
+      throw error;
+    }
+  };
+
   const handleForgotPassword = async (email: string) => {
     try {
       if (!email || !email.includes('@')) {
@@ -108,6 +163,45 @@ export const AppNavigator = () => {
     }
   };
 
+  const handleOAuthCallback = async (code: string) => {
+    try {
+      console.log('AppNavigator: Handling OAuth callback with code:', code);
+      
+      // Import OAuth functions
+      const { exchangeCodeForToken, getUserInfo } = await import('../config/oauth');
+      
+      // Exchange code for token
+      const tokenResponse = await exchangeCodeForToken('google', code);
+      console.log('AppNavigator: Token exchange successful');
+      
+      // Get user info
+      const userInfo = await getUserInfo('google', tokenResponse.access_token);
+      console.log('AppNavigator: User info received:', userInfo);
+      
+      // Create user object
+      const user: AuthUser = {
+        uid: userInfo.id,
+        email: userInfo.email,
+        displayName: userInfo.name,
+        photoURL: userInfo.picture,
+        providerId: 'google.com'
+      };
+      
+      // Set user and navigate to main
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      setCurrentScreen('main');
+      
+      // Clear URL parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      console.log('AppNavigator: OAuth login successful, navigated to main');
+    } catch (error) {
+      console.error('AppNavigator: OAuth callback error:', error);
+      alert('OAuth login failed: ' + (error as Error).message);
+    }
+  };
+
   const renderScreen = () => {
     switch (currentScreen) {
       case 'welcome':
@@ -117,7 +211,8 @@ export const AppNavigator = () => {
           <Login
             onLogin={handleLogin}
             onGoogleLogin={handleGoogleLogin}
-            onFacebookLogin={handleFacebookLogin}
+            onAppleLogin={handleAppleLogin}
+            onWeChatLogin={handleWeChatLogin}
             onForgotPassword={handleForgotPassword}
             onSignUp={() => setCurrentScreen('signup')}
             onBack={() => setCurrentScreen('welcome')}
@@ -128,13 +223,16 @@ export const AppNavigator = () => {
           <SignUp
             onSignUp={handleSignUp}
             onGoogleSignUp={handleGoogleLogin}
-            onFacebookSignUp={handleFacebookLogin}
+                          onAppleSignUp={handleAppleLogin}
+              onWeChatSignUp={handleWeChatLogin}
             onLogin={() => setCurrentScreen('login')}
-            onBack={() => setCurrentScreen('welcome')}
+            onBack={() => setCurrentScreen('login')}
           />
         );
       case 'main':
         return <MainApp onLogout={handleLogout} />;
+      case 'oauth-callback':
+        return <OAuthCallback provider="google" />;
       default:
         return <Welcome onGetStarted={() => setCurrentScreen('login')} />;
     }

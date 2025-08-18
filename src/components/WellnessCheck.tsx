@@ -37,7 +37,7 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
   const quote = getRandomQuote();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pl-2 sm:pl-0">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Daily Wellness Check</h2>
         <p className="text-gray-600">How are you feeling today?</p>

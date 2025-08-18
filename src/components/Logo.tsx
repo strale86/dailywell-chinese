@@ -34,7 +34,7 @@ export const Logo: React.FC<LogoProps> = ({
     switch (variant) {
       case 'white':
         return {
-          gradient: 'from-white to-gray-100',
+          gradient: 'from-purple-500 to-purple-600',
           text: 'text-white',
           icons: 'text-white/80'
         };

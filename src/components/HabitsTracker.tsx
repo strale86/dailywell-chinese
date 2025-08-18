@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Check, Flame } from 'lucide-react';
+import { Plus, Check, Flame, Target, TrendingUp, Calendar, Trash2 } from 'lucide-react';
 import { Habit } from '../types';
 import { getTodayString, getWeekDates } from '../utils/dateUtils';
 
@@ -7,6 +7,7 @@ interface HabitsTrackerProps {
   habits: Habit[];
   onAddHabit: (habit: Omit<Habit, 'id' | 'streak' | 'completedDates'>) => void;
   onToggleHabit: (id: string, date: string) => void;
+  onDeleteHabit: (id: string) => void;
 }
 
 const habitIcons = ['💧', '🏃‍♂️', '🧘‍♀️', '📚', '🥗', '😴', '✍️', '🎵'];
@@ -16,6 +17,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
   habits,
   onAddHabit,
   onToggleHabit,
+  onDeleteHabit,
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [newHabit, setNewHabit] = useState({
@@ -24,7 +26,38 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
     color: 'bg-blue-500',
     target: 1,
     unit: 'time',
+    category: 'health' as const,
+    startDate: getTodayString(),
+    totalCompletions: 0,
+    bestStreak: 0,
+    isActive: true,
   });
+
+  const getIconForHabit = (habitName: string) => {
+    const name = habitName.toLowerCase();
+    if (name.includes('water') || name.includes('drink') || name.includes('hidrat') || name.includes('voda')) return '💧';
+    if (name.includes('run') || name.includes('jog') || name.includes('exercise') || name.includes('workout') || name.includes('trčanje')) return '🏃‍♂️';
+    if (name.includes('meditation') || name.includes('yoga') || name.includes('breath') || name.includes('meditacija')) return '🧘‍♀️';
+    if (name.includes('read') || name.includes('book') || name.includes('study') || name.includes('čitanje')) return '📚';
+    if (name.includes('eat') || name.includes('food') || name.includes('meal') || name.includes('diet') || name.includes('jelo')) return '🥗';
+    if (name.includes('sleep') || name.includes('bed') || name.includes('rest') || name.includes('spavanje')) return '😴';
+    if (name.includes('write') || name.includes('journal') || name.includes('diary') || name.includes('pisanje')) return '✍️';
+    if (name.includes('music') || name.includes('listen') || name.includes('song') || name.includes('muzika')) return '🎵';
+    return '💧'; // default
+  };
+
+  const getColorForHabit = (habitName: string) => {
+    const name = habitName.toLowerCase();
+    if (name.includes('water') || name.includes('drink') || name.includes('voda')) return 'bg-blue-500';
+    if (name.includes('run') || name.includes('exercise') || name.includes('trčanje')) return 'bg-green-500';
+    if (name.includes('meditation') || name.includes('yoga') || name.includes('meditacija')) return 'bg-purple-500';
+    if (name.includes('read') || name.includes('study') || name.includes('čitanje')) return 'bg-yellow-500';
+    if (name.includes('eat') || name.includes('food') || name.includes('jelo')) return 'bg-red-500';
+    if (name.includes('sleep') || name.includes('rest') || name.includes('spavanje')) return 'bg-indigo-500';
+    if (name.includes('write') || name.includes('journal') || name.includes('pisanje')) return 'bg-pink-500';
+    if (name.includes('music') || name.includes('listen') || name.includes('muzika')) return 'bg-teal-500';
+    return 'bg-blue-500'; // default
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +69,11 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
         color: 'bg-blue-500',
         target: 1,
         unit: 'time',
+        category: 'health' as const,
+        startDate: getTodayString(),
+        totalCompletions: 0,
+        bestStreak: 0,
+        isActive: true,
       });
       setShowForm(false);
     }
@@ -45,19 +83,65 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
   const weekDates = getWeekDates();
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+    <div className="space-y-6 pl-2 sm:pl-0">
+      <div className="flex justify-between items-center">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Habits Tracker</h2>
           <p className="text-gray-600">Build consistent daily habits</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-2 bg-green-600 text-white px-4 py-3 sm:px-4 sm:py-2 rounded-lg hover:bg-green-700 transition-colors w-full sm:w-auto justify-center"
+          className="flex items-center space-x-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-all"
         >
-          <Plus className="w-5 h-5" />
-          <span>Add Habit</span>
+          <Plus className="w-4 h-4" />
+          <span className="text-sm">Add Habit</span>
         </button>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Total Habits</p>
+              <p className="text-2xl font-bold text-gray-900">{habits.length}</p>
+            </div>
+            <Target className="w-8 h-8 text-blue-500" />
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Active Streaks</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {habits.filter(h => h.streak > 0).length}
+              </p>
+            </div>
+            <Flame className="w-8 h-8 text-orange-500" />
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Today's Progress</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {habits.filter(h => h.completedDates.includes(today)).length}/{habits.length}
+              </p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-green-500" />
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Best Streak</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {Math.max(...habits.map(h => h.streak), 0)}
+              </p>
+            </div>
+            <Calendar className="w-8 h-8 text-purple-500" />
+          </div>
+        </div>
       </div>
 
       {showForm && (
@@ -67,13 +151,31 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               type="text"
               placeholder="Habit name..."
               value={newHabit.name}
-              onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
+              onChange={(e) => {
+                const name = e.target.value;
+                setNewHabit({ 
+                  ...newHabit, 
+                  name,
+                  icon: getIconForHabit(name),
+                  color: getColorForHabit(name)
+                });
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && newHabit.name.trim()) {
+                  handleSubmit(e);
+                }
+              }}
+              onBlur={() => {
+                if (newHabit.name.trim()) {
+                  handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+                }
+              }}
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               autoFocus
             />
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
               <div className="grid grid-cols-4 gap-2">
@@ -94,7 +196,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-4 gap-2 mt-2">
                 {habitColors.map((color) => (
                   <button
                     key={color}
@@ -106,6 +208,22 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                   />
                 ))}
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <select
+                value={newHabit.category}
+                onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value as any })}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="health">Health</option>
+                <option value="productivity">Productivity</option>
+                <option value="learning">Learning</option>
+                <option value="wellness">Wellness</option>
+                <option value="fitness">Fitness</option>
+                <option value="personal">Personal</option>
+              </select>
             </div>
           </div>
 
@@ -130,19 +248,13 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               </select>
             </div>
             
-            <div className="flex space-x-2">
+            <div className="flex justify-end">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
                 Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                Add Habit
               </button>
             </div>
           </div>
@@ -155,8 +267,8 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">🎯</span>
             </div>
-            <h3 className="text-xl font-medium text-gray-500 mb-2">No habits yet</h3>
-            <p className="text-gray-400">Start building healthy habits today!</p>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">No habits yet</h3>
+            <p className="text-gray-600">Start building healthy habits today!</p>
           </div>
         ) : (
           habits.map((habit) => (
@@ -166,6 +278,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               weekDates={weekDates}
               today={today}
               onToggle={onToggleHabit}
+              onDelete={onDeleteHabit}
             />
           ))
         )}
@@ -179,9 +292,10 @@ interface HabitItemProps {
   weekDates: string[];
   today: string;
   onToggle: (id: string, date: string) => void;
+  onDelete: (id: string) => void;
 }
 
-const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle }) => {
+const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle, onDelete }) => {
   const completedToday = habit.completedDates.includes(today);
 
   return (
@@ -200,6 +314,9 @@ const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle
         </div>
         
         <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
+            <span className="capitalize">{habit.category}</span>
+          </div>
           {habit.streak > 0 && (
             <div className="flex items-center space-x-1 bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-sm font-medium">
               <Flame className="w-4 h-4" />
@@ -216,6 +333,14 @@ const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle
             }`}
           >
             {completedToday && <Check className="w-4 h-4" />}
+          </button>
+          
+          <button
+            onClick={() => onDelete(habit.id)}
+            className="w-8 h-8 rounded-full border-2 border-red-300 hover:border-red-500 flex items-center justify-center transition-all hover:bg-red-50"
+            title="Delete habit"
+          >
+            <Trash2 className="w-4 h-4 text-red-500" />
           </button>
         </div>
       </div>

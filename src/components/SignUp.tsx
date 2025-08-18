@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, User, Calendar, Loader2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, Loader2 } from 'lucide-react';
 
 interface SignUpProps {
   onSignUp: (userData: SignUpData) => void;
   onGoogleSignUp: () => void;
-  onFacebookSignUp: () => void;
+  onAppleSignUp: () => void;
+  onWeChatSignUp: () => void;
   onLogin: () => void;
   onBack: () => void;
 }
@@ -15,29 +16,30 @@ interface SignUpData {
   email: string;
   password: string;
   confirmPassword: string;
-  birthDate: string;
 }
 
 export const SignUp: React.FC<SignUpProps> = ({ 
   onSignUp, 
   onGoogleSignUp, 
-  onFacebookSignUp, 
+  onAppleSignUp,
+  onWeChatSignUp,
   onLogin, 
   onBack 
 }) => {
+
   const [formData, setFormData] = useState<SignUpData>({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
-    birthDate: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [isFacebookLoading, setIsFacebookLoading] = useState(false);
+  const [isAppleLoading, setIsAppleLoading] = useState(false);
+  const [isWeChatLoading, setIsWeChatLoading] = useState(false);
 
   const handleSignUp = async () => {
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.confirmPassword) {
@@ -77,14 +79,25 @@ export const SignUp: React.FC<SignUpProps> = ({
     }
   };
 
-  const handleFacebookSignUp = async () => {
-    setIsFacebookLoading(true);
+  const handleAppleSignUp = async () => {
+    setIsAppleLoading(true);
     try {
-      await onFacebookSignUp();
+      await onAppleSignUp();
     } catch (error) {
-      console.log('Facebook sign up failed. Please try again.');
+      console.log('Apple sign up failed. Please try again.');
     } finally {
-      setIsFacebookLoading(false);
+      setIsAppleLoading(false);
+    }
+  };
+
+  const handleWeChatSignUp = async () => {
+    setIsWeChatLoading(true);
+    try {
+      await onWeChatSignUp();
+    } catch (error) {
+      console.log('WeChat sign up failed. Please try again.');
+    } finally {
+      setIsWeChatLoading(false);
     }
   };
 
@@ -99,38 +112,43 @@ export const SignUp: React.FC<SignUpProps> = ({
         <div className="text-center mb-8">
           <button
             onClick={onBack}
-            className="absolute top-6 left-6 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white/30 transition-all text-white font-medium"
+            className="absolute top-6 left-4 p-3 bg-white/20 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/30 transition-all text-white"
           >
-            ← Back
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
           </button>
-          <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">Create Account</h1>
+          
+
+          
+          <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-lg mt-8">Create Account</h1>
           <p className="text-white/90">Join DailyWell and start your wellness journey</p>
         </div>
 
         {/* Sign Up Form */}
         <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-8 space-y-6 border border-white/20">
-          {/* Name Fields */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative">
-              <User size={20} className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="text"
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={(e) => updateFormData('firstName', e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-              />
-            </div>
-            <div className="relative">
-              <User size={20} className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Last Name"
-                value={formData.lastName}
-                onChange={(e) => updateFormData('lastName', e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-              />
-            </div>
+          {/* First Name */}
+          <div className="relative">
+            <User size={20} className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="text"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={(e) => updateFormData('firstName', e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          {/* Last Name */}
+          <div className="relative">
+            <User size={20} className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChange={(e) => updateFormData('lastName', e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            />
           </div>
 
           {/* Email */}
@@ -145,16 +163,7 @@ export const SignUp: React.FC<SignUpProps> = ({
             />
           </div>
 
-          {/* Birth Date */}
-          <div className="relative">
-            <Calendar size={20} className="absolute left-3 top-3 text-gray-400" />
-            <input
-              type="date"
-              value={formData.birthDate}
-              onChange={(e) => updateFormData('birthDate', e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-            />
-          </div>
+
 
           {/* Password */}
           <div className="relative">
@@ -169,7 +178,7 @@ export const SignUp: React.FC<SignUpProps> = ({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -188,7 +197,7 @@ export const SignUp: React.FC<SignUpProps> = ({
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -213,6 +222,8 @@ export const SignUp: React.FC<SignUpProps> = ({
               'Create Account'
             )}
           </button>
+
+
 
           {/* Login Link */}
           <div className="text-center mt-6">

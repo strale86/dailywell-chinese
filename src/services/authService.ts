@@ -7,38 +7,40 @@ export interface AuthUser {
 }
 
 export class AuthService {
-  // Google OAuth Login (simulacija)
+  // Google OAuth Login (prava implementacija)
   static async signInWithGoogle(): Promise<AuthUser> {
     try {
-      console.log('Google OAuth simulation starting...');
+      console.log('Google OAuth starting...');
       
-      // Simuliram OAuth delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || process.env.REACT_APP_GOOGLE_CLIENT_ID;
       
-      const mockUser: AuthUser = {
-        uid: 'google_' + Date.now(),
-        email: 'user@gmail.com',
-        displayName: 'Google User',
-        photoURL: 'https://lh3.googleusercontent.com/a/default-user',
-        providerId: 'google.com'
-      };
+      if (!clientId) {
+        throw new Error('Google Client ID not configured');
+      }
+      
+      // Debug: proveri koji Client ID se koristi
+      console.log('Using Client ID:', clientId);
+      if (clientId !== '422122756546-5f1e19u72jdimb8n1nftcd5qj2s7uesu.apps.googleusercontent.com') {
+        alert(`Client ID mismatch! Expected: 422122756546-5f1e19u72jdimb8n1nftcd5qj2s7uesu.apps.googleusercontent.com\nGot: ${clientId}`);
+      }
 
-      localStorage.setItem('userToken', 'google-token-' + Date.now());
-      localStorage.setItem('userEmail', mockUser.email || '');
-      localStorage.setItem('userProfile', JSON.stringify({
-        firstName: 'Google',
-        lastName: 'User',
-        email: mockUser.email,
-        birthDate: '',
-        gender: '',
-        goals: []
-      }));
+      // Google OAuth starting...
 
-      console.log('Google OAuth completed successfully');
-      return mockUser;
+      // Koristi postojeću OAuth konfiguraciju
+      const { buildOAuthUrl } = await import('../config/oauth');
+      const authUrl = buildOAuthUrl('google', `google_login_${Date.now()}`);
+
+      // Direktan redirect umesto popup-a
+      window.location.href = authUrl;
+      
+      // Funkcija se neće vratiti jer se stranica preusmerava
+      return new Promise(() => {
+        // Ova funkcija se neće izvršiti jer se stranica preusmerava
+      });
+      
     } catch (error: any) {
       console.error('Google OAuth error:', error);
-      throw new Error('Google OAuth failed');
+      throw new Error('Google OAuth failed: ' + error.message);
     }
   }
 
@@ -74,6 +76,76 @@ export class AuthService {
     } catch (error: any) {
       console.error('Facebook OAuth error:', error);
       throw new Error('Facebook OAuth failed');
+    }
+  }
+
+  // Apple OAuth Login (simulacija)
+  static async signInWithApple(): Promise<AuthUser> {
+    try {
+      console.log('Apple OAuth simulation starting...');
+      
+      // Simuliram OAuth delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const mockUser: AuthUser = {
+        uid: 'apple_' + Date.now(),
+        email: 'user@icloud.com',
+        displayName: 'Apple User',
+        photoURL: null,
+        providerId: 'apple.com'
+      };
+
+      localStorage.setItem('userToken', 'apple-token-' + Date.now());
+      localStorage.setItem('userEmail', mockUser.email || '');
+      localStorage.setItem('userProfile', JSON.stringify({
+        firstName: 'Apple',
+        lastName: 'User',
+        email: mockUser.email,
+        birthDate: '',
+        gender: '',
+        goals: []
+      }));
+
+      console.log('Apple OAuth completed successfully');
+      return mockUser;
+    } catch (error: any) {
+      console.error('Apple OAuth error:', error);
+      throw new Error('Apple OAuth failed');
+    }
+  }
+
+  // WeChat OAuth Login (simulacija)
+  static async signInWithWeChat(): Promise<AuthUser> {
+    try {
+      console.log('WeChat OAuth simulation starting...');
+      
+      // Simuliram OAuth delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const mockUser: AuthUser = {
+        uid: 'wechat_' + Date.now(),
+        email: 'user@wechat.com',
+        displayName: 'WeChat User',
+        photoURL: 'https://thirdwx.qlogo.cn/user/avatar',
+        providerId: 'wechat.com'
+      };
+
+      localStorage.setItem('userToken', 'wechat-token-' + Date.now());
+      localStorage.setItem('userEmail', mockUser.email || '');
+      localStorage.setItem('userProfile', JSON.stringify({
+        firstName: 'WeChat',
+        lastName: 'User',
+        email: mockUser.email,
+        birthDate: '',
+        gender: '',
+        goals: []
+      }));
+
+      console.log('WeChat OAuth completed successfully');
+      return mockUser;
+    } catch (error: any) {
+      console.error('WeChat OAuth error:', error);
+      throw new Error('WeChat OAuth failed');
     }
   }
 
