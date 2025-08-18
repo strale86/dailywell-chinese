@@ -1,0 +1,56 @@
+{
+  "welcome": {
+    "title": "DailyWell",
+    "subtitle": "Ihr täglicher Wellness-Begleiter",
+    "heading": "Transformieren Sie Ihre Tägliche Routine",
+    "description": "Bauen Sie gesunde Gewohnheiten auf, verfolgen Sie Ihre Fortschritte und erreichen Sie Ihre Wellness-Ziele mit unserer umfassenden täglichen Begleiter-App.",
+    "features": {
+      "tasks": "Aufgabenverwaltung & Produktivität",
+      "habits": "Gewohnheitsverfolgung & Serien",
+      "wellness": "Wellness-Checks",
+      "timer": "Fokus-Timer (Pomodoro)",
+      "analytics": "Fortschrittsanalyse"
+    },
+    "getStarted": "Loslegen",
+    "joinMessage": "Schließen Sie sich Tausenden von Nutzern an, die ihr tägliches Wohlbefinden verbessern"
+  },
+  "login": {
+    "title": "Willkommen Zurück",
+    "subtitle": "Melden Sie sich an, um Ihre Wellness-Reise fortzusetzen",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "signIn": "Anmelden",
+    "forgotPassword": "Passwort vergessen?",
+    "googleLogin": "Mit Google anmelden",
+    "appleLogin": "Mit Apple anmelden",
+    "wechatLogin": "Mit WeChat anmelden",
+    "noAccount": "Haben Sie kein Konto?",
+    "signUp": "Registrieren"
+  },
+  "signup": {
+    "title": "Konto Erstellen",
+    "subtitle": "Starten Sie heute Ihre Wellness-Reise",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "confirmPassword": "Passwort Bestätigen",
+    "createAccount": "Konto Erstellen",
+    "hasAccount": "Haben Sie bereits ein Konto?",
+    "signIn": "Anmelden"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen zurück!",
+    "todayTasks": "Heutige Aufgaben",
+    "habits": "Gewohnheiten",
+    "wellness": "Wellness-Check",
+    "focus": "Fokus-Timer"
+  },
+  "premium": {
+    "title": "Premium-Funktionen",
+    "upgrade": "Zu Premium upgraden",
+    "proPlan": "Pro-Plan",
+    "premiumPlan": "Premium-Plan"
+  }
+}

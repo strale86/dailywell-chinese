@@ -32,8 +32,10 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
       setProfile(saved ? JSON.parse(saved) : null);
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', handleStorageChange);
+      return () => window.removeEventListener('storage', handleStorageChange);
+    }
   }, []);
 
   // Listen for online/offline status
@@ -43,16 +45,18 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
       setPendingActions(offlineManager.getPendingActionsCount());
     };
 
-    window.addEventListener('online', handleOnlineStatus);
-    window.addEventListener('offline', handleOnlineStatus);
-    
-    // Initial check
-    handleOnlineStatus();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', handleOnlineStatus);
+      window.addEventListener('offline', handleOnlineStatus);
+      
+      // Initial check
+      handleOnlineStatus();
 
-    return () => {
-      window.removeEventListener('online', handleOnlineStatus);
-      window.removeEventListener('offline', handleOnlineStatus);
-    };
+      return () => {
+        window.removeEventListener('online', handleOnlineStatus);
+        window.removeEventListener('offline', handleOnlineStatus);
+      };
+    }
   }, [offlineManager]);
 
   return (

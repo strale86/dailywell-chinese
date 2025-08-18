@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Zap, Heart, Target } from 'lucide-react';
 
@@ -7,7 +7,34 @@ interface WelcomeProps {
 }
 
 export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
+
+  // Auto-detect language on component mount
+  useEffect(() => {
+    const detected = navigator.language.split('-')[0];
+    if (detected && !localStorage.getItem('i18nextLng')) {
+      setDetectedLanguage(detected);
+    }
+  }, []);
+
+  const languages = [
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'zh', name: '中文', flag: '🇨🇳' },
+    { code: 'sr', name: 'Српски', flag: '🇷🇸' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'hi', name: 'हिंदी', flag: '🇮🇳' }
+  ];
+
+  const handleLanguageChange = (languageCode: string) => {
+    setSelectedLanguage(languageCode);
+    i18n.changeLanguage(languageCode);
+    localStorage.setItem('i18nextLng', languageCode);
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 relative overflow-hidden">
@@ -26,6 +53,31 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
         </div>
         <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">{t('welcome.title')}</h1>
         <p className="text-lg text-white/90 text-center">{t('welcome.subtitle')}</p>
+        
+        {/* Language Switcher */}
+        <div className="mt-6 flex flex-col items-center">
+          <div className="flex space-x-2 mb-2">
+            {languages.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => handleLanguageChange(lang.code)}
+                className={`w-12 h-12 rounded-full border-2 transition-all duration-200 hover:scale-110 ${
+                  selectedLanguage === lang.code
+                    ? 'border-white bg-white/20'
+                    : 'border-white/30 bg-white/10 hover:bg-white/20'
+                }`}
+                title={lang.name}
+              >
+                <span className="text-2xl">{lang.flag}</span>
+              </button>
+            ))}
+          </div>
+          {detectedLanguage && (
+            <p className="text-white/70 text-sm">
+              Detected: {languages.find(l => l.code === detectedLanguage)?.name || detectedLanguage}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Main content */}

@@ -8,16 +8,16 @@ export interface OAuthConfig {
 
 // WeChat OAuth Configuration
 export const wechatConfig: OAuthConfig = {
-  clientId: process.env.REACT_APP_WECHAT_CLIENT_ID || 'your_wechat_client_id',
-  clientSecret: process.env.REACT_APP_WECHAT_CLIENT_SECRET || 'your_wechat_client_secret',
+  clientId: import.meta.env.VITE_WECHAT_CLIENT_ID || 'your_wechat_client_id',
+  clientSecret: import.meta.env.VITE_WECHAT_CLIENT_SECRET || 'your_wechat_client_secret',
   redirectUri: `${window.location.origin}/oauth-callback?provider=wechat`,
   scope: 'snsapi_userinfo'
 };
 
 // Alipay OAuth Configuration
 export const alipayConfig: OAuthConfig = {
-  clientId: process.env.REACT_APP_ALIPAY_CLIENT_ID || 'your_alipay_client_id',
-  clientSecret: process.env.REACT_APP_ALIPAY_CLIENT_SECRET || 'your_alipay_client_secret',
+  clientId: import.meta.env.VITE_ALIPAY_CLIENT_ID || 'your_alipay_client_id',
+  clientSecret: import.meta.env.VITE_ALIPAY_CLIENT_SECRET || 'your_alipay_client_secret',
   redirectUri: `${window.location.origin}/oauth-callback?provider=alipay`,
   scope: 'auth_user'
 };

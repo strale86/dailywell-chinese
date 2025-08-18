@@ -8,7 +8,7 @@ import { AuthService } from './services/authService';
 import { socialAuthService } from './services/socialAuthService';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'login' | 'signup' | 'main' | 'oauth-callback'>('main');
+  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'login' | 'signup' | 'main' | 'oauth-callback'>('welcome');
   const [oauthProvider, setOauthProvider] = useState<'google' | 'apple' | 'wechat' | 'alipay'>('google');
 
   // Debug logging removed for production
@@ -42,17 +42,7 @@ function App() {
         if (currentUser || socialUser) {
           setCurrentScreen('main');
         } else {
-          // Auto-login with demo user
-          const demoUser = {
-            id: 'demo_user',
-            email: 'demo@example.com',
-            firstName: 'Demo',
-            lastName: 'User',
-            photoURL: '',
-            providerId: 'email'
-          };
-          localStorage.setItem('currentUser', JSON.stringify(demoUser));
-          setCurrentScreen('main');
+          setCurrentScreen('welcome');
         }
       };
       

@@ -7,6 +7,11 @@ import { getCurrentMarket } from './config/marketConfig';
 import enTranslation from './locales/en/translation.json';
 import srTranslation from './locales/sr/translation.json';
 import zhTranslation from './locales/zh/translation.json';
+import esTranslation from './locales/es/translation.json';
+import itTranslation from './locales/it/translation.json';
+import frTranslation from './locales/fr/translation.json';
+import deTranslation from './locales/de/translation.json';
+import hiTranslation from './locales/hi/translation.json';
 
 const resources = {
   en: {
@@ -17,6 +22,21 @@ const resources = {
   },
   zh: {
     translation: zhTranslation
+  },
+  es: {
+    translation: esTranslation
+  },
+  it: {
+    translation: itTranslation
+  },
+  fr: {
+    translation: frTranslation
+  },
+  de: {
+    translation: deTranslation
+  },
+  hi: {
+    translation: hiTranslation
   }
 };
 
