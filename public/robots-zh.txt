@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Chinese market specific
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: Sogou
+Allow: /
+Crawl-delay: 1
+
+User-agent: 360Spider
+Allow: /
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://dailywell-zh.netlify.app/sitemap-zh.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /oauth-callback
+Disallow: /alipay-callback

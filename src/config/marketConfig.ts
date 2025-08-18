@@ -62,6 +62,11 @@ export const getCurrentMarket = (): MarketConfig => {
     return marketConfigs[envLanguage];
   }
   
+  // For development, default to Chinese
+  if (import.meta.env.DEV) {
+    return marketConfigs.zh;
+  }
+  
   // Fallback to URL detection
   const hostname = window.location.hostname;
   

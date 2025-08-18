@@ -17,6 +17,7 @@ body {
 /* Dark mode styles */
 .dark body {
   background-color: #111827;
+  color: #f9fafb;
 }
 
 /* Dark mode for components */
@@ -30,6 +31,84 @@ body {
 
 .dark .bg-white\/80 {
   background-color: rgba(55, 65, 81, 0.8);
+}
+
+/* Global dark mode for white backgrounds */
+.dark .bg-white {
+  background-color: #1f2937;
+}
+
+/* Global dark mode for text */
+.dark .text-gray-900 {
+  color: #f9fafb !important;
+}
+
+.dark .text-gray-800 {
+  color: #f3f4f6 !important;
+}
+
+.dark .text-gray-700 {
+  color: #e5e7eb !important;
+}
+
+.dark .text-gray-600 {
+  color: #d1d5db !important;
+}
+
+.dark .text-gray-500 {
+  color: #9ca3af !important;
+}
+
+.dark .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+/* Dark mode for navigation */
+.dark .bg-white.border-b {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+/* Dark mode for cards and containers */
+.dark .bg-gray-50 {
+  background-color: #374151 !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #4b5563 !important;
+}
+
+/* Dark mode for buttons */
+.dark .hover\:text-gray-900:hover {
+  color: #f9fafb !important;
+}
+
+.dark .hover\:border-gray-300:hover {
+  border-color: #6b7280 !important;
+}
+
+/* Dark mode for form elements */
+.dark input, .dark textarea, .dark select {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark input::placeholder, .dark textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+.dark .text-gray-500 {
+  color: #9ca3af;
+}
+
+/* Global dark mode for borders */
+.dark .border {
+  border-color: #374151;
 }
 
 .dark .text-white {
@@ -50,6 +129,49 @@ body {
 
 .dark .border-white\/30 {
   border-color: rgba(249, 250, 251, 0.3);
+}
+
+/* Date input localization for Chinese */
+input[type="date"] {
+  direction: ltr;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Chinese language specific date input styling */
+[lang="zh"] input[type="date"],
+[lang="zh-CN"] input[type="date"],
+.chinese-date-input {
+  direction: ltr;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Force LTR for date input fields */
+.chinese-date-input::-webkit-datetime-edit-fields-wrapper {
+  direction: ltr !important;
+}
+
+.chinese-date-input::-webkit-datetime-edit {
+  direction: ltr !important;
+}
+
+/* Date input placeholder styling */
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  direction: ltr;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+/* Chinese date format hint */
+.date-format-hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.dark .date-format-hint {
+  color: #9ca3af;
 }
 
 /* Advanced Loading Animations */

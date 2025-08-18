@@ -91,7 +91,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
 
         {/* Download Links */}
         <div className="text-center mt-8">
-          <p className="text-white/90 mb-4">Download our mobile app</p>
+          <p className="text-white/90 mb-4">{t('welcome.downloadApp')}</p>
           <div className="flex justify-center space-x-4">
             <a
               href="https://play.google.com/store/apps/details?id=com.dailywell.app"

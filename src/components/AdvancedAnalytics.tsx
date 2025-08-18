@@ -14,6 +14,7 @@ import {
 } from 'chart.js';
 import { Target, Activity, Heart } from 'lucide-react';
 import { Task, Habit, WellnessEntry } from '../types';
+import { useTranslation } from 'react-i18next';
 
 // Registruj Chart.js komponente
 ChartJS.register(
@@ -39,6 +40,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
   habits,
   wellnessEntries,
 }) => {
+  const { t } = useTranslation();
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('week');
 
   // Generisi podatke za grafove
@@ -123,8 +125,8 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Advanced Analytics</h2>
-          <p className="text-gray-600">Detailed insights and progress tracking</p>
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{t('advancedAnalytics.advancedAnalytics')}</h2>
+        <p className="text-gray-600">{t('advancedAnalytics.detailedInsights')}</p>
         </div>
       </div>
       
@@ -140,7 +142,9 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            {period.charAt(0).toUpperCase() + period.slice(1)}
+            {period === 'week' ? t('advancedAnalytics.week') : 
+             period === 'month' ? t('advancedAnalytics.month') : 
+             t('advancedAnalytics.year')}
           </button>
         ))}
       </div>
@@ -149,7 +153,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       <div className="bg-white p-6 rounded-xl shadow-sm border">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Target className="w-5 h-5 text-blue-500" />
-          Task Completion Trend
+          {t('advancedAnalytics.taskCompletionTrend')}
         </h3>
         <div className="h-64">
           <Line
@@ -157,14 +161,14 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
               labels: taskData.labels,
               datasets: [
                 {
-                  label: 'Completed Tasks',
+                  label: t('advancedAnalytics.completedTasks'),
                   data: taskData.completedData,
                   borderColor: 'rgb(59, 130, 246)',
                   backgroundColor: 'rgba(59, 130, 246, 0.1)',
                   tension: 0.4,
                 },
                 {
-                  label: 'Total Tasks',
+                  label: t('advancedAnalytics.totalTasks'),
                   data: taskData.totalData,
                   borderColor: 'rgb(156, 163, 175)',
                   backgroundColor: 'rgba(156, 163, 175, 0.1)',
@@ -197,7 +201,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       <div className="bg-white p-6 rounded-xl shadow-sm border">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Activity className="w-5 h-5 text-green-500" />
-          Habits by Category
+          {t('advancedAnalytics.habitsByCategory')}
         </h3>
         <div className="h-64">
           <Bar
@@ -205,7 +209,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
               labels: habitsData.labels,
               datasets: [
                 {
-                  label: 'Total Streaks',
+                  label: t('advancedAnalytics.totalStreaks'),
                   data: habitsData.data,
                   backgroundColor: [
                     'rgba(59, 130, 246, 0.8)',
@@ -243,7 +247,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       <div className="bg-white p-6 rounded-xl shadow-sm border">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Heart className="w-5 h-5 text-pink-500" />
-          Wellness Overview
+          {t('advancedAnalytics.wellnessOverview')}
         </h3>
         <div className="h-64">
           <Bar
@@ -251,7 +255,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
               labels: wellnessData.labels,
               datasets: [
                 {
-                  label: 'Average Score',
+                  label: t('advancedAnalytics.averageScore'),
                   data: wellnessData.data,
                   backgroundColor: [
                     'rgba(59, 130, 246, 0.8)',

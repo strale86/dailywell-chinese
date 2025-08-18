@@ -1,5 +1,6 @@
 import React from 'react';
 import { Zap, Heart, Target } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -12,6 +13,7 @@ export const Logo: React.FC<LogoProps> = ({
   showText = true, 
   variant = 'default' 
 }) => {
+  const { t } = useTranslation();
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-12 h-12',
@@ -74,11 +76,11 @@ export const Logo: React.FC<LogoProps> = ({
       {showText && (
         <div>
           <h1 className={`${textSizeClasses[size]} font-bold ${colors.text} tracking-tight`}>
-            DailyWell
+            {t('logo.title')}
           </h1>
           {size !== 'sm' && (
             <p className={`text-xs ${variant === 'white' ? 'text-white/70' : 'text-gray-500'} font-medium`}>
-              Your wellness companion
+              {t('logo.subtitle')}
             </p>
           )}
         </div>

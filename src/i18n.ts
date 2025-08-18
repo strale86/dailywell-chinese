@@ -4,9 +4,9 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { getCurrentMarket } from './config/marketConfig';
 
 // Import translations
-import enTranslation from '../public/locales/en/translation.json';
-import srTranslation from '../public/locales/sr/translation.json';
-import zhTranslation from '../public/locales/zh/translation.json';
+import enTranslation from './locales/en/translation.json';
+import srTranslation from './locales/sr/translation.json';
+import zhTranslation from './locales/zh/translation.json';
 
 const resources = {
   en: {
@@ -49,6 +49,10 @@ export const setLanguageFromMarket = () => {
   console.log(`Setting language to: ${language}`);
   i18n.changeLanguage(language);
   
+  // Update document lang attribute for better localization
+  document.documentElement.lang = language;
+  document.body.lang = language;
+  
   // Update document title based on market
   const appName = import.meta.env.VITE_APP_NAME || market.appName;
   document.title = appName;
@@ -56,5 +60,11 @@ export const setLanguageFromMarket = () => {
 
 // Initialize with current market language
 setLanguageFromMarket();
+
+// Listen for language changes and update document lang attribute
+i18n.on('languageChanged', (lng) => {
+  document.documentElement.lang = lng;
+  document.body.lang = lng;
+});
 
 export default i18n;

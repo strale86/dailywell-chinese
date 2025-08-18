@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Download, Bell, Wifi, Settings, Star, Brain, Cloud, Users, Trophy, MessageCircle, Share2, BookOpen, Headphones, Dumbbell, Smartphone, QrCode } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PremiumFeaturesProps {
   isPremium: boolean;
@@ -10,6 +11,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
   isPremium,
   onUpgrade,
 }) => {
+  const { t } = useTranslation();
   const [qrCodes, setQrCodes] = useState<{[key: string]: string}>({});
   const [loading, setLoading] = useState<{[key: string]: boolean}>({});
   const [paymentStatus, setPaymentStatus] = useState<{[key: string]: string}>({});
@@ -18,6 +20,21 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
     setLoading(prev => ({ ...prev, [plan]: true }));
     
     try {
+      // In development, we'll use a mock response
+      // In production, this would call the Netlify function
+      const isDevelopment = process.env.NODE_ENV === 'development';
+      
+      if (isDevelopment) {
+        // Mock response for development
+        setTimeout(() => {
+          const mockQrUrl = `weixin://wxpay/bizpayurl?pr=mock_${Date.now()}`;
+          setQrCodes(prev => ({ ...prev, [plan]: mockQrUrl }));
+          setPaymentStatus(prev => ({ ...prev, [plan]: 'pending' }));
+          setLoading(prev => ({ ...prev, [plan]: false }));
+        }, 1000);
+        return;
+      }
+
       const response = await fetch('/.netlify/functions/generate-qr', {
         method: 'POST',
         headers: {
@@ -48,8 +65,8 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Premium Features</h2>
-          <p className="text-gray-600">Unlock advanced capabilities</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{t('premiumFeatures.premiumFeatures')}</h2>
+          <p className="text-gray-600">{t('premiumFeatures.unlockAdvanced')}</p>
         </div>
       </div>
 
@@ -59,13 +76,13 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
           <div className="flex items-center gap-3">
             <Download className="w-6 h-6 text-blue-500" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Data Export</h3>
-              <p className="text-sm text-gray-600">Export your data as CSV or JSON</p>
+              <h3 className="text-lg font-semibold text-gray-900">{t('premiumFeatures.dataExport')}</h3>
+              <p className="text-sm text-gray-600">{t('premiumFeatures.dataExportDesc')}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Star className="w-4 h-4 text-yellow-500" />
-            <span className="text-sm text-gray-600">Premium</span>
+            <span className="text-sm text-gray-600">{t('premiumFeatures.premium')}</span>
           </div>
         </div>
         
@@ -78,7 +95,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
              }`}
            >
-             Export CSV
+             {t('premiumFeatures.exportCSV')}
            </button>
            <button
              disabled={!isPremium}
@@ -88,7 +105,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
              }`}
            >
-             Export JSON
+             {t('premiumFeatures.exportJSON')}
            </button>
            <button
              disabled={!isPremium}
@@ -98,7 +115,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
              }`}
            >
-             Export PDF
+             {t('premiumFeatures.exportPDF')}
            </button>
                   </div>
        </div>
@@ -691,7 +708,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                    disabled={loading['pro']}
                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
                  >
-                   {loading['pro'] ? 'Generating...' : 'Generate QR Code'}
+                   {loading['pro'] ? t('premiumFeatures.generating') : t('premiumFeatures.generateQRCode')}
                  </button>
                ) : (
                  <div className="bg-white p-3 rounded-lg border border-green-200 inline-block">
@@ -726,7 +743,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                    disabled={loading['premium']}
                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
                  >
-                   {loading['premium'] ? 'Generating...' : 'Generate QR Code'}
+                   {loading['premium'] ? t('premiumFeatures.generating') : t('premiumFeatures.generateQRCode')}
                  </button>
                ) : (
                  <div className="bg-white p-3 rounded-lg border border-purple-200 inline-block">

@@ -60,7 +60,7 @@ export const AppNavigator = () => {
 
   const handleSignUp = async (userData: any) => {
     try {
-      const user = await AuthService.signInWithEmail(userData.email, userData.password);
+      const user = await AuthService.signUpWithEmail(userData.email, userData.password, userData.firstName);
       setCurrentUser(user);
       setIsAuthenticated(true);
       setCurrentScreen('main');
@@ -125,9 +125,19 @@ export const AppNavigator = () => {
   const handleWeChatLogin = async () => {
     try {
       console.log('AppNavigator: Starting WeChat login...');
-      const user = await AuthService.signInWithWeChat();
+      const user = await socialAuthService.signInWithWeChat();
       console.log('AppNavigator: WeChat login successful, user:', user);
-      setCurrentUser(user);
+      
+      // Convert SocialUser to AuthUser
+      const authUser: AuthUser = {
+        uid: user.id,
+        email: user.email,
+        displayName: `${user.firstName} ${user.lastName}`,
+        photoURL: user.profilePicture,
+        providerId: user.provider
+      };
+      
+      setCurrentUser(authUser);
       setIsAuthenticated(true);
       setCurrentScreen('main');
       console.log('AppNavigator: Navigated to main screen');

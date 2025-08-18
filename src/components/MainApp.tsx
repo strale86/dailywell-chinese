@@ -12,6 +12,7 @@ import { PremiumFeatures } from './PremiumFeatures';
 import { Notes } from './Notes';
 import { AIRecommendations } from './AIRecommendations';
 import { UserStats, Task, Habit, WellnessEntry, PomodoroSession, Goal, Note } from '../types';
+import { useTranslation } from 'react-i18next';
 
 // Lazy load teške komponente
 const AdvancedAnalytics = lazy(() => import('./AdvancedAnalytics').then(module => ({ default: module.AdvancedAnalytics })));
@@ -23,7 +24,8 @@ interface MainAppProps {
 }
 
 export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
-           const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<string>('dashboard');
   
   // State for tasks
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -297,16 +299,16 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
                );
                    default:
                return (
-                 <div className="text-center py-12">
-                   <h2 className="text-xl font-semibold text-gray-900 mb-4">Page Not Found</h2>
-                   <p className="text-gray-600">The requested page could not be found.</p>
-                 </div>
+                         <div className="text-center py-12">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('mainApp.pageNotFound')}</h2>
+          <p className="text-gray-600 dark:text-gray-300">{t('mainApp.pageNotFoundDesc')}</p>
+        </div>
                );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Header */}
       <Header stats={mockStats} onLogout={onLogout} />
       

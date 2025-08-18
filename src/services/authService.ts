@@ -1,5 +1,3 @@
-import { authService as supabaseAuth } from './supabaseService';
-
 export interface AuthUser {
   uid: string;
   email: string;
@@ -10,70 +8,74 @@ export interface AuthUser {
 
 export class AuthService {
   static async signInWithEmail(email: string, password: string): Promise<AuthUser> {
-    try {
-      const user = await supabaseAuth.signIn(email, password);
-      if (!user) throw new Error('Login failed');
-      
+    // Jednostavan localStorage login
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u: any) => u.email === email && u.password === password);
+    
+    if (user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
       return {
         uid: user.id,
-        email: user.email || '',
-        displayName: user.user_metadata?.display_name,
-        photoURL: user.user_metadata?.avatar_url,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
         providerId: 'email'
       };
-    } catch (error) {
-      console.error('Supabase auth error:', error);
-      throw error;
+    } else {
+      throw new Error('Invalid credentials');
     }
   }
 
   static async signUpWithEmail(email: string, password: string, displayName?: string): Promise<AuthUser> {
-    try {
-      const user = await supabaseAuth.signUp(email, password, displayName);
-      if (!user) throw new Error('Sign up failed');
-      
-      return {
-        uid: user.id,
-        email: user.email || '',
-        displayName: user.user_metadata?.display_name,
-        photoURL: user.user_metadata?.avatar_url,
-        providerId: 'email'
-      };
-    } catch (error) {
-      console.error('Supabase signup error:', error);
-      throw error;
+    // Jednostavan localStorage signup
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    // Proveri da li korisnik već postoji
+    if (users.find((u: any) => u.email === email)) {
+      throw new Error('User already exists');
     }
+    
+    const newUser = {
+      id: Date.now().toString(),
+      email,
+      password,
+      displayName,
+      photoURL: '',
+      createdAt: new Date().toISOString()
+    };
+    
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    
+    return {
+      uid: newUser.id,
+      email: newUser.email,
+      displayName: newUser.displayName,
+      photoURL: newUser.photoURL,
+      providerId: 'email'
+    };
   }
 
   static async signOut(): Promise<void> {
-    try {
-      await supabaseAuth.signOut();
-    } catch (error) {
-      console.error('Supabase signout error:', error);
-      throw error;
-    }
+    localStorage.removeItem('currentUser');
   }
 
   static async getCurrentUser(): Promise<AuthUser | null> {
-    try {
-      const user = await supabaseAuth.getCurrentUser();
-      if (!user) return null;
-      
-      return {
-        uid: user.id,
-        email: user.email || '',
-        displayName: user.user_metadata?.display_name,
-        photoURL: user.user_metadata?.avatar_url,
-        providerId: 'email'
-      };
-    } catch (error) {
-      console.error('Supabase getCurrentUser error:', error);
-      return null;
-    }
+    const user = localStorage.getItem('currentUser');
+    if (!user) return null;
+    
+    const userData = JSON.parse(user);
+    return {
+      uid: userData.id,
+      email: userData.email,
+      displayName: userData.displayName,
+      photoURL: userData.photoURL,
+      providerId: 'email'
+    };
   }
 
   static isAuthenticated(): boolean {
-    // This will be handled by Supabase auth state
-    return false; // Will be updated with real-time auth state
+    return !!localStorage.getItem('currentUser');
   }
 }

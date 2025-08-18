@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { AppNavigator } from './navigation/AppNavigator';
+import App from './App';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { registerServiceWorker } from './utils/offlineManager';
 import './i18n'; // Import i18n configuration
@@ -12,7 +12,7 @@ registerServiceWorker();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <AppNavigator />
+      <App />
     </ThemeProvider>
   </StrictMode>
 );

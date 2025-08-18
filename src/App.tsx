@@ -8,13 +8,12 @@ import { AuthService } from './services/authService';
 import { socialAuthService } from './services/socialAuthService';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'login' | 'signup' | 'main' | 'oauth-callback'>('welcome');
+  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'login' | 'signup' | 'main' | 'oauth-callback'>('main');
   const [oauthProvider, setOauthProvider] = useState<'google' | 'apple' | 'wechat' | 'alipay'>('google');
 
-  // Add debug logging
-  console.log('App component loaded, currentScreen:', currentScreen);
+  // Debug logging removed for production
 
-  // Check for OAuth callback on app load
+  // Check for OAuth callback on app load and auto-login
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -34,6 +33,30 @@ function App() {
       }
       
       setCurrentScreen('oauth-callback');
+    } else {
+      // Auto-login check
+      const checkAutoLogin = async () => {
+        const currentUser = await AuthService.getCurrentUser();
+        const socialUser = socialAuthService.getCurrentSocialUser();
+        
+        if (currentUser || socialUser) {
+          setCurrentScreen('main');
+        } else {
+          // Auto-login with demo user
+          const demoUser = {
+            id: 'demo_user',
+            email: 'demo@example.com',
+            firstName: 'Demo',
+            lastName: 'User',
+            photoURL: '',
+            providerId: 'email'
+          };
+          localStorage.setItem('currentUser', JSON.stringify(demoUser));
+          setCurrentScreen('main');
+        }
+      };
+      
+      checkAutoLogin();
     }
   }, []);
   
@@ -48,7 +71,7 @@ function App() {
 
   const handleSignUp = async (userData: any) => {
     try {
-      const user = await AuthService.signInWithEmail(userData.email, userData.password);
+      const user = await AuthService.signUpWithEmail(userData.email, userData.password, userData.firstName);
       setCurrentScreen('login');
     } catch (error) {
       console.error('Sign up error:', error);
@@ -57,7 +80,7 @@ function App() {
 
   const handleForgotPassword = async (email: string) => {
     const resetCode = Math.floor(100000 + Math.random() * 900000);
-    console.log(`Reset code sent to: ${email}, Code: ${resetCode}`);
+    // Reset code generated: ${resetCode} for ${email}
   };
 
   const handleGoogleLogin = async () => {
@@ -151,8 +174,6 @@ function App() {
         return (
           <Login 
             onLogin={handleLogin}
-            onGoogleLogin={handleGoogleLogin}
-            onAppleLogin={handleAppleLogin}
             onWeChatLogin={handleWeChatLogin}
             onAlipayLogin={handleAlipayLogin}
             onForgotPassword={handleForgotPassword}
@@ -164,8 +185,6 @@ function App() {
         return (
           <SignUp
             onSignUp={handleSignUp}
-            onGoogleSignUp={handleGoogleSignUp}
-            onAppleSignUp={handleAppleSignUp}
             onWeChatSignUp={handleWeChatSignUp}
             onAlipaySignUp={handleAlipaySignUp}
             onLogin={() => setCurrentScreen('login')}

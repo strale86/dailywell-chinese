@@ -4,6 +4,11 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  # Chinese market environment variables
+  REACT_APP_DEFAULT_LANGUAGE = "zh"
+  REACT_APP_CHINESE_MARKET = "true"
+  REACT_APP_WECHAT_OAUTH_ENABLED = "true"
+  REACT_APP_ALIPAY_OAUTH_ENABLED = "true"
 
 # Redirects for different markets
 [[redirects]]
@@ -14,20 +19,81 @@
 # English market (default)
 [[redirects]]
   from = "https://dailywell.com/*"
-  to = "https://your-app-name.netlify.app/:splat"
+  to = "https://dailywell-zh.netlify.app/:splat"
   status = 301
 
 # Serbian market
 [[redirects]]
   from = "https://dailywell.rs/*"
-  to = "https://your-app-name.netlify.app/:splat?lng=sr"
+  to = "https://dailywell-zh.netlify.app/:splat?lng=sr"
   status = 301
 
 # Chinese market
 [[redirects]]
   from = "https://dailywell.cn/*"
-  to = "https://your-app-name.netlify.app/:splat?lng=zh"
+  to = "https://dailywell-zh.netlify.app/:splat?lng=zh"
   status = 301
+
+# Chinese market alternative domains
+[[redirects]]
+  from = "https://dailywell.中国/*"
+  to = "https://dailywell-zh.netlify.app/:splat?lng=zh"
+  status = 301
+
+[[redirects]]
+  from = "https://每日健康.cn/*"
+  to = "https://dailywell-zh.netlify.app/:splat?lng=zh"
+  status = 301
+
+# WeChat OAuth callback
+[[redirects]]
+  from = "/oauth-callback"
+  to = "/index.html"
+  status = 200
+
+# Alipay OAuth callback
+[[redirects]]
+  from = "/alipay-callback"
+  to = "/index.html"
+  status = 200
+
+# Chinese SEO redirects
+[[redirects]]
+  from = "/健康"
+  to = "/wellness?lng=zh"
+  status = 301
+
+[[redirects]]
+  from = "/习惯"
+  to = "/habits?lng=zh"
+  status = 301
+
+[[redirects]]
+  from = "/任务"
+  to = "/tasks?lng=zh"
+  status = 301
+
+[[redirects]]
+  from = "/专注"
+  to = "/focus?lng=zh"
+  status = 301
+
+[[redirects]]
+  from = "/高级版"
+  to = "/premium?lng=zh"
+  status = 301
+
+# Chinese sitemap
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap-zh.xml"
+  status = 200
+
+# Chinese robots.txt
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots-zh.txt"
+  status = 200
 
 # Headers for PWA
 [[headers]]
@@ -49,3 +115,30 @@
   for = "/sw.js"
   [headers.values]
     Cache-Control = "no-cache"
+
+# PWA manifest
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Chinese market specific headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Language = "zh-CN, en-US, sr-RS"
+    Accept-Language = "zh-CN, zh, en-US, en, sr-RS, sr"
+
+# WeChat browser detection
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-UA-Compatible = "IE=edge,chrome=1"
+
+# Chinese CDN optimization
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    CDN-Cache-Control = "max-age=31536000"
+    Edge-Cache-Control = "max-age=31536000"

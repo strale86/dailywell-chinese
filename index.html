@@ -2,47 +2,116 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-              <link rel="icon" type="image/png" href="/icon.png" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>DailyWell - Wellness & Planning App</title>
-          
-          <!-- Apple Touch Icon for iOS -->
-          <link rel="apple-touch-icon" href="/icon.png" />
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="DailyWell" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#8B5CF6" />
-    <meta name="msapplication-TileColor" content="#8B5CF6" />
-              <meta name="msapplication-TileImage" content="/icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <meta name="viewport" content="width=1200, initial-scale=1.0" />
+    <title>DailyWell - Wellness & Planning App</title>
     <script>
-      // Completely prevent share-modal.js errors
-      window.addEventListener('DOMContentLoaded', function() {
-        // Remove any existing share-modal scripts
-        const scripts = document.querySelectorAll('script[src*="share-modal"]');
-        scripts.forEach(script => script.remove());
+      // Completely prevent share-modal.js errors and other external script issues
+      (function() {
+        // Override window.addEventListener to prevent share-modal errors
+        const originalAddEventListener = window.addEventListener;
+        window.addEventListener = function(type, listener, options) {
+          // Prevent share-modal related event listeners
+          if (type && typeof type === 'string' && type.includes('share-modal')) {
+            console.log('Prevented share-modal event listener:', type);
+            return;
+          }
+          return originalAddEventListener.call(this, type, listener, options);
+        };
         
-        // Prevent future share-modal scripts
+        // Override document.addEventListener as well
+        const originalDocAddEventListener = document.addEventListener;
+        document.addEventListener = function(type, listener, options) {
+          if (type && typeof type === 'string' && type.includes('share-modal')) {
+            console.log('Prevented share-modal document event listener:', type);
+            return;
+          }
+          return originalDocAddEventListener.call(this, type, listener, options);
+        };
+        
+        // Immediately remove any existing share-modal scripts
+        function removeShareModalScripts() {
+          const scripts = document.querySelectorAll('script[src*="share-modal"]');
+          scripts.forEach(script => {
+            script.remove();
+            console.log('Removed share-modal script');
+          });
+          
+          // Also remove any inline scripts that might contain share-modal code
+          const inlineScripts = document.querySelectorAll('script:not([src])');
+          inlineScripts.forEach(script => {
+            if (script.textContent && script.textContent.includes('share-modal')) {
+              script.remove();
+              console.log('Removed inline share-modal script');
+            }
+          });
+        }
+        
+        // Remove immediately
+        removeShareModalScripts();
+        
+        // Also remove on DOMContentLoaded
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', removeShareModalScripts);
+        } else {
+          removeShareModalScripts();
+        }
+        
+        // Prevent future share-modal scripts with more aggressive observer
         const observer = new MutationObserver(function(mutations) {
           mutations.forEach(function(mutation) {
             mutation.addedNodes.forEach(function(node) {
-              if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
-                if (node.src && node.src.includes('share-modal')) {
-                  node.remove();
+              if (node.nodeType === 1) {
+                // Check if it's a script tag
+                if (node.tagName === 'SCRIPT') {
+                  if (node.src && (node.src.includes('share-modal') || node.src.includes('netlify'))) {
+                    node.remove();
+                    console.log('Prevented share-modal/netlify script');
+                  }
+                  // Check inline scripts too
+                  if (node.textContent && node.textContent.includes('share-modal')) {
+                    node.remove();
+                    console.log('Prevented inline share-modal script');
+                  }
+                }
+                // Check child nodes too
+                if (node.querySelectorAll) {
+                  const childScripts = node.querySelectorAll('script[src*="share-modal"], script[src*="netlify"]');
+                  childScripts.forEach(script => {
+                    script.remove();
+                    console.log('Removed child share-modal script');
+                  });
                 }
               }
             });
           });
         });
         
-        observer.observe(document.head, { childList: true });
-        observer.observe(document.body, { childList: true });
+        // Observe both head and body
+        observer.observe(document.head, { childList: true, subtree: true });
+        observer.observe(document.body, { childList: true, subtree: true });
         
-        // Remove Netlify profile icon
-        const netlifyElements = document.querySelectorAll('[data-netlify], [class*="netlify"], [id*="netlify"]');
-        netlifyElements.forEach(element => element.remove());
-      });
+        // Remove Netlify elements
+        function removeNetlifyElements() {
+          const netlifyElements = document.querySelectorAll('[data-netlify], [class*="netlify"], [id*="netlify"], .netlify-identity-widget');
+          netlifyElements.forEach(element => {
+            element.remove();
+            console.log('Removed Netlify element');
+          });
+        }
+        
+        removeNetlifyElements();
+        
+        // Also run periodically to catch any late additions
+        setInterval(removeShareModalScripts, 500);
+        setInterval(removeNetlifyElements, 500);
+        
+        // Override any global functions that might be called by share-modal
+        window.shareModal = function() { console.log('shareModal function blocked'); };
+        window.ShareModal = function() { console.log('ShareModal function blocked'); };
+        
+        console.log('Share-modal protection activated');
+      })();
     </script>
     <style>
       /* Hide Netlify elements */

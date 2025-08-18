@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
 import { PomodoroSession } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface PomodoroTimerProps {
   onSessionComplete: (session: Omit<PomodoroSession, 'id'>) => void;
 }
 
 export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete }) => {
+  const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
   const [isActive, setIsActive] = useState(false);
   const [isBreak, setIsBreak] = useState(false);
@@ -114,8 +116,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
   return (
     <div className="space-y-6 pl-2 sm:pl-0">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Focus Timer</h2>
-        <p className="text-gray-600">Stay focused with the Pomodoro Technique</p>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('pomodoroTimer.title')}</h2>
+                  <p className="text-gray-600">{t('pomodoroTimer.subtitle')}</p>
       </div>
 
       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-lg border">
@@ -146,7 +148,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
                 <div className={`text-sm font-medium ${
                   isBreak ? 'text-green-600' : 'text-indigo-600'
                 }`}>
-                  {isBreak ? 'Break Time' : 'Focus Time'}
+                  {isBreak ? t('pomodoroTimer.breakTime') : t('pomodoroTimer.focusTime')}
                 </div>
               </div>
             </div>
@@ -157,7 +159,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
             <div className="max-w-sm mx-auto">
               <input
                 type="text"
-                placeholder="What are you working on?"
+                placeholder={t('pomodoroTimer.taskPlaceholder')}
                 value={currentTask}
                 onChange={(e) => setCurrentTask(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
@@ -181,12 +183,12 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
               {isActive ? (
                 <>
                   <Pause className="w-5 h-5" />
-                  <span>Pause</span>
+                  <span>{t('timer.pause')}</span>
                 </>
               ) : (
                 <>
                   <Play className="w-5 h-5" />
-                  <span>Start</span>
+                  <span>{t('timer.start')}</span>
                 </>
               )}
             </button>
@@ -196,7 +198,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
               className="flex items-center justify-center space-x-2 px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors w-full sm:w-auto"
             >
               <RotateCcw className="w-5 h-5" />
-              <span>Reset</span>
+              <span>{t('timer.reset')}</span>
             </button>
           </div>
 
@@ -204,13 +206,13 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
           <div className="flex justify-center space-x-8 pt-4 border-t">
             <div className="text-center">
               <div className="text-2xl font-bold text-indigo-600">{sessionsCompleted}</div>
-              <div className="text-sm text-gray-600">Sessions Today</div>
+              <div className="text-sm text-gray-600">{t('pomodoroTimer.sessionsToday')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">
                 {Math.floor((sessionsCompleted * 25) / 60)}h {(sessionsCompleted * 25) % 60}m
               </div>
-              <div className="text-sm text-gray-600">Focus Time</div>
+              <div className="text-sm text-gray-600">{t('pomodoroTimer.focusTime')}</div>
             </div>
           </div>
         </div>
@@ -220,13 +222,13 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
       <div className="bg-white p-6 rounded-lg shadow-sm border">
         <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
           <Clock className="w-5 h-5 mr-2 text-indigo-500" />
-          Pomodoro Tips
+          {t('pomodoroTimer.tips')}
         </h3>
         <div className="space-y-2 text-sm text-gray-600">
-          <p>• Focus on one task for 25 minutes</p>
-          <p>• Take a 5-minute break after each session</p>
-          <p>• After 4 sessions, take a longer 15-30 minute break</p>
-          <p>• Turn off all distractions during focus time</p>
+          <p>• {t('pomodoroTimer.tip1')}</p>
+          <p>• {t('pomodoroTimer.tip2')}</p>
+          <p>• {t('pomodoroTimer.tip3')}</p>
+          <p>• {t('pomodoroTimer.tip4')}</p>
         </div>
       </div>
     </div>

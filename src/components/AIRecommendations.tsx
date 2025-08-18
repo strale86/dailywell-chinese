@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Brain, TrendingUp, Target, Heart, Zap, RefreshCw, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import { AIRecommendationService, AIRecommendation } from '../services/aiRecommendations';
 import { Task, Habit, WellnessEntry, Goal, Note } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface AIRecommendationsProps {
   tasks: Task[];
@@ -18,6 +19,7 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
   goals,
   notes,
 }) => {
+  const { t } = useTranslation();
   const [recommendations, setRecommendations] = useState<AIRecommendation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -84,9 +86,9 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
             <Brain className="w-6 h-6 text-purple-600" />
-            AI Recommendations
+            {t('aiRecommendations.title')}
           </h2>
-          <p className="text-gray-600">Personalized insights based on your data</p>
+          <p className="text-gray-600">{t('aiRecommendations.subtitle')}</p>
         </div>
         <button
           onClick={generateRecommendations}
@@ -94,21 +96,21 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
           className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-          {isLoading ? 'Analyzing...' : 'Refresh'}
+          {isLoading ? t('aiRecommendations.analyzing') : t('aiRecommendations.refresh')}
         </button>
       </div>
 
       {lastUpdated && (
         <div className="text-sm text-gray-500">
-          Last updated: {lastUpdated.toLocaleTimeString()}
+          {t('aiRecommendations.lastUpdated')}: {lastUpdated.toLocaleTimeString()}
         </div>
       )}
 
       {recommendations.length === 0 ? (
         <div className="text-center py-12">
           <Brain className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No recommendations yet</h3>
-          <p className="text-gray-600">Start using the app to get personalized AI recommendations</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('aiRecommendations.noRecommendations')}</h3>
+          <p className="text-gray-600">{t('aiRecommendations.startUsingApp')}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -123,10 +125,10 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
                     <h3 className="text-lg font-semibold text-gray-900">{recommendation.title}</h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(recommendation.priority)}`}>
-                        {recommendation.priority} priority
+                        {t(`aiRecommendations.priority${recommendation.priority.charAt(0).toUpperCase() + recommendation.priority.slice(1)}`)} {t('aiRecommendations.priority')}
                       </span>
                       <span className="text-xs text-gray-500">
-                        {recommendation.confidence}% confidence
+                        {recommendation.confidence}% {t('aiRecommendations.confidence')}
                       </span>
                     </div>
                   </div>
@@ -140,7 +142,7 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
                   <div className="flex items-start gap-2">
                     <AlertCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-blue-900">Suggested Action:</p>
+                      <p className="text-sm font-medium text-blue-900">{t('aiRecommendations.suggestedAction')}:</p>
                       <p className="text-sm text-blue-700">{recommendation.action}</p>
                     </div>
                   </div>
@@ -150,7 +152,7 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">
-                    Category: {recommendation.category}
+                    {t('aiRecommendations.category')}: {t(`aiRecommendations.category${recommendation.category.charAt(0).toUpperCase() + recommendation.category.slice(1)}`)}
                   </span>
                   <span className="text-xs text-gray-500">
                     {recommendation.createdAt.toLocaleDateString()}
@@ -167,10 +169,9 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
           <div className="flex items-start gap-3">
             <Brain className="w-5 h-5 text-purple-600 mt-0.5" />
             <div>
-              <h4 className="text-sm font-medium text-purple-900">How AI Recommendations Work</h4>
+              <h4 className="text-sm font-medium text-purple-900">{t('aiRecommendations.howItWorks')}</h4>
               <p className="text-sm text-purple-700 mt-1">
-                Our AI analyzes your tasks, habits, wellness data, and goals to provide personalized suggestions 
-                for improving your productivity and well-being. Recommendations are updated automatically as you use the app.
+                {t('aiRecommendations.howItWorksDescription')}
               </p>
             </div>
           </div>
@@ -179,5 +180,6 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
     </div>
   );
 };
+
 
 

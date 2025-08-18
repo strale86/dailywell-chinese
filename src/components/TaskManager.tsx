@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Check, Trash2, Flag, CheckSquare } from 'lucide-react';
 import { Task } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface TaskManagerProps {
   tasks: Task[];
@@ -15,6 +16,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
   onToggleTask,
   onDeleteTask,
 }) => {
+  const { t } = useTranslation();
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
@@ -52,14 +54,14 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
     <div className="pl-2 sm:pl-0">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Today's Tasks</h2>
-          <p className="text-gray-600">{completedTasks.length} of {tasks.length} completed</p>
+          <h2 className="text-2xl font-bold text-gray-900">{t('taskManager.todaysTasks')}</h2>
+          <p className="text-gray-600">{completedTasks.length} {t('taskManager.of')} {tasks.length} {t('taskManager.completed')}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Add Task
+          {t('taskManager.addTask')}
         </button>
       </div>
 
@@ -68,7 +70,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
           <div>
             <input
               type="text"
-              placeholder="Task title..."
+              placeholder={t('taskManager.taskTitle')}
               value={newTask.title}
               onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
               className="w-full px-3 py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent text-white placeholder-gray-300"
@@ -77,7 +79,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
           </div>
           <div>
             <textarea
-              placeholder="Description (optional)..."
+              placeholder={`${t('taskManager.description')} ${t('taskManager.optional')}`}
               value={newTask.description}
               onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
               className="w-full px-3 py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent resize-none text-white placeholder-gray-300"
@@ -90,9 +92,9 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as 'low' | 'medium' | 'high' })}
               className="px-3 py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent w-full sm:w-auto text-white"
             >
-              <option value="low">Low Priority</option>
-              <option value="medium">Medium Priority</option>
-              <option value="high">High Priority</option>
+              <option value="low">{t('taskManager.low')} {t('taskManager.priority')}</option>
+              <option value="medium">{t('taskManager.medium')} {t('taskManager.priority')}</option>
+              <option value="high">{t('taskManager.high')} {t('taskManager.priority')}</option>
             </select>
             <div className="flex space-x-2 w-full sm:w-auto">
               <button

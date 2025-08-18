@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { User, Mail, Calendar, Target, Settings, X } from 'lucide-react';
+// Removed react-datepicker imports to fix build error
+import { useTranslation } from 'react-i18next';
 
 interface UserProfile {
   firstName: string;
@@ -26,6 +28,51 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onLogout, stats }) => {
+  const { t, i18n } = useTranslation();
+  
+  // Debug: log current language
+  console.log('Current language:', i18n.language);
+  console.log('Document lang:', document.documentElement.lang);
+  
+  // Set document lang attribute for date input localization
+  React.useEffect(() => {
+    if (i18n.language === 'zh') {
+      document.documentElement.lang = 'zh-CN';
+      document.body.lang = 'zh-CN';
+      console.log('Set document lang to zh-CN');
+    } else {
+      document.documentElement.lang = i18n.language;
+      document.body.lang = i18n.language;
+    }
+  }, [i18n.language]);
+  
+  // Force Chinese language for date input
+  const isChinese = i18n.language === 'zh';
+  
+  // Immediately set document lang for date input
+  if (isChinese && document.documentElement.lang !== 'zh-CN') {
+    document.documentElement.lang = 'zh-CN';
+    document.body.lang = 'zh-CN';
+  }
+  
+  // Helper function to format date for display
+  const formatDateForDisplay = (dateString: string) => {
+    if (!dateString) return t('profileModal.notSet');
+    
+    const date = new Date(dateString);
+    if (i18n.language === 'zh') {
+      return date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
   const [profile, setProfile] = useState<UserProfile>(() => {
     const saved = localStorage.getItem('dailywell-profile');
     return saved ? JSON.parse(saved) : {
@@ -70,7 +117,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-xl font-bold text-gray-900">Profile</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('profileModal.profile')}</h2>
           <div className="flex items-center space-x-2">
             {!isEditing ? (
               <button
@@ -78,14 +125,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                 className="flex items-center space-x-2 bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors text-sm"
               >
                 <Settings className="w-4 h-4" />
-                <span>Edit</span>
+                <span>{t('profileModal.edit')}</span>
               </button>
             ) : (
               <button
                 onClick={handleSave}
                 className="flex items-center space-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition-colors text-sm"
               >
-                <span>Save</span>
+                <span>{t('profileModal.save')}</span>
               </button>
             )}
             <button
@@ -102,7 +149,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <User className="w-5 h-5 mr-2 text-blue-600" />
-              Profile Picture
+              {t('profileModal.profilePicture')}
             </h3>
             
             <div className="flex items-center space-x-4">
@@ -144,7 +191,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                       window.dispatchEvent(new Event('storage'));
                     }}
                     className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
-                    title="Remove avatar"
+                    title={t('profileModal.removeAvatar')}
                   >
                     ×
                   </button>
@@ -155,12 +202,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                 <h4 className="text-lg font-semibold text-gray-900">
                   {profile.firstName && profile.lastName 
                     ? `${profile.firstName} ${profile.lastName}`
-                    : 'User Profile'
+                    : t('profileModal.userProfile')
                   }
                 </h4>
-                <p className="text-gray-600">{profile.email || 'No email set'}</p>
+                <p className="text-gray-600">{profile.email || t('profileModal.noEmailSet')}</p>
                 <p className="text-sm text-gray-500">
-                  {profile.birthDate ? `Born: ${new Date(profile.birthDate).toLocaleDateString()}` : 'Birth date not set'}
+                  {profile.birthDate
+                    ? `${t('profileModal.born')}: ${new Date(profile.birthDate).toLocaleDateString(i18n.language === 'zh' ? 'zh-CN' : i18n.language)}`
+                    : t('profileModal.birthDateNotSet')}
                 </p>
               </div>
             </div>
@@ -169,45 +218,45 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <User className="w-5 h-5 mr-2 text-blue-600" />
-              Personal Information
+              {t('profileModal.personalInformation')}
             </h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('profileModal.firstName')}</label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={profile.firstName}
                     onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter first name"
+                    placeholder={t('profileModal.enterFirstName')}
                   />
                 ) : (
-                  <p className="text-gray-900">{profile.firstName || 'Not set'}</p>
+                  <p className="text-gray-900">{profile.firstName || t('profileModal.notSet')}</p>
                 )}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('profileModal.lastName')}</label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={profile.lastName}
                     onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter last name"
+                    placeholder={t('profileModal.enterLastName')}
                   />
                 ) : (
-                  <p className="text-gray-900">{profile.lastName || 'Not set'}</p>
+                  <p className="text-gray-900">{profile.lastName || t('profileModal.notSet')}</p>
                 )}
               </div>
             </div>
 
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                <Mail className="w-4 h-4 mr-1" />
-                Email
+                              <Mail className="w-4 h-4 mr-1" />
+              {t('profileModal.email')}
               </label>
               {isEditing ? (
                 <input
@@ -215,47 +264,59 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                   value={profile.email}
                   onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter email"
+                  placeholder={t('profileModal.enterEmail')}
                 />
               ) : (
-                <p className="text-gray-900">{profile.email || 'Not set'}</p>
+                                  <p className="text-gray-900">{profile.email || t('profileModal.notSet')}</p>
               )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  Birth Date
+                                <Calendar className="w-4 h-4 mr-1" />
+              {t('profileModal.birthDate')}
                 </label>
                 {isEditing ? (
-                  <input
-                    type="date"
-                    value={profile.birthDate}
-                    onChange={(e) => setProfile({ ...profile, birthDate: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  <div>
+                    <input
+                      type="date"
+                      value={profile.birthDate}
+                      onChange={(e) => setProfile({ ...profile, birthDate: e.target.value })}
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${isChinese ? 'chinese-date-input' : ''}`}
+                      style={{
+                        direction: 'ltr',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}
+                      placeholder={isChinese ? 'YYYY-MM-DD' : 'MM/DD/YYYY'}
+                    />
+                    {isChinese && (
+                      <p className="date-format-hint">格式: YYYY-MM-DD</p>
+                    )}
+                  </div>
                 ) : (
-                  <p className="text-gray-900">{profile.birthDate || 'Not set'}</p>
+                  <p className="text-gray-900">
+                    {formatDateForDisplay(profile.birthDate)}
+                  </p>
                 )}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('profileModal.gender')}</label>
                 {isEditing ? (
                   <select
                     value={profile.gender}
                     onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                    <option value="prefer-not-to-say">Prefer not to say</option>
+                    <option value="">{t('profileModal.selectGender')}</option>
+                                  <option value="male">{t('profileModal.male')}</option>
+              <option value="female">{t('profileModal.female')}</option>
+              <option value="other">{t('profileModal.other')}</option>
+              <option value="prefer-not-to-say">{t('profileModal.preferNotToSay')}</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900">{profile.gender || 'Not set'}</p>
+                  <p className="text-gray-900">{profile.gender || t('profileModal.notSet')}</p>
                 )}
               </div>
             </div>
@@ -264,12 +325,12 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Target className="w-5 h-5 mr-2 text-purple-600" />
-              Goals
+              {t('profileModal.goals')}
             </h3>
             
             {isEditing ? (
               <div className="space-y-2">
-                {['Fitness & Health', 'Productivity', 'Mindfulness', 'Learning', 'Career Growth', 'Relationships', 'Financial Goals', 'Creative Projects'].map((goal) => (
+                {[t('profileModal.goalFitnessHealth'), t('profileModal.goalProductivity'), t('profileModal.goalMindfulness'), t('profileModal.goalLearning'), t('profileModal.goalCareerGrowth'), t('profileModal.goalRelationships'), t('profileModal.goalFinancialGoals'), t('profileModal.goalCreativeProjects')].map((goal) => (
                   <label key={goal} className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -298,31 +359,31 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500">No goals set</p>
+                  <p className="text-gray-500">{t('profileModal.noGoalsSet')}</p>
                 )}
               </div>
             )}
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Progress Summary</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('profileModal.progressSummary')}</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-blue-50 p-3 rounded-lg text-center">
                 <p className="text-xl font-bold text-blue-700">{stats.totalPoints}</p>
-                <p className="text-xs text-blue-600">Total Points</p>
+                <p className="text-xs text-blue-600">{t('profileModal.totalPoints')}</p>
               </div>
               <div className="bg-green-50 p-3 rounded-lg text-center">
                 <p className="text-xl font-bold text-green-700">{stats.tasksCompleted}</p>
-                <p className="text-xs text-green-600">Tasks Completed</p>
+                <p className="text-xs text-green-600">{t('profileModal.tasksCompleted')}</p>
               </div>
               <div className="bg-yellow-50 p-3 rounded-lg text-center">
                 <p className="text-xl font-bold text-yellow-700">{stats.pomodoroSessions}</p>
-                <p className="text-xs text-yellow-600">Pomodoro Sessions</p>
+                <p className="text-xs text-yellow-600">{t('profileModal.pomodoroSessions')}</p>
               </div>
               <div className="bg-red-50 p-3 rounded-lg text-center">
                 <p className="text-xl font-bold text-red-700">{stats.currentStreak}</p>
-                <p className="text-xs text-red-600">Current Streak</p>
+                <p className="text-xs text-red-600">{t('profileModal.currentStreak')}</p>
               </div>
             </div>
           </div>
@@ -330,12 +391,12 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
         
         {/* Logout Button */}
         <div className="p-6 border-t border-gray-200">
-          <button
-            onClick={onLogout}
-            className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-          >
-            Logout
-          </button>
+                      <button
+              onClick={onLogout}
+              className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+            >
+              {t('profileModal.logout')}
+            </button>
         </div>
       </div>
     </div>

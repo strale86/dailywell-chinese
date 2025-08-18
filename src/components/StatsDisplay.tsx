@@ -2,6 +2,7 @@ import React from 'react';
 import { TrendingUp, Target, Award, Calendar } from 'lucide-react';
 import { UserStats, Task, Habit, WellnessEntry, PomodoroSession } from '../types';
 import { getTodayString, getWeekDates } from '../utils/dateUtils';
+import { useTranslation } from 'react-i18next';
 
 interface StatsDisplayProps {
   stats: UserStats;
@@ -18,6 +19,7 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
   wellnessEntries,
   pomodoroSessions,
 }) => {
+  const { t } = useTranslation();
   const today = getTodayString();
   const weekDates = getWeekDates();
   
@@ -53,36 +55,36 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
   const achievements = [
     {
       id: 'first-task',
-      title: 'First Task',
-      description: 'Complete your first task',
+      title: t('statsDisplay.firstTask'),
+      description: t('statsDisplay.completeFirstTask'),
       unlocked: completedTasks.length > 0,
       icon: '✅'
     },
     {
       id: 'habit-starter',
-      title: 'Habit Starter',
-      description: 'Complete a habit for the first time',
+      title: t('statsDisplay.habitStarter'),
+      description: t('statsDisplay.completeHabitFirstTime'),
       unlocked: habits.some(habit => habit.completedDates.length > 0),
       icon: '🎯'
     },
     {
       id: 'wellness-warrior',
-      title: 'Wellness Warrior',
-      description: 'Complete 7 wellness check-ins',
+      title: t('statsDisplay.wellnessWarrior'),
+      description: t('statsDisplay.completeWellnessCheckins'),
       unlocked: wellnessEntries.length >= 7,
       icon: '💪'
     },
     {
       id: 'focus-master',
-      title: 'Focus Master',
-      description: 'Complete 10 Pomodoro sessions',
+      title: t('statsDisplay.focusMaster'),
+      description: t('statsDisplay.completePomodoroSessions'),
       unlocked: pomodoroSessions.filter(s => s.completed).length >= 10,
       icon: '🧠'
     },
     {
       id: 'streak-keeper',
-      title: 'Streak Keeper',
-      description: 'Maintain a 7-day habit streak',
+      title: t('statsDisplay.streakKeeper'),
+      description: t('statsDisplay.maintainHabitStreak'),
       unlocked: habits.some(habit => habit.streak >= 7),
       icon: '🔥'
     }
@@ -93,8 +95,8 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
   return (
     <div className="space-y-6 pl-2 sm:pl-0">
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Your Progress</h2>
-        <p className="text-gray-600">Track your daily wellness journey</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">{t('stats.yourProgress')}</h2>
+        <p className="text-gray-600">{t('stats.trackJourney')}</p>
       </div>
 
       {/* Overview Stats */}
@@ -102,7 +104,7 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Tasks</p>
+              <p className="text-sm text-gray-600">{t('stats.totalTasks')}</p>
               <p className="text-2xl font-bold text-gray-900">{tasks.length}</p>
             </div>
             <TrendingUp className="w-8 h-8 text-green-500" />
@@ -112,7 +114,7 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Completion Rate</p>
+              <p className="text-sm text-gray-600">{t('stats.completionRate')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0}%
               </p>
@@ -124,7 +126,7 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Focus Sessions</p>
+              <p className="text-sm text-gray-600">{t('stats.focusSessions')}</p>
               <p className="text-2xl font-bold text-gray-900">{pomodoroSessions.length}</p>
             </div>
             <Award className="w-8 h-8 text-purple-500" />
@@ -134,7 +136,7 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Avg Mood</p>
+              <p className="text-sm text-gray-600">{t('statsDisplay.avgMood')}</p>
               <p className="text-2xl font-bold text-gray-900">{averageMood}/5</p>
             </div>
             <Calendar className="w-8 h-8 text-orange-500" />
@@ -147,8 +149,8 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
             <TrendingUp className="w-8 h-8 text-blue-600" />
             <span className="text-2xl font-bold text-blue-700">{stats.totalPoints}</span>
           </div>
-          <p className="text-sm font-medium text-blue-600">Total Points</p>
-          <p className="text-xs text-blue-500">Level {stats.level}</p>
+                        <p className="text-sm font-medium text-blue-600">{t('statsDisplay.totalPoints')}</p>
+          <p className="text-xs text-blue-500">{t('common.level')} {stats.level}</p>
         </div>
 
         <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border">
@@ -156,9 +158,9 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
             <Target className="w-8 h-8 text-green-600" />
             <span className="text-2xl font-bold text-green-700">{completedTasks.length}</span>
           </div>
-          <p className="text-sm font-medium text-green-600">Tasks Completed</p>
+                        <p className="text-sm font-medium text-green-600">{t('statsDisplay.tasksCompleted')}</p>
           <p className="text-xs text-green-500">
-            {todayTasks.filter(t => t.completed).length} today
+            {todayTasks.filter(t => t.completed).length} {t('common.today')}
           </p>
         </div>
 
@@ -167,9 +169,9 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
             <Award className="w-8 h-8 text-purple-600" />
             <span className="text-2xl font-bold text-purple-700">{completedHabitsToday}</span>
           </div>
-          <p className="text-sm font-medium text-purple-600">Habits Today</p>
+                        <p className="text-sm font-medium text-purple-600">{t('statsDisplay.habitsToday')}</p>
           <p className="text-xs text-purple-500">
-            {habits.length > 0 ? Math.round((completedHabitsToday / habits.length) * 100) : 0}% complete
+            {habits.length > 0 ? Math.round((completedHabitsToday / habits.length) * 100) : 0}% {t('common.complete')}
           </p>
         </div>
 
@@ -178,21 +180,21 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
             <Calendar className="w-8 h-8 text-orange-600" />
             <span className="text-2xl font-bold text-orange-700">{todayPomodoroSessions.length}</span>
           </div>
-          <p className="text-sm font-medium text-orange-600">Focus Sessions</p>
+                        <p className="text-sm font-medium text-orange-600">{t('statsDisplay.focusSessions')}</p>
           <p className="text-xs text-orange-500">
-            {todayPomodoroSessions.length * 25}min focused
+            {todayPomodoroSessions.length * 25}{t('common.minutes')} {t('common.focused')}
           </p>
         </div>
       </div>
 
       {/* Weekly Habit Progress */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Weekly Habit Progress</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('statsDisplay.weeklyHabitProgress')}</h3>
         <div className="space-y-3">
           <div className="flex justify-between text-sm text-gray-600 mb-2">
             {weekDates.map(date => (
               <span key={date} className="text-center">
-                {new Date(date).toLocaleDateString('en', { weekday: 'short' })}
+                {new Date(date).toLocaleDateString('zh-CN', { weekday: 'short' })}
               </span>
             ))}
           </div>
@@ -220,27 +222,27 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
       {/* Wellness Summary */}
       {todayWellness && (
         <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Today's Wellness</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('statsDisplay.todaysWellness')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="text-center p-3 bg-yellow-50 rounded-lg">
               <div className="text-2xl mb-1">😊</div>
-              <div className="text-sm font-medium text-gray-700">Mood</div>
+              <div className="text-sm font-medium text-gray-700">{t('wellnessCheck.mood')}</div>
               <div className="text-lg font-semibold text-yellow-600">{todayWellness.mood}/5</div>
             </div>
             <div className="text-center p-3 bg-red-50 rounded-lg">
               <div className="text-2xl mb-1">🧠</div>
-              <div className="text-sm font-medium text-gray-700">Stress</div>
+              <div className="text-sm font-medium text-gray-700">{t('wellnessCheck.stress')}</div>
               <div className="text-lg font-semibold text-red-600">{todayWellness.stress}/5</div>
             </div>
             <div className="text-center p-3 bg-green-50 rounded-lg">
               <div className="text-2xl mb-1">⚡</div>
-              <div className="text-sm font-medium text-gray-700">Energy</div>
+              <div className="text-sm font-medium text-gray-700">{t('wellnessCheck.energy')}</div>
               <div className="text-lg font-semibold text-green-600">{todayWellness.energy}/5</div>
             </div>
           </div>
           {averageMood > 0 && (
             <p className="text-sm text-gray-600 mt-4 text-center">
-              Average mood this period: {averageMood}/5
+              {t('statsDisplay.averageMoodPeriod')}: {averageMood}/5
             </p>
           )}
         </div>
@@ -248,7 +250,7 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
 
       {/* Achievements */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Achievements</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('statsDisplay.achievements')}</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {achievements.map((achievement) => (
             <div
@@ -286,7 +288,7 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
         </div>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
-            {unlockedAchievements.length} of {achievements.length} achievements unlocked
+            {t('statsDisplay.achievementsUnlocked')}: {unlockedAchievements.length} {t('common.of')} {achievements.length}
           </p>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Check, Flame, Target, TrendingUp, Calendar, Trash2 } from 'lucide-react';
 import { Habit } from '../types';
 import { getTodayString, getWeekDates } from '../utils/dateUtils';
+import { useTranslation } from 'react-i18next';
 
 interface HabitsTrackerProps {
   habits: Habit[];
@@ -19,6 +20,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
   onToggleHabit,
   onDeleteHabit,
 }) => {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [newHabit, setNewHabit] = useState({
     name: '',
@@ -86,15 +88,15 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
     <div className="space-y-6 pl-2 sm:pl-0">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Habits Tracker</h2>
-          <p className="text-gray-600">Build consistent daily habits</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{t('habitsTracker.habits')}</h2>
+          <p className="text-gray-600">{t('habitsTracker.addYourFirstHabit')}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
           className="flex items-center space-x-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-all"
         >
           <Plus className="w-4 h-4" />
-          <span className="text-sm">Add Habit</span>
+          <span className="text-sm">{t('habitsTracker.addHabit')}</span>
         </button>
       </div>
 
@@ -103,7 +105,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Habits</p>
+              <p className="text-sm text-gray-600">{t('habitsTracker.habits')}</p>
               <p className="text-2xl font-bold text-gray-900">{habits.length}</p>
             </div>
             <Target className="w-8 h-8 text-blue-500" />
@@ -112,7 +114,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Active Streaks</p>
+              <p className="text-sm text-gray-600">{t('habitsTracker.streak')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {habits.filter(h => h.streak > 0).length}
               </p>
@@ -123,7 +125,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Today's Progress</p>
+              <p className="text-sm text-gray-600">{t('habitsTracker.today')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {habits.filter(h => h.completedDates.includes(today)).length}/{habits.length}
               </p>
@@ -134,7 +136,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Best Streak</p>
+              <p className="text-sm text-gray-600">{t('habitsTracker.streak')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {Math.max(...habits.map(h => h.streak), 0)}
               </p>
@@ -149,7 +151,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
           <div>
             <input
               type="text"
-              placeholder="Habit name..."
+              placeholder={t('habitsTracker.habitName')}
               value={newHabit.name}
               onChange={(e) => {
                 const name = e.target.value;
@@ -177,7 +179,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('habitsTracker.icon')}</label>
               <div className="grid grid-cols-4 gap-2">
                 {habitIcons.map((icon) => (
                   <button
@@ -195,7 +197,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('habitsTracker.color')}</label>
               <div className="grid grid-cols-4 gap-2 mt-2">
                 {habitColors.map((color) => (
                   <button
@@ -211,18 +213,18 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('habitsTracker.category')}</label>
               <select
                 value={newHabit.category}
                 onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value as any })}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-                <option value="health">Health</option>
-                <option value="productivity">Productivity</option>
-                <option value="learning">Learning</option>
-                <option value="wellness">Wellness</option>
-                <option value="fitness">Fitness</option>
-                <option value="personal">Personal</option>
+                <option value="health">{t('habitsTracker.categoryHealth')}</option>
+                <option value="productivity">{t('habitsTracker.categoryProductivity')}</option>
+                <option value="learning">{t('habitsTracker.categoryLearning')}</option>
+                <option value="wellness">{t('habitsTracker.categoryWellness')}</option>
+                <option value="fitness">{t('habitsTracker.categoryFitness')}</option>
+                <option value="personal">{t('habitsTracker.categoryPersonal')}</option>
               </select>
             </div>
           </div>
@@ -241,10 +243,10 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                 onChange={(e) => setNewHabit({ ...newHabit, unit: e.target.value })}
                 className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-                <option value="time">time(s)</option>
-                <option value="minutes">minute(s)</option>
-                <option value="glasses">glass(es)</option>
-                <option value="pages">page(s)</option>
+                <option value="time">{t('habitsTracker.unitTime')}</option>
+                <option value="minutes">{t('habitsTracker.unitMinutes')}</option>
+                <option value="glasses">{t('habitsTracker.unitGlasses')}</option>
+                <option value="pages">{t('habitsTracker.unitPages')}</option>
               </select>
             </div>
             
@@ -254,7 +256,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                 onClick={() => setShowForm(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
             </div>
           </div>
@@ -267,8 +269,8 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">🎯</span>
             </div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No habits yet</h3>
-            <p className="text-gray-600">Start building healthy habits today!</p>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">{t('habitsTracker.noHabits')}</h3>
+            <p className="text-gray-600">{t('habitsTracker.addYourFirstHabit')}</p>
           </div>
         ) : (
           habits.map((habit) => (
@@ -296,6 +298,7 @@ interface HabitItemProps {
 }
 
 const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle, onDelete }) => {
+  const { t } = useTranslation();
   const completedToday = habit.completedDates.includes(today);
 
   return (
@@ -308,7 +311,7 @@ const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle
           <div>
             <h3 className="font-semibold text-gray-900">{habit.name}</h3>
             <p className="text-sm text-gray-600">
-              {habit.target} {habit.unit} daily
+              {habit.target} {habit.unit} {t('habitsTracker.daily')}
             </p>
           </div>
         </div>
@@ -338,7 +341,7 @@ const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle
           <button
             onClick={() => onDelete(habit.id)}
             className="w-8 h-8 rounded-full border-2 border-red-300 hover:border-red-500 flex items-center justify-center transition-all hover:bg-red-50"
-            title="Delete habit"
+            title={t('habitsTracker.deleteHabit')}
           >
             <Trash2 className="w-4 h-4 text-red-500" />
           </button>
