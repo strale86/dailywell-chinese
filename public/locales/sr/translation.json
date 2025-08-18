@@ -1,8 +1,18 @@
 {
   "welcome": {
-    "title": "Dobrodošli u DailyWell",
-    "subtitle": "Vaš dnevni pratilac za dobrobit",
-    "getStarted": "Započnite"
+    "title": "DailyWell",
+    "subtitle": "Vaš dnevni wellness pratilac",
+    "heading": "Transformišite svoju dnevnu rutinu",
+    "description": "Gradite zdrave navike, pratite svoj napredak i postignite svoje wellness ciljeve sa našom sveobuhvatnom aplikacijom za dnevno praćenje.",
+    "features": {
+      "tasks": "Upravljanje zadacima i produktivnost",
+      "habits": "Praćenje navika i nizovi",
+      "wellness": "Wellness provere",
+      "timer": "Timer za fokus (Pomodoro)",
+      "analytics": "Analitika napretka"
+    },
+    "getStarted": "Započnite",
+    "joinMessage": "Pridružite se hiljadama korisnika koji poboljšavaju svoj dnevni wellness"
   },
   "login": {
     "title": "Dobrodošli nazad",

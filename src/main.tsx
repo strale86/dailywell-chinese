@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { AppNavigator } from './navigation/AppNavigator';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { registerServiceWorker } from './utils/offlineManager';
+import './i18n'; // Import i18n configuration
 import './index.css';
 
 // Register service worker for offline functionality

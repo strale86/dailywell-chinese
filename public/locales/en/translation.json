@@ -1,8 +1,18 @@
 {
   "welcome": {
-    "title": "Welcome to DailyWell",
-    "subtitle": "Your Daily Wellness Companion",
-    "getStarted": "Get Started"
+    "title": "DailyWell",
+    "subtitle": "Your daily wellness companion",
+    "heading": "Transform Your Daily Routine",
+    "description": "Build healthy habits, track your progress, and achieve your wellness goals with our comprehensive daily companion app.",
+    "features": {
+      "tasks": "Task Management & Productivity",
+      "habits": "Habit Tracking & Streaks",
+      "wellness": "Wellness Check-ins",
+      "timer": "Focus Timer (Pomodoro)",
+      "analytics": "Progress Analytics"
+    },
+    "getStarted": "Get Started",
+    "joinMessage": "Join thousands of users improving their daily wellness"
   },
   "login": {
     "title": "Welcome Back",
