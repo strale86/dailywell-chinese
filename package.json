@@ -19,6 +19,7 @@
     "@capacitor/ios": "^7.4.2",
     "@google-cloud/local-auth": "^3.0.1",
     "@greatsumini/react-facebook-login": "^3.4.0",
+    "@supabase/supabase-js": "^2.55.0",
     "chart.js": "^4.5.0",
     "firebase": "^12.1.0",
     "googleapis": "^156.0.0",
