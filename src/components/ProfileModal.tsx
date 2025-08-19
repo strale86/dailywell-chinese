@@ -30,30 +30,8 @@ interface ProfileModalProps {
 export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onLogout, stats }) => {
   const { t, i18n } = useTranslation();
   
-  // Debug: log current language
-  console.log('Current language:', i18n.language);
-  console.log('Document lang:', document.documentElement.lang);
-  
-  // Set document lang attribute for date input localization
-  React.useEffect(() => {
-    if (i18n.language === 'zh') {
-      document.documentElement.lang = 'zh-CN';
-      document.body.lang = 'zh-CN';
-      console.log('Set document lang to zh-CN');
-    } else {
-      document.documentElement.lang = i18n.language;
-      document.body.lang = i18n.language;
-    }
-  }, [i18n.language]);
-  
-  // Force Chinese language for date input
+  // Koristimo jezik samo za formatiranje datuma; ne menjamo document.lang
   const isChinese = i18n.language === 'zh';
-  
-  // Immediately set document lang for date input
-  if (isChinese && document.documentElement.lang !== 'zh-CN') {
-    document.documentElement.lang = 'zh-CN';
-    document.body.lang = 'zh-CN';
-  }
   
   // Helper function to format date for display
   const formatDateForDisplay = (dateString: string) => {

@@ -1,6 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { Header } from './Header';
-import { Navigation } from './Navigation';
+
 import { Dashboard } from './Dashboard';
 import { TaskManager } from './TaskManager';
 import { PomodoroTimer } from './PomodoroTimer';
@@ -312,13 +312,7 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
       {/* Header */}
       <Header stats={mockStats} onLogout={onLogout} />
       
-                   {/* Navigation */}
-             <Navigation 
-               activeTab={activeTab}
-               setActiveTab={handleTabChange}
-             />
-        
-                   {/* Main content */}
+      {/* Main content */}
              <main className="container mx-auto px-4 py-6">
                {renderActiveComponent()}
              </main>

@@ -91,19 +91,6 @@
     "unlockAdvanced": "解锁高级功能",
     "premiumFeatures": "高级功能"
   },
-  "navigation": {
-    "dashboard": "仪表板",
-    "tasks": "任务",
-    "habits": "习惯",
-    "wellness": "健康",
-    "notes": "笔记",
-    "ai": "AI助手",
-    "focus": "专注",
-    "goals": "目标",
-    "stats": "统计",
-    "analytics": "分析",
-    "premium": "高级版"
-  },
   "tasks": {
     "addTask": "添加任务",
     "taskName": "任务名称",

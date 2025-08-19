@@ -98,6 +98,28 @@ export const Login: React.FC<LoginProps> = ({
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      console.log('Starting Google OAuth...');
+      await onGoogleLogin();
+      console.log('Google OAuth completed');
+    } catch (error) {
+      console.error('Google OAuth failed:', error);
+      console.log('Google OAuth failed. Please try again.');
+    }
+  };
+
+  const handleAppleLogin = async () => {
+    try {
+      console.log('Starting Apple OAuth...');
+      await onAppleLogin();
+      console.log('Apple OAuth completed');
+    } catch (error) {
+      console.error('Apple OAuth failed:', error);
+      console.log('Apple OAuth failed. Please try again.');
+    }
+  };
+
   const handleForgotPassword = () => {
     if (!email) {
       setErrors({ ...errors, email: t('login.emailRequired') });
