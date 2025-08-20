@@ -128,36 +128,36 @@ export const SignUp: React.FC<SignUpProps> = ({
     const newErrors = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '', general: '' };
 
     if (!formData.firstName) {
-      newErrors.firstName = 'Please enter your first name';
+      newErrors.firstName = text.firstNameRequired;
       hasErrors = true;
     }
 
     if (!formData.lastName) {
-      newErrors.lastName = 'Please enter your last name';
+      newErrors.lastName = text.lastNameRequired;
       hasErrors = true;
     }
 
     if (!formData.email) {
-      newErrors.email = 'Please enter your email';
+      newErrors.email = text.emailRequired;
       hasErrors = true;
     } else if (!formData.email.includes('@')) {
-              newErrors.email = 'Please enter a valid email';
+              newErrors.email = text.validEmail;
       hasErrors = true;
     }
 
     if (!formData.password) {
-      newErrors.password = 'Please enter a password';
+      newErrors.password = text.passwordRequired;
       hasErrors = true;
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = text.passwordMinLength;
       hasErrors = true;
     }
 
     if (!formData.confirmPassword) {
-              newErrors.confirmPassword = 'Passwords do not match';
+              newErrors.confirmPassword = text.passwordsDoNotMatch;
       hasErrors = true;
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = text.passwordsDoNotMatch;
       hasErrors = true;
     }
 
@@ -198,10 +198,10 @@ export const SignUp: React.FC<SignUpProps> = ({
             onClick={onBack}
             className="absolute top-4 sm:top-6 left-3 sm:left-6 px-3 sm:px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white/30 transition-all text-white font-medium text-sm sm:text-base"
           >
-            ←
+            ← {text.back}
           </button>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-lg">Create Account</h1>
-          <p className="text-white/90 text-sm sm:text-base">Join your wellness journey today</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-lg">{text.title}</h1>
+          <p className="text-white/90 text-sm sm:text-base">{text.subtitle}</p>
         </div>
 
         {/* Sign Up Form */}
@@ -218,7 +218,7 @@ export const SignUp: React.FC<SignUpProps> = ({
               <User size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
               <input
                 type="text"
-                placeholder="First Name"
+                placeholder={text.firstName}
                 value={formData.firstName}
                 onChange={(e) => updateFormData('firstName', e.target.value)}
                 className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
@@ -233,7 +233,7 @@ export const SignUp: React.FC<SignUpProps> = ({
               <User size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
               <input
                 type="text"
-                placeholder="Last Name"
+                placeholder={text.lastName}
                 value={formData.lastName}
                 onChange={(e) => updateFormData('lastName', e.target.value)}
                 className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
@@ -251,7 +251,7 @@ export const SignUp: React.FC<SignUpProps> = ({
             <Mail size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={text.email}
               value={formData.email}
               onChange={(e) => updateFormData('email', e.target.value)}
               className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
@@ -266,7 +266,7 @@ export const SignUp: React.FC<SignUpProps> = ({
           {/* Birth Date - Custom Design */}
           <div className="relative">
             <label className="block text-white/90 text-xs sm:text-sm mb-2 font-medium">
-              Date of Birth
+              {text.birthDate}
             </label>
             <div className="flex space-x-1 sm:space-x-2">
               {/* Month */}
@@ -346,7 +346,7 @@ export const SignUp: React.FC<SignUpProps> = ({
             <Lock size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
+              placeholder={text.password}
               value={formData.password}
               onChange={(e) => updateFormData('password', e.target.value)}
               className={`w-full pl-9 sm:pl-10 pr-12 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
@@ -370,7 +370,7 @@ export const SignUp: React.FC<SignUpProps> = ({
             <Lock size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
             <input
               type={showConfirmPassword ? 'text' : 'password'}
-              placeholder="Confirm Password"
+              placeholder={text.confirmPassword}
               value={formData.confirmPassword}
               onChange={(e) => updateFormData('confirmPassword', e.target.value)}
               className={`w-full pl-9 sm:pl-10 pr-12 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
@@ -406,10 +406,10 @@ export const SignUp: React.FC<SignUpProps> = ({
             {isLoading ? (
               <div className="flex items-center justify-center">
                 <Loader2 size={18} className="animate-spin mr-2 sm:w-5 sm:h-5" />
-                Creating Account...
+                {text.creatingAccount}
               </div>
             ) : (
-              'Create Account'
+              text.createAccount
             )}
           </button>
 
@@ -417,12 +417,12 @@ export const SignUp: React.FC<SignUpProps> = ({
 
           {/* Login Link */}
           <div className="text-center mt-4 sm:mt-6">
-            <span className="text-white/90 text-sm sm:text-base">Already have an account? </span>
+            <span className="text-white/90 text-sm sm:text-base">{text.hasAccount} </span>
             <button
               onClick={onLogin}
               className="text-white font-semibold hover:text-white/80 transition-colors text-sm sm:text-base"
             >
-              Sign In
+              {text.signIn}
             </button>
           </div>
         </div>

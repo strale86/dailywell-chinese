@@ -116,6 +116,24 @@ function App() {
     }
   };
 
+  const handleWeChatSignUp = async () => {
+    try {
+      const user = await socialAuthService.signInWithWeChat();
+      setCurrentScreen('main');
+    } catch (error) {
+      console.error('WeChat sign up error:', error);
+    }
+  };
+
+  const handleAlipaySignUp = async () => {
+    try {
+      const user = await socialAuthService.signInWithAlipay();
+      setCurrentScreen('main');
+    } catch (error) {
+      console.error('Alipay sign up error:', error);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await AuthService.signOut();

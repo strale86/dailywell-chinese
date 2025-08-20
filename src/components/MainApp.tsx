@@ -315,11 +315,11 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
             {/* Prvi red - 5 opcija */}
             <div className="grid grid-cols-5 gap-0.5 sm:gap-1 md:gap-3">
               {[
-                { id: 'dashboard', label: t.dashboard, icon: BarChart3 },
-                { id: 'tasks', label: t.tasks, icon: CheckSquare },
-                { id: 'pomodoro', label: t.timer, icon: Timer },
-                { id: 'habits', label: t.habits, icon: Target },
-                { id: 'wellness', label: t.wellness, icon: Heart }
+                { id: 'dashboard', label: t.dashboard, icon: BarChart3, color: '#EA580C' },
+                { id: 'tasks', label: t.tasks, icon: CheckSquare, color: '#10B981' },
+                { id: 'pomodoro', label: t.timer, icon: Timer, color: '#F59E0B' },
+                { id: 'habits', label: t.habits, icon: Target, color: '#8B5CF6' },
+                { id: 'wellness', label: t.wellness, icon: Heart, color: '#EC4899' }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -327,10 +327,15 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
                   className={`flex flex-col items-center space-y-0.5 px-0.5 sm:px-1 md:px-2 py-1 sm:py-2 md:py-3 text-xs font-medium rounded-lg transition-colors ${
                     activeTab === tab.id
                       ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-gray-700'
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
-                  <tab.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                  <tab.icon 
+                    className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} 
+                    style={{ 
+                      stroke: activeTab === tab.id ? '#2563EB' : tab.color
+                    }}
+                  />
                   <span className="text-center leading-tight text-xs sm:text-xs md:text-xs">{tab.label}</span>
                 </button>
               ))}
@@ -339,12 +344,12 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
             {/* Drugi red - 6 opcija */}
             <div className="grid grid-cols-6 gap-0.5 sm:gap-1 md:gap-3">
               {[
-                { id: 'goals', label: t.goals, icon: Flag },
-                { id: 'stats', label: t.stats, icon: TrendingUp },
-                { id: 'premium', label: t.premium, icon: Star },
-                { id: 'notes', label: t.notes, icon: FileText },
-                { id: 'ai', label: t.ai, icon: Brain },
-                { id: 'analytics', label: t.analytics, icon: Activity }
+                { id: 'goals', label: t.goals, icon: Flag, color: '#6366F1' },
+                { id: 'stats', label: t.stats, icon: TrendingUp, color: '#374151' },
+                { id: 'premium', label: t.premium, icon: Star, color: '#EAB308' },
+                { id: 'notes', label: t.notes, icon: FileText, color: '#991B1B' },
+                { id: 'ai', label: t.ai, icon: Brain, color: '#F87171' },
+                { id: 'analytics', label: t.analytics, icon: Activity, color: '#EF4444' }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -352,10 +357,16 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
                   className={`flex flex-col items-center space-y-0.5 px-0.5 sm:px-1 md:px-2 py-1 sm:py-2 md:py-3 text-xs font-medium rounded-lg transition-colors ${
                     activeTab === tab.id
                       ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-gray-700'
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
-                  <tab.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                  <tab.icon 
+                    className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} 
+                    style={{ 
+                      color: activeTab === tab.id ? '#2563EB' : tab.color,
+                      fill: activeTab === tab.id ? '#2563EB' : tab.color
+                    }}
+                  />
                   <span className="text-center leading-tight text-xs sm:text-xs md:text-xs">{tab.label}</span>
                 </button>
               ))}
