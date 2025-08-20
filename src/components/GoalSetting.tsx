@@ -42,25 +42,45 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
           pages: "Stranica",
           hours: "Sati"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "目标设定",
-          subtitle: "设定并跟踪您的个人目标",
-          addGoal: "添加目标",
-          enterGoalTitle: "输入目标标题",
-          cancel: "取消",
-          noGoals: "暂无目标",
-          startSettingGoals: "开始设定目标以跟踪进度",
-          health: "健康",
-          productivity: "生产力",
-          learning: "学习",
-          wellness: "健康",
-          fitness: "健身",
-          personal: "个人",
-          times: "次",
-          days: "天",
-          pages: "页",
-          hours: "小时"
+          title: "Establecimiento de objetivos",
+          subtitle: "Establece y rastrea tus objetivos personales",
+          addGoal: "Agregar objetivo",
+          enterGoalTitle: "Ingresa el título del objetivo",
+          cancel: "Cancelar",
+          noGoals: "Aún no hay objetivos",
+          startSettingGoals: "Comienza a establecer tus objetivos para rastrear el progreso",
+          health: "Salud",
+          productivity: "Productividad",
+          learning: "Aprendizaje",
+          wellness: "Bienestar",
+          fitness: "Fitness",
+          personal: "Personal",
+          times: "Veces",
+          days: "Días",
+          pages: "Páginas",
+          hours: "Horas"
+        };
+      case 'fr':
+        return {
+          title: "Définition d'objectifs",
+          subtitle: "Définissez et suivez vos objectifs personnels",
+          addGoal: "Ajouter un objectif",
+          enterGoalTitle: "Entrez le titre de l'objectif",
+          cancel: "Annuler",
+          noGoals: "Aucun objectif pour le moment",
+          startSettingGoals: "Commencez à définir vos objectifs pour suivre les progrès",
+          health: "Santé",
+          productivity: "Productivité",
+          learning: "Apprentissage",
+          wellness: "Bien-être",
+          fitness: "Fitness",
+          personal: "Personnel",
+          times: "Fois",
+          days: "Jours",
+          pages: "Pages",
+          hours: "Heures"
         };
       default: // English
         return {
@@ -115,14 +135,14 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+      <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
           <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{text.subtitle}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-2 bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-all text-sm"
+          className="flex items-center space-x-2 bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-all text-sm flex-shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>{text.addGoal}</span>

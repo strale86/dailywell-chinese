@@ -53,26 +53,47 @@ export const Login: React.FC<LoginProps> = ({
           signUp: "Registrujte se",
           back: "Nazad"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "登录",
-          subtitle: "欢迎回到您的健康之旅",
-          email: "邮箱地址",
-          password: "密码",
-          emailRequired: "邮箱是必填项",
-          validEmail: "请输入有效的邮箱",
-          passwordRequired: "密码是必填项",
-          signIn: "登录",
-          signingIn: "登录中...",
-          invalidCredentials: "邮箱或密码无效",
-          forgotPassword: "忘记密码？",
-          googleLogin: "使用Google登录",
-          appleLogin: "使用Apple登录",
-          wechatLogin: "使用微信登录",
-          alipayLogin: "使用支付宝登录",
-          noAccount: "没有账户？",
-          signUp: "注册",
-          back: "返回"
+          title: "Iniciar sesión",
+          subtitle: "Bienvenido de vuelta a tu viaje de bienestar",
+          email: "Dirección de correo electrónico",
+          password: "Contraseña",
+          emailRequired: "El correo electrónico es requerido",
+          validEmail: "Por favor ingresa un correo electrónico válido",
+          passwordRequired: "La contraseña es requerida",
+          signIn: "Iniciar sesión",
+          signingIn: "Iniciando sesión...",
+          invalidCredentials: "Correo electrónico o contraseña inválidos",
+          forgotPassword: "¿Olvidaste tu contraseña?",
+          googleLogin: "Iniciar sesión con Google",
+          appleLogin: "Iniciar sesión con Apple",
+          wechatLogin: "Iniciar sesión con WeChat",
+          alipayLogin: "Iniciar sesión con Alipay",
+          noAccount: "¿No tienes una cuenta?",
+          signUp: "Registrarse",
+          back: "Atrás"
+        };
+      case 'fr':
+        return {
+          title: "Se connecter",
+          subtitle: "Bon retour à votre voyage de bien-être",
+          email: "Adresse e-mail",
+          password: "Mot de passe",
+          emailRequired: "L'e-mail est requis",
+          validEmail: "Veuillez entrer un e-mail valide",
+          passwordRequired: "Le mot de passe est requis",
+          signIn: "Se connecter",
+          signingIn: "Connexion en cours...",
+          invalidCredentials: "E-mail ou mot de passe invalide",
+          forgotPassword: "Mot de passe oublié ?",
+          googleLogin: "Se connecter avec Google",
+          appleLogin: "Se connecter avec Apple",
+          wechatLogin: "Se connecter avec WeChat",
+          alipayLogin: "Se connecter avec Alipay",
+          noAccount: "Vous n'avez pas de compte ?",
+          signUp: "S'inscrire",
+          back: "Retour"
         };
       default: // English
         return {

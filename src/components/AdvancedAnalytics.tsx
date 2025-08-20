@@ -70,29 +70,53 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
           stress: "Stres",
           energy: "Energija"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "高级分析",
-          subtitle: "详细洞察和趋势",
-          week: "周",
-          month: "月",
-          year: "年",
-          taskCompletionTrend: "任务完成趋势",
-          completedTasks: "已完成任务",
-          totalTasks: "总任务",
-          habitsByCategory: "按类别分类的习惯",
-          totalStreaks: "总连续",
-          wellnessOverview: "健康概览",
-          averageScore: "平均分数",
-          health: "健康",
-          productivity: "生产力",
-          learning: "学习",
-          wellness: "健康",
-          fitness: "健身",
-          personal: "个人",
-          mood: "心情",
-          stress: "压力",
-          energy: "能量"
+          title: "Análisis avanzado",
+          subtitle: "Insights detallados y tendencias",
+          week: "Semana",
+          month: "Mes",
+          year: "Año",
+          taskCompletionTrend: "Tendencia de finalización de tareas",
+          completedTasks: "Tareas completadas",
+          totalTasks: "Total de tareas",
+          habitsByCategory: "Hábitos por categoría",
+          totalStreaks: "Rachas totales",
+          wellnessOverview: "Resumen de bienestar",
+          averageScore: "Puntuación promedio",
+          health: "Salud",
+          productivity: "Productividad",
+          learning: "Aprendizaje",
+          wellness: "Bienestar",
+          fitness: "Fitness",
+          personal: "Personal",
+          mood: "Estado de ánimo",
+          stress: "Estrés",
+          energy: "Energía"
+        };
+      case 'fr':
+        return {
+          title: "Analyses avancées",
+          subtitle: "Aperçus détaillés et tendances",
+          week: "Semaine",
+          month: "Mois",
+          year: "Année",
+          taskCompletionTrend: "Tendance de finalisation des tâches",
+          completedTasks: "Tâches terminées",
+          totalTasks: "Total des tâches",
+          habitsByCategory: "Habitudes par catégorie",
+          totalStreaks: "Séries totales",
+          wellnessOverview: "Aperçu du bien-être",
+          averageScore: "Score moyen",
+          health: "Santé",
+          productivity: "Productivité",
+          learning: "Apprentissage",
+          wellness: "Bien-être",
+          fitness: "Fitness",
+          personal: "Personnel",
+          mood: "Humeur",
+          stress: "Stress",
+          energy: "Énergie"
         };
       default: // English
         return {
@@ -141,8 +165,10 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       let locale = 'en-US';
       if (currentLanguage === 'sr') {
         locale = 'sr-RS';
-      } else if (currentLanguage === 'zh') {
-        locale = 'zh-CN';
+      } else if (currentLanguage === 'es') {
+        locale = 'es-ES';
+      } else if (currentLanguage === 'fr') {
+        locale = 'fr-FR';
       }
       labels.push(date.toLocaleDateString(locale, { month: 'short', day: 'numeric' }));
       
@@ -249,7 +275,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       </div>
 
       {/* Task Completion Chart */}
-      <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
         <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
           <Target className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
           {text.taskCompletionTrend}
@@ -321,7 +347,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       </div>
 
       {/* Habits by Category Chart */}
-      <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
         <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
           <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
           {text.habitsByCategory}
@@ -385,7 +411,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       </div>
 
       {/* Wellness Overview Chart */}
-      <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
         <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
           <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
           {text.wellnessOverview}

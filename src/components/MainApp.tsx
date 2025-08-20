@@ -52,23 +52,37 @@ const translations = {
     stats: "Statistike",
     premium: "Premium",
     notes: "Beleške",
-    ai: "AI",
+    ai: "Vestacka inteligencija",
     analytics: "Analitika",
     selectTab: "Izaberite tab da započnete"
   },
-  zh: {
-    dashboard: "仪表板",
-    tasks: "任务",
-    timer: "计时器",
-    habits: "习惯",
-    wellness: "健康",
-    goals: "目标",
-    stats: "统计",
-    premium: "高级版",
-    notes: "笔记",
-    ai: "AI",
-    analytics: "分析",
-    selectTab: "选择一个标签开始"
+  es: {
+    dashboard: "Panel",
+    tasks: "Tareas",
+    timer: "Temporizador",
+    habits: "Hábitos",
+    wellness: "Bienestar",
+    goals: "Objetivos",
+    stats: "Estadísticas",
+    premium: "Premium",
+    notes: "Notas",
+    ai: "Inteligencia Artificial",
+    analytics: "Análisis",
+    selectTab: "Selecciona una pestaña para comenzar"
+  },
+  fr: {
+    dashboard: "Tableau de bord",
+    tasks: "Tâches",
+    timer: "Minuteur",
+    habits: "Habitudes",
+    wellness: "Bien-être",
+    goals: "Objectifs",
+    stats: "Statistiques",
+    premium: "Premium",
+    notes: "Notes",
+    ai: "Intelligence Artificielle",
+    analytics: "Analyses",
+    selectTab: "Sélectionnez un onglet pour commencer"
   }
 };
 
@@ -103,14 +117,27 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
   // State for notes
   const [notes, setNotes] = useState<Note[]>([]);
 
-  // Mock stats data
-  const mockStats: UserStats = {
+  // Stats state
+  const [stats, setStats] = useState<UserStats>({
     totalPoints: 0,
     level: 1,
     tasksCompleted: 0,
     habitsCompleted: 0,
     pomodoroSessions: 0,
     currentStreak: 0
+  });
+
+  // Function to add points and update level
+  const addPoints = (points: number) => {
+    setStats(prevStats => {
+      const newTotalPoints = prevStats.totalPoints + points;
+      const newLevel = Math.floor(newTotalPoints / 1000) + 1;
+      return {
+        ...prevStats,
+        totalPoints: newTotalPoints,
+        level: newLevel
+      };
+    });
   };
 
   const handleTabChange = (tab: string) => {
@@ -226,7 +253,7 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
       case 'dashboard':
         return (
           <Dashboard
-            stats={mockStats}
+            stats={stats}
             tasks={tasks}
             habits={habits}
             wellnessEntries={wellnessEntries}
@@ -276,7 +303,7 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
       case 'stats':
         return (
           <StatsDisplay
-            stats={mockStats}
+            stats={stats}
             tasks={tasks}
             habits={habits}
             wellnessEntries={wellnessEntries}
@@ -306,7 +333,7 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Header */}
-      <Header stats={mockStats} onLogout={onLogout} />
+      <Header stats={stats} onLogout={onLogout} />
       
       {/* Navigation */}
       <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">

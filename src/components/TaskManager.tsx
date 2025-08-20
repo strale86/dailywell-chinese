@@ -71,22 +71,39 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
           of: "od",
           completedText: "završeno"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "今日任务",
-          addTask: "添加任务",
-          taskTitle: "任务标题",
-          description: "描述（可选）",
-          priority: "优先级",
-          lowPriority: "低优先级",
-          mediumPriority: "中优先级",
-          highPriority: "高优先级",
-          cancel: "取消",
-          noTasks: "暂无任务",
-          addFirstTask: "添加您的第一个任务开始使用！",
-          completed: "已完成",
-          of: "共",
-          completedText: "已完成"
+          title: "Tareas de hoy",
+          addTask: "Agregar tarea",
+          taskTitle: "Título de la tarea",
+          description: "Descripción (opcional)",
+          priority: "Prioridad",
+          lowPriority: "Baja prioridad",
+          mediumPriority: "Prioridad media",
+          highPriority: "Alta prioridad",
+          cancel: "Cancelar",
+          noTasks: "Aún no hay tareas",
+          addFirstTask: "¡Agrega tu primera tarea para comenzar!",
+          completed: "Completado",
+          of: "de",
+          completedText: "completado"
+        };
+      case 'fr':
+        return {
+          title: "Tâches d'aujourd'hui",
+          addTask: "Ajouter une tâche",
+          taskTitle: "Titre de la tâche",
+          description: "Description (optionnel)",
+          priority: "Priorité",
+          lowPriority: "Priorité basse",
+          mediumPriority: "Priorité moyenne",
+          highPriority: "Priorité haute",
+          cancel: "Annuler",
+          noTasks: "Aucune tâche pour le moment",
+          addFirstTask: "Ajoutez votre première tâche pour commencer !",
+          completed: "Terminé",
+          of: "sur",
+          completedText: "terminé"
         };
       default: // English
         return {
@@ -112,14 +129,14 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 md:mb-6 space-y-2 sm:space-y-0">
+      <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
         <div>
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
           <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{completedTasks.length} {text.of} {tasks.length} {text.completedText}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-2 sm:px-3 md:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm md:text-base"
+          className="px-2 sm:px-3 md:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm md:text-base flex-shrink-0"
         >
           {text.addTask}
         </button>

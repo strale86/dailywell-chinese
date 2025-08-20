@@ -76,48 +76,91 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
           logout: "Odjavi se",
           removeAvatar: "Ukloni avatar"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "个人资料",
-          edit: "编辑",
-          save: "保存",
-          profilePicture: "头像",
-          userProfile: "用户资料",
-          noEmailSet: "未设置邮箱",
-          born: "出生",
-          birthDateNotSet: "未设置出生日期",
-          personalInformation: "个人信息",
-          firstName: "名字",
-          lastName: "姓氏",
-          email: "邮箱",
-          dateOfBirth: "出生日期",
-          gender: "性别",
-          enterFirstName: "输入名字",
-          enterLastName: "输入姓氏",
-          enterEmail: "输入邮箱",
-          selectGender: "选择性别",
-          male: "男",
-          female: "女",
-          other: "其他",
-          preferNotToSay: "不愿透露",
-          notSet: "未设置",
-          goals: "目标",
-          fitnessHealth: "健身与健康",
-          productivity: "生产力",
-          mindfulness: "正念",
-          learning: "学习",
-          careerGrowth: "职业发展",
-          relationships: "人际关系",
-          financialGoals: "财务目标",
-          creativeProjects: "创意项目",
-          noGoalsSet: "未设置目标",
-          progressSummary: "进度总结",
-          totalPoints: "总积分",
-          tasksCompleted: "已完成任务",
-          pomodoroSessions: "番茄工作法会话",
-          currentStreak: "当前连续",
-          logout: "退出登录",
-          removeAvatar: "删除头像"
+          title: "Perfil",
+          edit: "Editar",
+          save: "Guardar",
+          profilePicture: "Foto de perfil",
+          userProfile: "Perfil de usuario",
+          noEmailSet: "No hay correo electrónico configurado",
+          born: "Nacido",
+          birthDateNotSet: "Fecha de nacimiento no configurada",
+          personalInformation: "Información personal",
+          firstName: "Nombre",
+          lastName: "Apellido",
+          email: "Correo electrónico",
+          dateOfBirth: "Fecha de nacimiento",
+          gender: "Género",
+          enterFirstName: "Ingresa el nombre",
+          enterLastName: "Ingresa el apellido",
+          enterEmail: "Ingresa el correo electrónico",
+          selectGender: "Seleccionar género",
+          male: "Masculino",
+          female: "Femenino",
+          other: "Otro",
+          preferNotToSay: "Prefiero no decir",
+          notSet: "No configurado",
+          goals: "Objetivos",
+          fitnessHealth: "Fitness y salud",
+          productivity: "Productividad",
+          mindfulness: "Atención plena",
+          learning: "Aprendizaje",
+          careerGrowth: "Crecimiento profesional",
+          relationships: "Relaciones",
+          financialGoals: "Objetivos financieros",
+          creativeProjects: "Proyectos creativos",
+          noGoalsSet: "No hay objetivos configurados",
+          progressSummary: "Resumen de progreso",
+          totalPoints: "Puntos totales",
+          tasksCompleted: "Tareas completadas",
+          pomodoroSessions: "Sesiones Pomodoro",
+          currentStreak: "Racha actual",
+          logout: "Cerrar sesión",
+          removeAvatar: "Eliminar avatar"
+        };
+      case 'fr':
+        return {
+          title: "Profil",
+          edit: "Modifier",
+          save: "Enregistrer",
+          profilePicture: "Photo de profil",
+          userProfile: "Profil utilisateur",
+          noEmailSet: "Aucun e-mail configuré",
+          born: "Né",
+          birthDateNotSet: "Date de naissance non configurée",
+          personalInformation: "Informations personnelles",
+          firstName: "Prénom",
+          lastName: "Nom de famille",
+          email: "E-mail",
+          dateOfBirth: "Date de naissance",
+          gender: "Genre",
+          enterFirstName: "Entrez le prénom",
+          enterLastName: "Entrez le nom de famille",
+          enterEmail: "Entrez l'e-mail",
+          selectGender: "Sélectionner le genre",
+          male: "Masculin",
+          female: "Féminin",
+          other: "Autre",
+          preferNotToSay: "Préfère ne pas dire",
+          notSet: "Non configuré",
+          goals: "Objectifs",
+          fitnessHealth: "Fitness et santé",
+          productivity: "Productivité",
+          mindfulness: "Pleine conscience",
+          learning: "Apprentissage",
+          careerGrowth: "Croissance professionnelle",
+          relationships: "Relations",
+          financialGoals: "Objectifs financiers",
+          creativeProjects: "Projets créatifs",
+          noGoalsSet: "Aucun objectif configuré",
+          progressSummary: "Résumé des progrès",
+          totalPoints: "Points totaux",
+          tasksCompleted: "Tâches terminées",
+          pomodoroSessions: "Sessions Pomodoro",
+          currentStreak: "Série actuelle",
+          logout: "Se déconnecter",
+          removeAvatar: "Supprimer l'avatar"
         };
       default: // English
         return {
@@ -175,7 +218,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
     if (!dateString) return text.notSet;
     
     const date = new Date(dateString);
-    const locale = currentLanguage === 'sr' ? 'sr-RS' : currentLanguage === 'zh' ? 'zh-CN' : 'en-US';
+    const locale = currentLanguage === 'sr' ? 'sr-RS' : currentLanguage === 'es' ? 'es-ES' : currentLanguage === 'fr' ? 'fr-FR' : 'en-US';
     return date.toLocaleDateString(locale, {
       year: 'numeric',
       month: 'long',
@@ -408,7 +451,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                       value={profile.birthDate}
                       onChange={(e) => setProfile({ ...profile, birthDate: e.target.value })}
                       className="birth-date-input w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                      placeholder={currentLanguage === 'zh' ? '年-月-日' : currentLanguage === 'sr' ? 'GGGG-MM-DD' : 'YYYY-MM-DD'}
+                      placeholder={currentLanguage === 'es' ? 'AAAA-MM-DD' : currentLanguage === 'fr' ? 'AAAA-MM-JJ' : currentLanguage === 'sr' ? 'GGGG-MM-DD' : 'YYYY-MM-DD'}
                     />
 
                   </div>

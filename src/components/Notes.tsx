@@ -38,22 +38,39 @@ export const Notes: React.FC<NotesProps> = ({
           created: "Kreirano",
           updated: "Ažurirano"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "笔记",
-          subtitle: "记录您的想法和创意",
-          addNote: "添加笔记",
-          newNote: "新笔记",
-          titleLabel: "标题",
-          contentLabel: "内容",
-          titlePlaceholder: "输入笔记标题",
-          contentPlaceholder: "在此写下您的笔记...",
-          cancel: "取消",
-          saveNote: "保存笔记",
-          noNotes: "暂无笔记",
-          startCreating: "开始创建您的第一个笔记",
-          created: "创建",
-          updated: "更新"
+          title: "Notas",
+          subtitle: "Captura tus pensamientos e ideas",
+          addNote: "Agregar nota",
+          newNote: "Nueva nota",
+          titleLabel: "Título",
+          contentLabel: "Contenido",
+          titlePlaceholder: "Ingresa el título de la nota",
+          contentPlaceholder: "Escribe tu nota aquí...",
+          cancel: "Cancelar",
+          saveNote: "Guardar nota",
+          noNotes: "Aún no hay notas",
+          startCreating: "Comienza creando tu primera nota",
+          created: "Creado",
+          updated: "Actualizado"
+        };
+      case 'fr':
+        return {
+          title: "Notes",
+          subtitle: "Capturez vos pensées et idées",
+          addNote: "Ajouter une note",
+          newNote: "Nouvelle note",
+          titleLabel: "Titre",
+          contentLabel: "Contenu",
+          titlePlaceholder: "Entrez le titre de la note",
+          contentPlaceholder: "Écrivez votre note ici...",
+          cancel: "Annuler",
+          saveNote: "Enregistrer la note",
+          noNotes: "Aucune note pour le moment",
+          startCreating: "Commencez par créer votre première note",
+          created: "Créé",
+          updated: "Mis à jour"
         };
       default: // English
         return {
@@ -95,14 +112,14 @@ export const Notes: React.FC<NotesProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+      <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
           <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{text.subtitle}</p>
         </div>
         <button
           onClick={() => setIsAddingNote(true)}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base flex-shrink-0"
         >
           <Plus className="w-4 h-4" />
           {text.addNote}

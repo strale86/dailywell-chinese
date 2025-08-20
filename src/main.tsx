@@ -2,8 +2,15 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { registerServiceWorker } from './utils/offlineManager';
 import './index.css';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </StrictMode>
+);
 
 // Block external scripts and prevent share-modal errors
 (function() {

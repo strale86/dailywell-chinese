@@ -117,105 +117,205 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
           howToPayStep3: "3. Potvrdite iznos plaćanja",
           howToPayStep4: "4. Premium funkcije će biti aktivirane trenutno"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "高级功能",
-          subtitle: "解锁高级功能和洞察",
-          premium: "高级",
-          dataExport: "数据导出",
-          dataExportDesc: "以各种格式导出您的数据",
-          exportCSV: "导出CSV",
-          exportJSON: "导出JSON",
-          exportPDF: "导出PDF",
-          backupSync: "备份和同步",
-          backupSyncDesc: "云备份和跨设备同步",
-          autoBackup: "自动备份",
-          crossDeviceSync: "跨设备同步",
-          versionHistory: "版本历史",
-          advancedNotifications: "高级通知",
-          advancedNotificationsDesc: "自定义提醒和智能警报",
-          habitReminders: "习惯提醒",
-          goalProgressAlerts: "目标进度警报",
-          pushNotifications: "推送通知",
-          pushNotificationsDesc: "设备上的实时通知",
-          taskDueReminders: "任务到期提醒",
-          habitStreakAlerts: "习惯连续提醒",
-          goalMilestoneNotifications: "目标里程碑通知",
-          friendChallengeUpdates: "朋友挑战更新",
-          configureNotifications: "配置通知",
-          upgradeForPushNotifications: "升级推送通知",
-          offlineMode: "离线模式",
-          offlineModeDesc: "无需网络连接即可工作",
-          offlineAccess: "离线访问",
-          syncWhenOnline: "在线时同步",
-          localStorage: "本地存储",
-          customizableDashboard: "可定制仪表板",
-          customizableDashboardDesc: "组织和排列小部件",
-          taskWidget: "任务小部件",
-          habitsWidget: "习惯小部件",
-          goalsWidget: "目标小部件",
-          analyticsWidget: "分析小部件",
-          aiRecommendations: "AI推荐",
-          aiRecommendationsDesc: "基于您数据的个性化建议",
-          habitSuggestion: "习惯建议",
-          habitSuggestionDesc: "根据您的晨间例行程序，尝试添加'喝水'作为每日习惯",
-          goalRecommendation: "目标推荐",
-          goalRecommendationDesc: "您即将完成阅读目标。考虑设定新目标！",
-          productivityTip: "生产力提示",
-          productivityTipDesc: "您的专注会话在早上最有效。在那时安排重要任务。",
-          getNewRecommendations: "获取新推荐",
-          upgradeForAiInsights: "升级AI洞察",
-          socialFeatures: "社交功能",
-          socialFeaturesDesc: "与朋友联系和竞争",
-          friendChallenges: "朋友挑战",
-          friendChallengesDesc: "创建并加入朋友挑战",
-          active: "活跃",
-          won: "获胜",
-          community: "社区",
-          communityDesc: "加入论坛和群组",
-          groups: "群组",
-          posts: "帖子",
-          shareAchievements: "分享成就",
-          shareAchievementsDesc: "在社交媒体上分享您的进度",
-          shared: "已分享",
-          likes: "点赞",
-          leaderboards: "排行榜",
-          leaderboardsDesc: "在全球和朋友排行榜上竞争",
-          rank: "排名",
-          points: "积分",
-          exploreCommunity: "探索社区",
-          upgradeForSocialFeatures: "升级社交功能",
-          premiumContent: "高级内容",
-          premiumContentDesc: "教育和健康内容",
-          wellnessArticles: "健康文章",
-          wellnessArticlesDesc: "关于健康和福祉的教育内容",
-          articles: "文章",
-          weeklyUpdates: "每周更新",
-          guidedMeditations: "引导冥想",
-          guidedMeditationsDesc: "放松和专注的音频会话",
-          sessions: "会话",
-          min: "分钟",
-          workoutPlans: "锻炼计划",
-          workoutPlansDesc: "结构化健身计划和练习",
-          plans: "计划",
-          allLevels: "所有级别",
-          browseContentLibrary: "浏览内容库",
-          upgradeForPremiumContent: "升级高级内容",
-          wechatPay: "微信支付",
-          wechatPayDesc: "扫描二维码升级到高级版",
-          proPlan: "专业版",
-          premiumPlan: "高级版",
-          advancedAnalytics: "高级分析",
-          allProFeatures: "所有专业功能",
-          generateQrCode: "生成二维码",
-          generating: "生成中...",
-          scanWithWechat: "用微信扫描",
-          waitingForPayment: "等待支付...",
-          howToPay: "如何支付：",
+          title: "Funciones premium",
+          subtitle: "Desbloquea funciones avanzadas e insights",
+          premium: "Premium",
+          dataExport: "Exportación de datos",
+          dataExportDesc: "Exporta tus datos en varios formatos",
+          exportCSV: "Exportar CSV",
+          exportJSON: "Exportar JSON",
+          exportPDF: "Exportar PDF",
+          backupSync: "Respaldo y sincronización",
+          backupSyncDesc: "Respaldo en la nube y sincronización entre dispositivos",
+          autoBackup: "Respaldo automático",
+          crossDeviceSync: "Sincronización entre dispositivos",
+          versionHistory: "Historial de versiones",
+          advancedNotifications: "Notificaciones avanzadas",
+          advancedNotificationsDesc: "Recordatorios personalizados y alertas inteligentes",
+          habitReminders: "Recordatorios de hábitos",
+          goalProgressAlerts: "Alertas de progreso de objetivos",
+          pushNotifications: "Notificaciones push",
+          pushNotificationsDesc: "Notificaciones en tiempo real en tu dispositivo",
+          taskDueReminders: "Recordatorios de tareas vencidas",
+          habitStreakAlerts: "Alertas de racha de hábitos",
+          goalMilestoneNotifications: "Notificaciones de hitos de objetivos",
+          friendChallengeUpdates: "Actualizaciones de desafíos de amigos",
+          configureNotifications: "Configurar notificaciones",
+          upgradeForPushNotifications: "Actualizar para notificaciones push",
+          offlineMode: "Modo sin conexión",
+          offlineModeDesc: "Funciona sin conexión a internet",
+          offlineAccess: "Acceso sin conexión",
+          syncWhenOnline: "Sincronizar cuando esté en línea",
+          localStorage: "Almacenamiento local",
+          customizableDashboard: "Panel personalizable",
+          customizableDashboardDesc: "Organiza y organiza widgets",
+          taskWidget: "Widget de tareas",
+          habitsWidget: "Widget de hábitos",
+          goalsWidget: "Widget de objetivos",
+          analyticsWidget: "Widget de análisis",
+          aiRecommendations: "Recomendaciones de IA",
+          aiRecommendationsDesc: "Sugerencias personalizadas basadas en tus datos",
+          habitSuggestion: "Sugerencia de hábito",
+          habitSuggestionDesc: "Basado en tu rutina matutina, intenta agregar 'beber agua' como hábito diario",
+          goalRecommendation: "Recomendación de objetivo",
+          goalRecommendationDesc: "Estás cerca de completar tu objetivo de lectura. ¡Considera establecer un nuevo objetivo!",
+          productivityTip: "Consejo de productividad",
+          productivityTipDesc: "Tus sesiones de enfoque son más efectivas por la mañana. Programa tareas importantes en ese momento.",
+          getNewRecommendations: "Obtener nuevas recomendaciones",
+          upgradeForAiInsights: "Actualizar para insights de IA",
+          socialFeatures: "Funciones sociales",
+          socialFeaturesDesc: "Conéctate y compite con amigos",
+          friendChallenges: "Desafíos de amigos",
+          friendChallengesDesc: "Crea y únete a desafíos de amigos",
+          active: "Activo",
+          won: "Ganado",
+          community: "Comunidad",
+          communityDesc: "Únete a foros y grupos",
+          groups: "Grupos",
+          posts: "Publicaciones",
+          shareAchievements: "Compartir logros",
+          shareAchievementsDesc: "Comparte tu progreso en redes sociales",
+          shared: "Compartido",
+          likes: "Me gusta",
+          leaderboards: "Tablas de clasificación",
+          leaderboardsDesc: "Compite en tablas de clasificación globales y de amigos",
+          rank: "Rango",
+          points: "Puntos",
+          exploreCommunity: "Explorar comunidad",
+          upgradeForSocialFeatures: "Actualizar para funciones sociales",
+          premiumContent: "Contenido premium",
+          premiumContentDesc: "Contenido educativo y de bienestar",
+          wellnessArticles: "Artículos de bienestar",
+          wellnessArticlesDesc: "Contenido educativo sobre salud y bienestar",
+          articles: "Artículos",
+          weeklyUpdates: "Actualizaciones semanales",
+          guidedMeditations: "Meditaciones guiadas",
+          guidedMeditationsDesc: "Sesiones de audio para relajación y enfoque",
+          sessions: "Sesiones",
+          min: "min",
+          workoutPlans: "Planes de entrenamiento",
+          workoutPlansDesc: "Planes de fitness estructurados y ejercicios",
+          plans: "Planes",
+          allLevels: "Todos los niveles",
+          browseContentLibrary: "Explorar biblioteca de contenido",
+          upgradeForPremiumContent: "Actualizar para contenido premium",
+          wechatPay: "Pago WeChat",
+          wechatPayDesc: "Escanee el código QR para actualizar a premium",
+          proPlan: "Plan Pro",
+          premiumPlan: "Plan Premium",
+          advancedAnalytics: "Análisis avanzado",
+          allProFeatures: "Todas las funciones Pro",
+          generateQrCode: "Generar código QR",
+          generating: "Generando...",
+          scanWithWechat: "Escanear con WeChat",
+          waitingForPayment: "Esperando pago...",
+          howToPay: "Cómo pagar:",
           howToPayStep1: "1. 在手机上打开微信应用",
           howToPayStep2: "2. 点击'扫一扫'并扫描二维码",
           howToPayStep3: "3. 确认支付金额",
           howToPayStep4: "4. 高级功能将立即激活"
+        };
+      case 'fr':
+        return {
+          title: "Fonctionnalités Premium",
+          subtitle: "Débloquez des fonctionnalités avancées et des insights",
+          premium: "Premium",
+          dataExport: "Exportation de données",
+          dataExportDesc: "Exportez vos données dans différents formats",
+          exportCSV: "Exporter CSV",
+          exportJSON: "Exporter JSON",
+          exportPDF: "Exporter PDF",
+          backupSync: "Sauvegarde et synchronisation",
+          backupSyncDesc: "Sauvegarde cloud et synchronisation multi-appareils",
+          autoBackup: "Sauvegarde automatique",
+          crossDeviceSync: "Synchronisation multi-appareils",
+          versionHistory: "Historique des versions",
+          advancedNotifications: "Notifications avancées",
+          advancedNotificationsDesc: "Rappels personnalisés et alertes intelligentes",
+          habitReminders: "Rappels d'habitudes",
+          goalProgressAlerts: "Alertes de progression d'objectifs",
+          pushNotifications: "Notifications en temps réel sur votre appareil",
+          pushNotificationsDesc: "Push en temps réel sur votre appareil",
+          taskDueReminders: "Rappels d'échéance de tâches",
+          habitStreakAlerts: "Alertes de série d'habitudes",
+          goalMilestoneNotifications: "Notifications de jalons d'objectifs",
+          friendChallengeUpdates: "Mises à jour de défis d'amis",
+          configureNotifications: "Configurer les notifications",
+          upgradeForPushNotifications: "Mettre à niveau pour les notifications push",
+          offlineMode: "Mode hors ligne",
+          offlineModeDesc: "Travaillez sans connexion internet",
+          offlineAccess: "Accès hors ligne",
+          syncWhenOnline: "Synchroniser quand en ligne",
+          localStorage: "Stockage local",
+          customizableDashboard: "Tableau de bord personnalisable",
+          customizableDashboardDesc: "Organisez et arrangez les widgets",
+          taskWidget: "Widget de tâches",
+          habitsWidget: "Widget d'habitudes",
+          goalsWidget: "Widget d'objectifs",
+          analyticsWidget: "Widget d'analyses",
+          aiRecommendations: "Recommandations IA",
+          aiRecommendationsDesc: "Suggestions personnalisées basées sur vos données",
+          habitSuggestion: "Suggestion d'habitude",
+          habitSuggestionDesc: "Basé sur votre routine matinale, essayez d'ajouter 'Boire de l'eau' comme habitude quotidienne",
+          goalRecommendation: "Recommandation d'objectif",
+          goalRecommendationDesc: "Vous êtes proche de terminer votre objectif de lecture. Considérez définir une nouvelle cible !",
+          productivityTip: "Conseil de productivité",
+          productivityTipDesc: "Vos sessions de concentration sont les plus productives le matin. Planifiez les tâches importantes à ce moment-là.",
+          getNewRecommendations: "Obtenir de nouvelles recommandations",
+          upgradeForAiInsights: "Mettre à niveau pour les insights IA",
+          socialFeatures: "Fonctionnalités sociales",
+          socialFeaturesDesc: "Connectez-vous et rivalisez avec des amis",
+          friendChallenges: "Défis d'amis",
+          friendChallengesDesc: "Créez et rejoignez des défis avec des amis",
+          active: "Actif",
+          won: "Gagné",
+          community: "Communauté",
+          communityDesc: "Rejoignez des forums et des groupes",
+          groups: "Groupes",
+          posts: "Publications",
+          shareAchievements: "Partager les réalisations",
+          shareAchievementsDesc: "Partagez vos progrès sur les réseaux sociaux",
+          shared: "Partagé",
+          likes: "J'aime",
+          leaderboards: "Classements",
+          leaderboardsDesc: "Rivalisez sur les classements globaux et entre amis",
+          rank: "Rang",
+          points: "Points",
+          exploreCommunity: "Explorer la communauté",
+          upgradeForSocialFeatures: "Mettre à niveau pour les fonctionnalités sociales",
+          premiumContent: "Contenu premium",
+          premiumContentDesc: "Contenu éducatif et de bien-être",
+          wellnessArticles: "Articles de bien-être",
+          wellnessArticlesDesc: "Contenu éducatif sur la santé et le bien-être",
+          articles: "Articles",
+          weeklyUpdates: "Mises à jour hebdomadaires",
+          guidedMeditations: "Méditations guidées",
+          guidedMeditationsDesc: "Sessions audio pour la relaxation et la concentration",
+          sessions: "Sessions",
+          min: "min",
+          workoutPlans: "Plans d'entraînement",
+          workoutPlansDesc: "Programmes de fitness structurés et exercices",
+          plans: "Plans",
+          allLevels: "Tous niveaux",
+          browseContentLibrary: "Parcourir la bibliothèque de contenu",
+          upgradeForPremiumContent: "Mettre à niveau pour le contenu premium",
+          wechatPay: "Paiement WeChat",
+          wechatPayDesc: "Scannez le code QR pour passer à Premium",
+          proPlan: "Plan Pro",
+          premiumPlan: "Plan Premium",
+          advancedAnalytics: "Analyses avancées",
+          allProFeatures: "Toutes les fonctionnalités Pro",
+          generateQrCode: "Générer le code QR",
+          generating: "Génération...",
+          scanWithWechat: "Scanner avec WeChat",
+          waitingForPayment: "En attente de paiement...",
+          howToPay: "Comment payer :",
+          howToPayStep1: "1. Ouvrez l'application WeChat sur votre téléphone",
+          howToPayStep2: "2. Appuyez sur 'Scanner' et scannez le code QR",
+          howToPayStep3: "3. Confirmez le montant du paiement",
+          howToPayStep4: "4. Les fonctionnalités Premium seront activées instantanément"
         };
       default: // English
         return {
@@ -381,8 +481,8 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
       </div>
 
       {/* Data Export Feature */}
-      <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 sm:mb-4 space-y-2 sm:space-y-0">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
           <div className="flex items-center gap-2 sm:gap-3">
             <Download className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
             <div>
@@ -390,7 +490,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.dataExportDesc}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <Star className="w-4 h-4 text-yellow-500" />
             <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
           </div>
@@ -431,8 +531,8 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
        </div>
 
        {/* Backup & Sync Feature */}
-       <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 sm:mb-4 space-y-2 sm:space-y-0">
+       <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+         <div className="flex items-center justify-between mb-3 sm:mb-4">
            <div className="flex items-center gap-2 sm:gap-3">
              <Cloud className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
              <div>
@@ -440,7 +540,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.backupSyncDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>
@@ -499,7 +599,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
             <p className="text-sm text-gray-600 dark:text-gray-400">{text.advancedNotificationsDesc}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <Star className="w-4 h-4 text-yellow-500" />
             <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
           </div>
@@ -545,7 +645,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-sm text-gray-600 dark:text-gray-400">{text.pushNotificationsDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>
@@ -630,7 +730,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-sm text-gray-600 dark:text-gray-400">{text.offlineModeDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>
@@ -689,7 +789,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-sm text-gray-600 dark:text-gray-400">{text.customizableDashboardDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>
@@ -761,7 +861,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-sm text-gray-600 dark:text-gray-400">{text.aiRecommendationsDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>
@@ -823,7 +923,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-sm text-gray-600 dark:text-gray-400">{text.socialFeaturesDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>
@@ -915,7 +1015,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-sm text-gray-600 dark:text-gray-400">{text.premiumContentDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>
@@ -992,7 +1092,7 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <p className="text-sm text-gray-600 dark:text-gray-400">{text.wechatPayDesc}</p>
              </div>
            </div>
-           <div className="flex items-center gap-2">
+           <div className="flex items-center gap-2 flex-shrink-0">
              <Star className="w-4 h-4 text-yellow-500" />
              <span className="text-sm text-gray-600 dark:text-gray-400">{text.premium}</span>
            </div>

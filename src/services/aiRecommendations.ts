@@ -31,25 +31,45 @@ const getRecommendationTexts = (language: string) => {
         goals: "Ciljevi",
         habits: "Navike"
       };
-    case 'zh':
+    case 'es':
       return {
-        improveTaskCompletion: "提高任务完成率",
-        taskCompletionRate: "您的任务完成率是",
-        tryBreakingDown: "尝试将较大的任务分解为更小、更易管理的步骤",
-        tryPomodoro: "尝试番茄工作法来提高专注力",
-        trackWellness: "跟踪您的健康",
-        startTracking: "开始跟踪您的日常健康以获得个性化洞察和建议",
-        completeFirstCheckin: "完成您的第一次健康检查",
-        setMoreGoals: "设定更多目标",
-        roomForGoals: "您有设定更多目标的空间。考虑在不同生活领域设定目标",
-        addNewGoals: "在不同类别中添加新目标",
-        tryNewHabits: "尝试新习惯",
-        basedOnHabits: "根据您当前的习惯，您可能会喜欢",
-        addSuggestedHabit: "添加建议的习惯之一",
-        productivity: "生产力",
-        wellness: "健康",
-        goals: "目标",
-        habits: "习惯"
+        improveTaskCompletion: "Mejorar tasa de finalización de tareas",
+        taskCompletionRate: "Tu tasa de finalización de tareas es",
+        tryBreakingDown: "Intenta dividir tareas más grandes en pasos más pequeños y manejables",
+        tryPomodoro: "Prueba la técnica Pomodoro para mejorar el enfoque",
+        trackWellness: "Rastrea tu bienestar",
+        startTracking: "Comienza a rastrear tu bienestar diario para obtener insights personalizados y recomendaciones",
+        completeFirstCheckin: "Completa tu primera verificación de bienestar",
+        setMoreGoals: "Establece más objetivos",
+        roomForGoals: "Tienes espacio para establecer más objetivos. Considera establecer objetivos en diferentes áreas de la vida",
+        addNewGoals: "Agrega nuevos objetivos en diferentes categorías",
+        tryNewHabits: "Prueba nuevos hábitos",
+        basedOnHabits: "Basado en tus hábitos actuales, podrías disfrutar",
+        addSuggestedHabit: "Agrega uno de los hábitos sugeridos",
+        productivity: "Productividad",
+        wellness: "Bienestar",
+        goals: "Objetivos",
+        habits: "Hábitos"
+      };
+    case 'fr':
+      return {
+        improveTaskCompletion: "Améliorer le taux de finalisation des tâches",
+        taskCompletionRate: "Votre taux de finalisation des tâches est",
+        tryBreakingDown: "Essayez de diviser les tâches plus importantes en étapes plus petites et gérables",
+        tryPomodoro: "Essayez la technique Pomodoro pour améliorer la concentration",
+        trackWellness: "Suivez votre bien-être",
+        startTracking: "Commencez à suivre votre bien-être quotidien pour obtenir des insights personnalisés et des recommandations",
+        completeFirstCheckin: "Terminez votre première vérification de bien-être",
+        setMoreGoals: "Définissez plus d'objectifs",
+        roomForGoals: "Vous avez de la place pour définir plus d'objectifs. Considérez définir des objectifs dans différents domaines de la vie",
+        addNewGoals: "Ajoutez de nouveaux objectifs dans différentes catégories",
+        tryNewHabits: "Essayez de nouvelles habitudes",
+        basedOnHabits: "Basé sur vos habitudes actuelles, vous pourriez apprécier",
+        addSuggestedHabit: "Ajoutez l'une des habitudes suggérées",
+        productivity: "Productivité",
+        wellness: "Bien-être",
+        goals: "Objectifs",
+        habits: "Habitudes"
       };
     default: // English
       return {
@@ -150,6 +170,9 @@ export class AIRecommendationService {
     const lowStreakHabits = habits.filter(habit => habit.streak < 3);
     
     if (lowStreakHabits.length > 0) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 1).toString(),
         type: 'habit',
@@ -157,7 +180,7 @@ export class AIRecommendationService {
         description: `You have ${lowStreakHabits.length} habits with low streaks. Focus on one habit at a time to build consistency.`,
         priority: 'medium',
         confidence: 75,
-        category: 'habits',
+        category: texts.habits,
         action: 'Set daily reminders for your most important habit',
         createdAt: new Date()
       });
@@ -203,6 +226,9 @@ export class AIRecommendationService {
     const avgStress = recentEntries.reduce((sum, entry) => sum + entry.stress, 0) / recentEntries.length;
 
     if (avgMood < 3) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 4).toString(),
         type: 'wellness',
@@ -210,13 +236,16 @@ export class AIRecommendationService {
         description: `Your average mood is ${avgMood.toFixed(1)}/5. Try activities that usually improve your mood.`,
         priority: 'high',
         confidence: 85,
-        category: 'wellness',
+        category: texts.wellness,
         action: 'Try 10 minutes of meditation or a walk',
         createdAt: new Date()
       });
     }
 
     if (avgStress > 3.5) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 5).toString(),
         type: 'wellness',
@@ -224,7 +253,7 @@ export class AIRecommendationService {
         description: `Your stress level is high (${avgStress.toFixed(1)}/5). Consider stress-reduction techniques.`,
         priority: 'high',
         confidence: 90,
-        category: 'wellness',
+        category: texts.wellness,
         action: 'Practice deep breathing or take a break',
         createdAt: new Date()
       });
@@ -236,6 +265,9 @@ export class AIRecommendationService {
     const lowProgressGoals = activeGoals.filter(goal => goal.progress < 30);
 
     if (lowProgressGoals.length > 0) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 6).toString(),
         type: 'goal',
@@ -243,7 +275,7 @@ export class AIRecommendationService {
         description: `You have ${lowProgressGoals.length} goals with slow progress. Break them down into smaller milestones.`,
         priority: 'medium',
         confidence: 70,
-        category: 'goals',
+        category: texts.goals,
         action: 'Review and update your goal milestones',
         createdAt: new Date()
       });

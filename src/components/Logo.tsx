@@ -23,10 +23,15 @@ export const Logo: React.FC<LogoProps> = ({
           title: "DailyWell",
           subtitle: "Vaš dnevni wellness pratilac"
         };
-      case 'zh':
+      case 'es':
         return {
           title: "DailyWell",
-          subtitle: "您的日常健康伴侣"
+          subtitle: "Tu compañero diario de bienestar"
+        };
+      case 'fr':
+        return {
+          title: "DailyWell",
+          subtitle: "Votre compagnon quotidien de bien-être"
         };
       default: // English
         return {

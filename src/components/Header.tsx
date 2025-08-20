@@ -20,11 +20,17 @@ const translations = {
     level: "Nivo",
     welcomeBack: "Dobrodošli nazad"
   },
-  zh: {
-    offline: "离线",
-    points: "积分",
-    level: "等级",
-    welcomeBack: "欢迎回来"
+  es: {
+    offline: "Sin conexión",
+    points: "Puntos",
+    level: "Nivel",
+    welcomeBack: "Bienvenido de vuelta"
+  },
+  fr: {
+    offline: "Hors ligne",
+    points: "Points",
+    level: "Niveau",
+    welcomeBack: "Bon retour"
   }
 };
 
@@ -103,7 +109,7 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
               </div>
             )}
             
-            <div className="flex items-center space-x-1 sm:space-x-4">
+            <div className="flex items-start space-x-1 sm:space-x-4">
               <div className="text-center">
                 <div className="flex items-center space-x-1">
                   <Award className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />

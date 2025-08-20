@@ -72,33 +72,61 @@ export const Dashboard: React.FC<DashboardProps> = ({
           date: "Datum",
           todaysStatus: "Današnji status"
         };
-      case 'zh':
+      case 'es':
         return {
-          welcomeBack: "欢迎回来！👋",
-          dailyProgress: "您的日常进度概览",
-          todaysTasks: "今日任务",
-          todaysHabits: "今日习惯",
-          focusSessions: "专注会话",
-          activeGoals: "活跃目标",
-          totalPoints: "总积分",
-          wellnessScore: "健康评分",
-          totalNotes: "总笔记",
-          social: "社交",
-          friendsChallenges: "朋友挑战",
-          viewAll: "查看全部",
-          addTask: "添加任务",
-          addHabit: "添加习惯",
-          recentActivity: "最近活动",
-          noActivity: "暂无活动",
-          completed: "已完成",
-          pending: "待处理",
-          notifications: "通知",
-          newAlerts: "新提醒",
-          mood: "心情",
-          stress: "压力",
-          energy: "能量",
-          date: "日期",
-          todaysStatus: "今日状态"
+          welcomeBack: "¡Bienvenido de vuelta! 👋",
+          dailyProgress: "Resumen de tu progreso diario",
+          todaysTasks: "Tareas de hoy",
+          todaysHabits: "Hábitos de hoy",
+          focusSessions: "Sesiones de enfoque",
+          activeGoals: "Objetivos activos",
+          totalPoints: "Puntos totales",
+          wellnessScore: "Puntuación de bienestar",
+          totalNotes: "Notas totales",
+          social: "Redes sociales",
+          friendsChallenges: "Desafíos de amigos",
+          viewAll: "Ver todo",
+          addTask: "Agregar tarea",
+          addHabit: "Agregar hábito",
+          recentActivity: "Actividad reciente",
+          noActivity: "Aún no hay actividad",
+          completed: "Completado",
+          pending: "Pendiente",
+          notifications: "Notificaciones",
+          newAlerts: "Nuevas alertas",
+          mood: "Estado de ánimo",
+          stress: "Estrés",
+          energy: "Energía",
+          date: "Fecha",
+          todaysStatus: "Estado de hoy"
+        };
+      case 'fr':
+        return {
+          welcomeBack: "Bon retour ! 👋",
+          dailyProgress: "Aperçu de vos progrès quotidiens",
+          todaysTasks: "Tâches d'aujourd'hui",
+          todaysHabits: "Habitudes d'aujourd'hui",
+          focusSessions: "Sessions de concentration",
+          activeGoals: "Objectifs actifs",
+          totalPoints: "Points totaux",
+          wellnessScore: "Score de bien-être",
+          totalNotes: "Notes totales",
+          social: "Réseaux sociaux",
+          friendsChallenges: "Défis d'amis",
+          viewAll: "Voir tout",
+          addTask: "Ajouter une tâche",
+          addHabit: "Ajouter une habitude",
+          recentActivity: "Activité récente",
+          noActivity: "Aucune activité pour le moment",
+          completed: "Terminé",
+          pending: "En attente",
+          notifications: "Notifications",
+          newAlerts: "Nouvelles alertes",
+          mood: "Humeur",
+          stress: "Stress",
+          energy: "Énergie",
+          date: "Date",
+          todaysStatus: "Statut d'aujourd'hui"
         };
       default: // English
         return {
@@ -148,6 +176,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <h1 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{text.welcomeBack}</h1>
         <p className="text-purple-100 text-sm sm:text-base">{text.dailyProgress}</p>
       </div>
+
+
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-1 sm:gap-2 md:gap-4">
         <div className="bg-white dark:bg-gray-800 rounded-xl p-2 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700">

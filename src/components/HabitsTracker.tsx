@@ -56,35 +56,65 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
           daily: "dnevno",
           deleteHabit: "Obriši naviku"
         };
-      case 'zh':
+      case 'es':
         return {
-          title: "习惯",
-          subtitle: "添加您的第一个习惯开始使用",
-          addHabit: "添加习惯",
-          habits: "习惯",
-          streak: "连续",
-          today: "今天",
-          noHabits: "暂无习惯",
-          addFirstHabit: "添加您的第一个习惯开始追踪",
-          enterHabitName: "输入习惯名称",
-          icon: "图标",
-          color: "颜色",
-          category: "类别",
-          cancel: "取消",
-          health: "健康",
-          productivity: "生产力",
-          learning: "学习",
-          wellness: "健康",
-          fitness: "健身",
-          personal: "个人",
-          time: "时间",
-          minutes: "分钟",
-          glasses: "杯",
-          pages: "页",
-          meals: "餐",
-          hours: "小时",
-          daily: "每日",
-          deleteHabit: "删除习惯"
+          title: "Hábitos",
+          subtitle: "Agrega tu primer hábito para comenzar",
+          addHabit: "Agregar hábito",
+          habits: "Hábitos",
+          streak: "Racha",
+          today: "Hoy",
+          noHabits: "Aún no hay hábitos",
+          addFirstHabit: "Agrega tu primer hábito para comenzar a rastrear",
+          enterHabitName: "Ingresa el nombre del hábito",
+          icon: "Icono",
+          color: "Color",
+          category: "Categoría",
+          cancel: "Cancelar",
+          health: "Salud",
+          productivity: "Productividad",
+          learning: "Aprendizaje",
+          wellness: "Bienestar",
+          fitness: "Fitness",
+          personal: "Personal",
+          time: "Tiempo",
+          minutes: "Minutos",
+          glasses: "Vasos",
+          pages: "Páginas",
+          meals: "Comidas",
+          hours: "Horas",
+          daily: "diario",
+          deleteHabit: "Eliminar hábito"
+        };
+      case 'fr':
+        return {
+          title: "Habitudes",
+          subtitle: "Ajoutez votre première habitude pour commencer",
+          addHabit: "Ajouter une habitude",
+          habits: "Habitudes",
+          streak: "Série",
+          today: "Aujourd'hui",
+          noHabits: "Aucune habitude pour le moment",
+          addFirstHabit: "Ajoutez votre première habitude pour commencer le suivi",
+          enterHabitName: "Entrez le nom de l'habitude",
+          icon: "Icône",
+          color: "Couleur",
+          category: "Catégorie",
+          cancel: "Annuler",
+          health: "Santé",
+          productivity: "Productivité",
+          learning: "Apprentissage",
+          wellness: "Bien-être",
+          fitness: "Fitness",
+          personal: "Personnel",
+          time: "Temps",
+          minutes: "Minutes",
+          glasses: "Verres",
+          pages: "Pages",
+          meals: "Repas",
+          hours: "Heures",
+          daily: "quotidien",
+          deleteHabit: "Supprimer l'habitude"
         };
       default: // English
         return {
@@ -186,14 +216,14 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+      <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
           <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{text.subtitle}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-1 sm:space-x-2 bg-green-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg hover:bg-green-700 transition-all text-xs sm:text-sm"
+          className="flex items-center space-x-1 sm:space-x-2 bg-green-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg hover:bg-green-700 transition-all text-xs sm:text-sm flex-shrink-0"
         >
           <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
           <span>{text.addHabit}</span>
@@ -455,10 +485,15 @@ const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle
           daily: "dnevno",
           deleteHabit: "Obriši naviku"
         };
-      case 'zh':
+      case 'es':
         return {
-          daily: "每日",
-          deleteHabit: "删除习惯"
+          daily: "diario",
+          deleteHabit: "Eliminar hábito"
+        };
+      case 'fr':
+        return {
+          daily: "quotidien",
+          deleteHabit: "Supprimer l'habitude"
         };
       default: // English
         return {

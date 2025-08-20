@@ -212,7 +212,7 @@ export async function getUserInfo(provider: 'google' | 'apple' | 'wechat' | 'ali
     const response = await fetch(`https://api.weixin.qq.com/sns/userinfo?` +
       `access_token=${accessToken}&` +
       `openid=${openid}&` +
-      `lang=zh_CN`);
+      `lang=en_US`);
     
     const data = await response.json();
     if (data.errcode) {
