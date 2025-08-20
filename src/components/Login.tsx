@@ -78,7 +78,7 @@ export const Login: React.FC<LoginProps> = ({
         return {
           title: "Se connecter",
           subtitle: "Bon retour à votre voyage de bien-être",
-          email: "Adresse e-mail",
+          email: "E-mail",
           password: "Mot de passe",
           emailRequired: "L'e-mail est requis",
           validEmail: "Veuillez entrer un e-mail valide",
