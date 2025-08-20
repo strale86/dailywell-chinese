@@ -35,7 +35,7 @@ export const SignUp: React.FC<SignUpProps> = ({
           subtitle: "Započnite svoj wellness put danas",
           firstName: "Ime",
           lastName: "Prezime",
-          email: "Email adresa",
+          email: "Korisničko ime",
           password: "Lozinka",
           confirmPassword: "Potvrdite lozinku",
           birthDate: "Datum rođenja",
