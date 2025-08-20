@@ -24,7 +24,8 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
     { code: 'en', name: 'English', flag: '🇺🇸', short: 'EN' },
     { code: 'es', name: 'Español', flag: '🇪🇸', short: 'ES' },
     { code: 'fr', name: 'Français', flag: '🇫🇷', short: 'FR' },
-    { code: 'sr', name: 'Српски', flag: '🇷🇸', short: 'SR' }
+    { code: 'sr', name: 'Српски', flag: '🇷🇸', short: 'SR' },
+    { code: 'zh', name: '中文', flag: '🇨🇳', short: 'ZH' }
   ];
 
   // Static translations

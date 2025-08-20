@@ -36,7 +36,7 @@ export const Login: React.FC<LoginProps> = ({
         return {
           title: "Prijavite se",
           subtitle: "Dobrodošli nazad na vaš wellness put",
-          email: "Email adresa",
+          email: "Korisničko ime",
           password: "Lozinka",
           emailRequired: "Email je obavezan",
           validEmail: "Unesite validan email",
@@ -57,7 +57,7 @@ export const Login: React.FC<LoginProps> = ({
         return {
           title: "Iniciar sesión",
           subtitle: "Bienvenido de vuelta a tu viaje de bienestar",
-          email: "Dirección de correo electrónico",
+          email: "Nombre de usuario",
           password: "Contraseña",
           emailRequired: "El correo electrónico es requerido",
           validEmail: "Por favor ingresa un correo electrónico válido",
@@ -78,7 +78,7 @@ export const Login: React.FC<LoginProps> = ({
         return {
           title: "Se connecter",
           subtitle: "Bon retour à votre voyage de bien-être",
-          email: "E-mail",
+          email: "Nom d'utilisateur",
           password: "Mot de passe",
           emailRequired: "L'e-mail est requis",
           validEmail: "Veuillez entrer un e-mail valide",
@@ -295,7 +295,7 @@ export const Login: React.FC<LoginProps> = ({
             }`} />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={text.email}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base ${
@@ -318,7 +318,7 @@ export const Login: React.FC<LoginProps> = ({
             }`} />
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
+              placeholder={text.password}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={`w-full pl-10 pr-12 py-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${

@@ -1,0 +1,5 @@
+[33mfb00b50[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Fix email and password translations
+[33mef052ca[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix translations and language switching functionality - Remove i18n system and marketConfig.ts - Enable dynamic language switching from localStorage - Fix Spanish translations (Social -> Redes sociales, AI -> Inteligencia Artificial) - Fix French translations (Social -> Réseaux sociaux, Premium section) - Update SignUp component with translated birth date fields and arrow icon - Fix AI recommendations service to use current language - Update push notifications translations in Premium section
+[33mfcf1a06[m Dodao obojene ikone u glavni meni i popravio SignUp lokalizaciju
+[33mfa5b05e[m Complete translation implementation - all components translated to Serbian, Chinese and English with static translations
+[33ma61378b[m Fix: removed navigation, improved profile modal, added translations
