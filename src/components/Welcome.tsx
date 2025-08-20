@@ -24,7 +24,8 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
     { code: 'en', name: 'English', flag: '🇺🇸', short: 'EN' },
     { code: 'es', name: 'Español', flag: '🇪🇸', short: 'ES' },
     { code: 'fr', name: 'Français', flag: '🇫🇷', short: 'FR' },
-    { code: 'sr', name: 'Српски', flag: '🇷🇸', short: 'SR' }
+    { code: 'sr', name: 'Српски', flag: '🇷🇸', short: 'SR' },
+    { code: 'zh', name: '中文', flag: '🇨🇳', short: 'ZH' }
   ];
 
   // Static translations
@@ -88,6 +89,21 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
       },
       getStarted: "Commencer",
       joinMessage: "Rejoignez des milliers d'utilisateurs améliorant leur bien-être quotidien"
+    },
+    zh: {
+      title: "DailyWell",
+      subtitle: "您的日常健康伴侣",
+      heading: "改变您的日常习惯",
+      description: "建立健康习惯，跟踪您的进度，并通过我们全面的日常伴侣应用程序实现您的健康目标。",
+      features: {
+        tasks: "任务管理与生产力",
+        habits: "习惯跟踪与系列", 
+        wellness: "健康检查",
+        timer: "专注计时器（番茄钟）",
+        analytics: "进度分析"
+      },
+      getStarted: "开始使用",
+      joinMessage: "加入数千名改善日常健康的用户"
     }
   };
 

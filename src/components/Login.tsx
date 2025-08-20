@@ -95,6 +95,27 @@ export const Login: React.FC<LoginProps> = ({
           signUp: "S'inscrire",
           back: "Retour"
         };
+      case 'zh':
+        return {
+          title: "登录",
+          subtitle: "欢迎回到您的健康之旅",
+          email: "用户名",
+          password: "密码",
+          emailRequired: "邮箱是必填项",
+          validEmail: "请输入有效的邮箱",
+          passwordRequired: "密码是必填项",
+          signIn: "登录",
+          signingIn: "登录中...",
+          invalidCredentials: "邮箱或密码无效",
+          forgotPassword: "忘记密码？",
+          googleLogin: "使用Google登录",
+          appleLogin: "使用Apple登录",
+          wechatLogin: "使用微信登录",
+          alipayLogin: "使用支付宝登录",
+          noAccount: "没有账户？",
+          signUp: "注册",
+          back: "返回"
+        };
       default: // English
         return {
           title: "Sign In",

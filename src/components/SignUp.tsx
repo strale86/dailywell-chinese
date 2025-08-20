@@ -149,6 +149,46 @@ export const SignUp: React.FC<SignUpProps> = ({
             "12": "Décembre"
           }
         };
+      case 'zh':
+        return {
+          title: "创建账户",
+          subtitle: "今天开始您的健康之旅",
+          firstName: "名字",
+          lastName: "姓氏",
+          email: "用户名",
+          password: "密码",
+          confirmPassword: "确认密码",
+          birthDate: "出生日期",
+          firstNameRequired: "请输入您的名字",
+          lastNameRequired: "请输入您的姓氏",
+          emailRequired: "请输入您的邮箱",
+          validEmail: "请输入有效的邮箱",
+          passwordRequired: "请输入密码",
+          passwordMinLength: "密码至少需要6个字符",
+          passwordsDoNotMatch: "密码不匹配",
+          createAccount: "创建账户",
+          creatingAccount: "创建账户中...",
+          hasAccount: "已有账户？",
+          signIn: "登录",
+          back: "返回",
+          month: "月",
+          day: "日",
+          year: "年",
+          months: {
+            "01": "一月",
+            "02": "二月", 
+            "03": "三月",
+            "04": "四月",
+            "05": "五月",
+            "06": "六月",
+            "07": "七月",
+            "08": "八月",
+            "09": "九月",
+            "10": "十月",
+            "11": "十一月",
+            "12": "十二月"
+          }
+        };
       default: // English
         return {
           title: "Create Account",
