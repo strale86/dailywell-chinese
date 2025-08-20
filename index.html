@@ -3,20 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="./icon.png" />
-    <meta name="viewport" content="width=1200, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DailyWell - Wellness & Planning App</title>
     <script>
-      // Simple share-modal blocking
+      // Aggressive share-modal blocking
       (function() {
-        // Block share-modal scripts
+        // Block ALL external scripts immediately
         const originalCreateElement = document.createElement;
         document.createElement = function(tagName) {
           const element = originalCreateElement.call(this, tagName);
           if (tagName.toLowerCase() === 'script') {
             const originalSetAttribute = element.setAttribute;
             element.setAttribute = function(name, value) {
-              if (name === 'src' && value && value.includes('share-modal')) {
-                console.log('BLOCKED: share-modal script');
+              if (name === 'src' && value && (
+                value.includes('share-modal') || 
+                value.includes('share_modal') ||
+                value.includes('external') ||
+                value.includes('cdn') ||
+                value.includes('jsdelivr') ||
+                value.includes('unpkg')
+              )) {
+                console.log('BLOCKED: external script:', value);
                 return;
               }
               return originalSetAttribute.call(this, name, value);
@@ -25,7 +32,7 @@
           return element;
         };
         
-        // Block null reference errors
+        // Block null reference errors globally
         if (typeof Element !== 'undefined' && Element.prototype) {
           const originalAddEventListener = Element.prototype.addEventListener;
           Element.prototype.addEventListener = function(type, listener, options) {
@@ -42,7 +49,173 @@
           };
         }
         
-        console.log('Share-modal protection activated');
+        // Block Chrome extension DOM access
+        const originalQuerySelector = document.querySelector;
+        document.querySelector = function(selector) {
+          try {
+            const result = originalQuerySelector.call(this, selector);
+            if (!result) {
+              console.log('BLOCKED: Chrome extension querySelector returned null for:', selector);
+              return null;
+            }
+            return result;
+          } catch (e) {
+            console.log('BLOCKED: Chrome extension querySelector error:', e.message);
+            return null;
+          }
+        };
+        
+        const originalQuerySelectorAll = document.querySelectorAll;
+        document.querySelectorAll = function(selector) {
+          try {
+            return originalQuerySelectorAll.call(this, selector);
+          } catch (e) {
+            console.log('BLOCKED: Chrome extension querySelectorAll error:', e.message);
+            return [];
+          }
+        };
+        
+        // Block ALL external requests
+        const originalFetch = window.fetch;
+        window.fetch = function(url, options) {
+          if (typeof url === 'string' && (
+            url.includes('share-modal') || 
+            url.includes('share_modal') ||
+            url.includes('external') ||
+            url.includes('cdn') ||
+            url.includes('jsdelivr') ||
+            url.includes('unpkg')
+          )) {
+            console.log('BLOCKED: external fetch request:', url);
+            return Promise.reject(new Error('Blocked external request'));
+          }
+          return originalFetch.call(this, url, options);
+        };
+        
+        // Block XMLHttpRequest
+        const originalXHROpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
+          if (typeof url === 'string' && (
+            url.includes('share-modal') || 
+            url.includes('share_modal') ||
+            url.includes('external') ||
+            url.includes('cdn') ||
+            url.includes('jsdelivr') ||
+            url.includes('unpkg')
+          )) {
+            console.log('BLOCKED: external XHR request:', url);
+            return;
+          }
+          return originalXHROpen.call(this, method, url, async, user, password);
+        };
+        
+        // Block dynamic script loading
+        const originalAppendChild = Node.prototype.appendChild;
+        Node.prototype.appendChild = function(child) {
+          if (child.tagName === 'SCRIPT' && child.src && (
+            child.src.includes('share-modal') || 
+            child.src.includes('share_modal') ||
+            child.src.includes('external') ||
+            child.src.includes('cdn') ||
+            child.src.includes('jsdelivr') ||
+            child.src.includes('unpkg')
+          )) {
+            console.log('BLOCKED: dynamic script append:', child.src);
+            return child; // Return without appending
+          }
+          return originalAppendChild.call(this, child);
+        };
+        
+        // Prevent ALL share-modal related errors
+        const originalConsoleError = console.error;
+        console.error = function(...args) {
+          const message = args.join(' ');
+          if (message.includes('share-modal') || 
+              message.includes('share_modal') ||
+              message.includes('external') ||
+              message.includes('cdn') ||
+              message.includes('jsdelivr') ||
+              message.includes('unpkg')) {
+            console.log('BLOCKED: external error message');
+            return;
+          }
+          return originalConsoleError.apply(console, args);
+        };
+        
+        // Block onerror events
+        window.addEventListener('error', function(e) {
+          if (e.filename && (
+            e.filename.includes('share-modal') || 
+            e.filename.includes('share_modal') ||
+            e.filename.includes('external') ||
+            e.filename.includes('cdn') ||
+            e.filename.includes('jsdelivr') ||
+            e.filename.includes('unpkg')
+          )) {
+            console.log('BLOCKED: external script error:', e.filename);
+            e.preventDefault();
+            return false;
+          }
+        }, true);
+        
+        // Block Chrome extension errors
+        window.addEventListener('error', function(e) {
+          if (e.message && (
+            e.message.includes('Cannot read properties of null') ||
+            e.message.includes('addEventListener') ||
+            e.message.includes('querySelector') ||
+            e.message.includes('chrome.storage') ||
+            e.message.includes('chrome.i18n') ||
+            e.message.includes('chrome.runtime')
+          )) {
+            console.log('BLOCKED: Chrome extension error:', e.message);
+            e.preventDefault();
+            return false;
+          }
+        }, true);
+        
+        // Block Chrome extension APIs
+        if (typeof chrome !== 'undefined') {
+          // Block chrome.storage
+          if (chrome.storage) {
+            chrome.storage.local = {
+              get: function() { console.log('BLOCKED: chrome.storage.local.get'); },
+              set: function() { console.log('BLOCKED: chrome.storage.local.set'); }
+            };
+          }
+          
+          // Block chrome.i18n
+          if (chrome.i18n) {
+            chrome.i18n.getMessage = function() { 
+              console.log('BLOCKED: chrome.i18n.getMessage'); 
+              return '';
+            };
+          }
+          
+          // Block chrome.runtime
+          if (chrome.runtime) {
+            chrome.runtime.id = 'blocked';
+          }
+        }
+        
+        // Block setTimeout calls that might be from extensions
+        const originalSetTimeout = window.setTimeout;
+        window.setTimeout = function(func, delay, ...args) {
+          if (typeof func === 'function') {
+            const funcString = func.toString();
+            if (funcString.includes('chrome.storage') || 
+                funcString.includes('chrome.i18n') || 
+                funcString.includes('chrome.runtime') ||
+                funcString.includes('tui-image-editor') ||
+                funcString.includes('xxdialog')) {
+              console.log('BLOCKED: Chrome extension setTimeout');
+              return 0; // Return invalid timeout ID
+            }
+          }
+          return originalSetTimeout.call(this, func, delay, ...args);
+        };
+        
+        console.log('Aggressive external script protection activated');
       })();
     </script>
   </head>

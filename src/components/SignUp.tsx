@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Mail, Lock, Eye, EyeOff, User, Calendar, Loader2 } from 'lucide-react';
+
+import { Mail, Lock, Eye, EyeOff, User, Loader2 } from 'lucide-react';
 
 interface SignUpProps {
   onSignUp: (userData: SignUpData) => void;
-  onWeChatSignUp: () => void;
-  onAlipaySignUp: () => void;
   onLogin: () => void;
   onBack: () => void;
 }
@@ -21,12 +19,90 @@ interface SignUpData {
 
 export const SignUp: React.FC<SignUpProps> = ({ 
   onSignUp, 
-  onWeChatSignUp, 
-  onAlipaySignUp, 
   onLogin, 
   onBack 
 }) => {
-  const { t } = useTranslation();
+
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations based on language
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          title: "Kreirajte nalog",
+          subtitle: "Započnite svoj wellness put danas",
+          firstName: "Ime",
+          lastName: "Prezime",
+          email: "Email adresa",
+          password: "Lozinka",
+          confirmPassword: "Potvrdite lozinku",
+          birthDate: "Datum rođenja",
+          firstNameRequired: "Unesite vaše ime",
+          lastNameRequired: "Unesite vaše prezime",
+          emailRequired: "Unesite vaš email",
+          validEmail: "Unesite validan email",
+          passwordRequired: "Unesite lozinku",
+          passwordMinLength: "Lozinka mora imati najmanje 6 karaktera",
+          passwordsDoNotMatch: "Lozinke se ne poklapaju",
+          createAccount: "Kreirajte nalog",
+          creatingAccount: "Kreiranje naloga...",
+          hasAccount: "Već imate nalog?",
+          signIn: "Prijavite se",
+          back: "Nazad"
+        };
+      case 'zh':
+        return {
+          title: "创建账户",
+          subtitle: "今天开始您的健康之旅",
+          firstName: "名字",
+          lastName: "姓氏",
+          email: "邮箱地址",
+          password: "密码",
+          confirmPassword: "确认密码",
+          birthDate: "出生日期",
+          firstNameRequired: "请输入您的名字",
+          lastNameRequired: "请输入您的姓氏",
+          emailRequired: "请输入您的邮箱",
+          validEmail: "请输入有效的邮箱",
+          passwordRequired: "请输入密码",
+          passwordMinLength: "密码至少需要6个字符",
+          passwordsDoNotMatch: "密码不匹配",
+          createAccount: "创建账户",
+          creatingAccount: "创建账户中...",
+          hasAccount: "已有账户？",
+          signIn: "登录",
+          back: "返回"
+        };
+      default: // English
+        return {
+          title: "Create Account",
+          subtitle: "Start your wellness journey today",
+          firstName: "First Name",
+          lastName: "Last Name",
+          email: "Email address",
+          password: "Password",
+          confirmPassword: "Confirm Password",
+          birthDate: "Date of Birth",
+          firstNameRequired: "Please enter your first name",
+          lastNameRequired: "Please enter your last name",
+          emailRequired: "Please enter your email",
+          validEmail: "Please enter a valid email",
+          passwordRequired: "Please enter a password",
+          passwordMinLength: "Password must be at least 6 characters",
+          passwordsDoNotMatch: "Passwords do not match",
+          createAccount: "Create Account",
+          creatingAccount: "Creating account...",
+          hasAccount: "Already have an account?",
+          signIn: "Sign In",
+          back: "Back"
+        };
+    }
+  };
+
+  const text = getText();
+
   const [formData, setFormData] = useState<SignUpData>({
     firstName: '',
     lastName: '',
@@ -38,9 +114,9 @@ export const SignUp: React.FC<SignUpProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isWeChatLoading, setIsWeChatLoading] = useState(false);
-  const [isAlipayLoading, setIsAlipayLoading] = useState(false);
   const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '', general: '' });
+
+
 
   const handleSignUp = async () => {
     console.log('handleSignUp called with:', formData);
@@ -52,25 +128,25 @@ export const SignUp: React.FC<SignUpProps> = ({
     const newErrors = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '', general: '' };
 
     if (!formData.firstName) {
-      newErrors.firstName = t('signup.enterFirstName');
+      newErrors.firstName = 'Please enter your first name';
       hasErrors = true;
     }
 
     if (!formData.lastName) {
-      newErrors.lastName = t('signup.enterLastName');
+      newErrors.lastName = 'Please enter your last name';
       hasErrors = true;
     }
 
     if (!formData.email) {
-      newErrors.email = t('signup.enterEmail');
+      newErrors.email = 'Please enter your email';
       hasErrors = true;
     } else if (!formData.email.includes('@')) {
-      newErrors.email = t('login.validEmail');
+              newErrors.email = 'Please enter a valid email';
       hasErrors = true;
     }
 
     if (!formData.password) {
-      newErrors.password = t('signup.enterPassword');
+      newErrors.password = 'Please enter a password';
       hasErrors = true;
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
@@ -78,7 +154,7 @@ export const SignUp: React.FC<SignUpProps> = ({
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = t('signup.confirmPasswordPlaceholder');
+              newErrors.confirmPassword = 'Passwords do not match';
       hasErrors = true;
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
@@ -107,49 +183,29 @@ export const SignUp: React.FC<SignUpProps> = ({
     }
   };
 
-  const handleWeChatSignUp = async () => {
-    setIsWeChatLoading(true);
-    try {
-      await onWeChatSignUp();
-    } catch (error) {
-      console.log('WeChat sign up failed. Please try again.');
-    } finally {
-      setIsWeChatLoading(false);
-    }
-  };
 
-  const handleAlipaySignUp = async () => {
-    setIsAlipayLoading(true);
-    try {
-      await onAlipaySignUp();
-    } catch (error) {
-      console.log('Alipay sign up failed. Please try again.');
-    } finally {
-      setIsAlipayLoading(false);
-    }
-  };
 
   const updateFormData = (field: keyof SignUpData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 flex items-center justify-center px-4 py-8">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 flex items-center justify-center px-3 sm:px-4 py-4 sm:py-8">
+      <div className="max-w-sm sm:max-w-md w-full">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <button
             onClick={onBack}
-            className="absolute top-6 left-6 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white/30 transition-all text-white font-medium"
+            className="absolute top-4 sm:top-6 left-3 sm:left-6 px-3 sm:px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white/30 transition-all text-white font-medium text-sm sm:text-base"
           >
             ←
           </button>
-          <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">{t('signup.title')}</h1>
-          <p className="text-white/90">{t('signup.subtitle')}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-lg">Create Account</h1>
+          <p className="text-white/90 text-sm sm:text-base">Join your wellness journey today</p>
         </div>
 
         {/* Sign Up Form */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-8 space-y-6 border border-white/20">
+        <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 border border-white/20">
           {/* General Error */}
           {errors.general && (
             <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-3 text-red-200 text-sm">
@@ -157,15 +213,15 @@ export const SignUp: React.FC<SignUpProps> = ({
             </div>
           )}
           {/* Name Fields */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="relative">
-              <User size={20} className="absolute left-3 top-3 text-gray-400" />
+              <User size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
               <input
                 type="text"
-                placeholder={t('signup.firstName')}
+                placeholder="First Name"
                 value={formData.firstName}
                 onChange={(e) => updateFormData('firstName', e.target.value)}
-                className={`w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+                className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
                   errors.firstName ? 'border-red-500' : 'border-white/30'
                 }`}
               />
@@ -174,13 +230,13 @@ export const SignUp: React.FC<SignUpProps> = ({
               )}
             </div>
             <div className="relative">
-              <User size={20} className="absolute left-3 top-3 text-gray-400" />
+              <User size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
               <input
                 type="text"
-                placeholder={t('signup.lastName')}
+                placeholder="Last Name"
                 value={formData.lastName}
                 onChange={(e) => updateFormData('lastName', e.target.value)}
-                className={`w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+                className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
                   errors.lastName ? 'border-red-500' : 'border-white/30'
                 }`}
               />
@@ -192,13 +248,13 @@ export const SignUp: React.FC<SignUpProps> = ({
 
           {/* Email */}
           <div className="relative">
-            <Mail size={20} className="absolute left-3 top-3 text-gray-400" />
+            <Mail size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
             <input
               type="email"
-              placeholder={t('signup.email')}
+              placeholder="Email"
               value={formData.email}
               onChange={(e) => updateFormData('email', e.target.value)}
-              className={`w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+              className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
                 errors.email ? 'border-red-500' : 'border-white/30'
               }`}
             />
@@ -207,30 +263,93 @@ export const SignUp: React.FC<SignUpProps> = ({
             )}
           </div>
 
-          {/* Birth Date */}
+          {/* Birth Date - Custom Design */}
           <div className="relative">
-            <label className="block text-white/90 text-sm mb-2 font-medium">
-              {t('signup.birthDate')}
+            <label className="block text-white/90 text-xs sm:text-sm mb-2 font-medium">
+              Date of Birth
             </label>
-            <Calendar size={20} className="absolute left-3 top-3 text-gray-400" />
-            <input
-              type="text"
-              placeholder="年-月-日 (例如: 1990-01-01)"
-              value={formData.birthDate}
-              onChange={(e) => updateFormData('birthDate', e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-            />
+            <div className="flex space-x-1 sm:space-x-2">
+              {/* Month */}
+              <div className="flex-1">
+                <select
+                  value={formData.birthDate.split('/')[0] || ''}
+                  onChange={(e) => {
+                    const parts = formData.birthDate.split('/');
+                    const newDate = `${e.target.value}/${parts[1] || ''}/${parts[2] || ''}`;
+                    updateFormData('birthDate', newDate);
+                  }}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-gray-900 text-xs sm:text-sm"
+                >
+                  <option value="">Month</option>
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              
+              {/* Day */}
+              <div className="flex-1">
+                <select
+                  value={formData.birthDate.split('/')[1] || ''}
+                  onChange={(e) => {
+                    const parts = formData.birthDate.split('/');
+                    const newDate = `${parts[0] || ''}/${e.target.value}/${parts[2] || ''}`;
+                    updateFormData('birthDate', newDate);
+                  }}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-gray-900 text-xs sm:text-sm"
+                >
+                  <option value="">Day</option>
+                  {Array.from({ length: 31 }, (_, i) => (
+                    <option key={i + 1} value={String(i + 1).padStart(2, '0')}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              {/* Year */}
+              <div className="flex-1">
+                <select
+                  value={formData.birthDate.split('/')[2] || ''}
+                  onChange={(e) => {
+                    const parts = formData.birthDate.split('/');
+                    const newDate = `${parts[0] || ''}/${parts[1] || ''}/${e.target.value}`;
+                    updateFormData('birthDate', newDate);
+                  }}
+                  className="w-full px-2 sm:px-3 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-gray-900 text-xs sm:text-sm"
+                >
+                  <option value="">Year</option>
+                  {Array.from({ length: 100 }, (_, i) => {
+                    const year = new Date().getFullYear() - i;
+                    return (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
           </div>
 
           {/* Password */}
           <div className="relative">
-            <Lock size={20} className="absolute left-3 top-3 text-gray-400" />
+            <Lock size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder={t('signup.password')}
+              placeholder="Password"
               value={formData.password}
               onChange={(e) => updateFormData('password', e.target.value)}
-              className={`w-full pl-10 pr-12 py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+              className={`w-full pl-9 sm:pl-10 pr-12 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
                 errors.password ? 'border-red-500' : 'border-white/30'
               }`}
             />
@@ -240,21 +359,21 @@ export const SignUp: React.FC<SignUpProps> = ({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400"
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <EyeOff size={18} className="sm:w-5 sm:h-5" /> : <Eye size={18} className="sm:w-5 sm:h-5" />}
             </button>
           </div>
 
           {/* Confirm Password */}
           <div className="relative">
-            <Lock size={20} className="absolute left-3 top-3 text-gray-400" />
+            <Lock size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 sm:w-5 sm:h-5" />
             <input
               type={showConfirmPassword ? 'text' : 'password'}
-              placeholder={t('signup.confirmPassword')}
+              placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={(e) => updateFormData('confirmPassword', e.target.value)}
-              className={`w-full pl-10 pr-12 py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+              className={`w-full pl-9 sm:pl-10 pr-12 py-2 sm:py-3 bg-white/80 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base ${
                 errors.confirmPassword ? 'border-red-500' : 'border-white/30'
               }`}
             />
@@ -264,9 +383,9 @@ export const SignUp: React.FC<SignUpProps> = ({
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400"
             >
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showConfirmPassword ? <EyeOff size={18} className="sm:w-5 sm:h-5" /> : <Eye size={18} className="sm:w-5 sm:h-5" />}
             </button>
           </div>
 
@@ -278,7 +397,7 @@ export const SignUp: React.FC<SignUpProps> = ({
               handleSignUp();
             }}
             disabled={isLoading}
-            className={`w-full py-3 rounded-xl font-semibold text-white transition-all ${
+            className={`w-full py-2 sm:py-3 rounded-xl font-semibold text-white transition-all text-sm sm:text-base ${
               isLoading 
                 ? 'bg-gray-400 cursor-not-allowed' 
                 : 'bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
@@ -286,69 +405,24 @@ export const SignUp: React.FC<SignUpProps> = ({
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
-                <Loader2 size={20} className="animate-spin mr-2" />
-                {t('signup.creatingAccount')}
+                <Loader2 size={18} className="animate-spin mr-2 sm:w-5 sm:h-5" />
+                Creating Account...
               </div>
             ) : (
-              t('signup.createAccount')
+              'Create Account'
             )}
           </button>
 
-          {/* Divider */}
-          <div className="flex items-center my-6">
-            <div className="flex-1 border-t border-white/20"></div>
-            <span className="px-4 text-white/60 text-sm">or</span>
-            <div className="flex-1 border-t border-white/20"></div>
-          </div>
 
-          {/* Social Sign Up Buttons */}
-          <div className="space-y-3">
-            {/* WeChat Button */}
-            <button
-              onClick={handleWeChatSignUp}
-              disabled={isWeChatLoading}
-              className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 transition-all"
-            >
-              {isWeChatLoading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <>
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 4.882-1.932 7.621-.55-.302-3.706-3.78-6.53-8.012-6.53zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-2.324 0c0-.651.52-1.18 1.162-1.18zm5.618 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-2.324 0c0-.651.52-1.18 1.162-1.18z"/>
-                    <path d="M24 14.487c0-3.386-3.4-6.136-7.589-6.136-4.288 0-7.767 2.75-7.767 6.136 0 3.386 3.479 6.136 7.767 6.136.856 0 1.682-.105 2.457-.299a.724.724 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .139.045c.135 0 .241-.111.241-.247 0-.06-.023-.12-.038-.177l-.325-1.233a.488.488 0 0 1 .177-.561C22.805 18.396 24 16.548 24 14.487zM16.07 12.797c-.535 0-.969-.44-.969-.982 0-.542.434-.982.969-.982s.969.44.969.982c0 .542-.434.982-.969.982zm4.618 0c-.535 0-.969-.44-.969-.982 0-.542.434-.982.969-.982s.969.44.969.982c0 .542-.434.982-.969.982z"/>
-                  </svg>
-                  <span>WeChat Sign Up</span>
-                </>
-              )}
-            </button>
-
-            {/* Alipay Button */}
-            <button
-              onClick={handleAlipaySignUp}
-              disabled={isAlipayLoading}
-              className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-all"
-            >
-              {isAlipayLoading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <>
-                  <div className="w-5 h-5 bg-white rounded flex items-center justify-center text-blue-600 font-bold text-xs">
-                    支
-                  </div>
-                  <span>Alipay Sign Up</span>
-                </>
-              )}
-            </button>
-          </div>
 
           {/* Login Link */}
-          <div className="text-center mt-6">
-            <span className="text-white/90">{t('signup.hasAccount')} </span>
+          <div className="text-center mt-4 sm:mt-6">
+            <span className="text-white/90 text-sm sm:text-base">Already have an account? </span>
             <button
               onClick={onLogin}
-              className="text-white font-semibold hover:text-white/80 transition-colors"
+              className="text-white font-semibold hover:text-white/80 transition-colors text-sm sm:text-base"
             >
-              {t('signup.signIn')}
+              Sign In
             </button>
           </div>
         </div>

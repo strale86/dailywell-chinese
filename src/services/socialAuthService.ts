@@ -17,10 +17,10 @@ class SocialAuthService {
   async signInWithGoogle(): Promise<SocialUser> {
     try {
       // Check if we have real OAuth credentials
-      const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-      const clientSecret = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || import.meta.env.REACT_APP_GOOGLE_CLIENT_ID;
+      const clientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET || import.meta.env.REACT_APP_GOOGLE_CLIENT_SECRET;
       
-      if (!clientId || clientId === 'your_google_client_id' || !clientSecret || clientSecret === 'your_google_client_secret') {
+      if (!clientId || clientId === 'your_google_client_id' || !clientSecret || clientSecret === 'your_google_client_secret' || clientSecret === 'your_google_client_secret_here') {
         // Fallback to demo mode if no real credentials
         // Simulate loading
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -39,7 +39,7 @@ class SocialAuthService {
         return mockUser;
       }
       
-      // Real OAuth implementation
+      // Real OAuth implementation with popup
       const state = `google_${Date.now()}`;
       const authUrl = buildOAuthUrl('google', state);
       
@@ -63,14 +63,19 @@ class SocialAuthService {
         }, 1000);
         
         // Listen for OAuth callback
-        window.addEventListener('message', async (event) => {
+        const messageHandler = async (event: MessageEvent) => {
           if (event.origin !== window.location.origin) return;
           
           if (event.data.type === 'oauth_callback') {
             clearInterval(checkClosed);
-            popup.close();
+            window.removeEventListener('message', messageHandler);
             
             try {
+              // Close popup first
+              if (popup && !popup.closed) {
+                popup.close();
+              }
+              
               const { code, state: returnedState } = event.data;
               
               // Verify state
@@ -101,7 +106,9 @@ class SocialAuthService {
               reject(error);
             }
           }
-        });
+        };
+        
+        window.addEventListener('message', messageHandler);
       });
     } catch (error) {
       throw new Error('Google sign-in failed');
@@ -112,7 +119,7 @@ class SocialAuthService {
   async signInWithApple(): Promise<SocialUser> {
     try {
       // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Create demo user
       const mockUser: SocialUser = {

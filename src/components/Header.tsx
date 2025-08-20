@@ -5,7 +5,28 @@ import { Logo } from './Logo';
 import { ProfileModal } from './ProfileModal';
 import { OfflineManager } from '../utils/offlineManager';
 import { useTheme } from '../contexts/ThemeContext';
-import { useTranslation } from 'react-i18next';
+
+// Static translations
+const translations = {
+  en: {
+    offline: "Offline",
+    points: "Points",
+    level: "Level",
+    welcomeBack: "Welcome back"
+  },
+  sr: {
+    offline: "Offline",
+    points: "Bodovi",
+    level: "Nivo",
+    welcomeBack: "Dobrodošli nazad"
+  },
+  zh: {
+    offline: "离线",
+    points: "积分",
+    level: "等级",
+    welcomeBack: "欢迎回来"
+  }
+};
 
 interface HeaderProps {
   stats: UserStats;
@@ -13,7 +34,6 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
-  const { t } = useTranslation();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profile, setProfile] = useState(() => {
     const saved = localStorage.getItem('dailywell-profile');
@@ -21,6 +41,10 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
   });
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [pendingActions, setPendingActions] = useState(0);
+
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+  const t = translations[currentLanguage as keyof typeof translations] || translations.en;
   
   const progressToNextLevel = ((stats.totalPoints % 1000) / 1000) * 100;
   const offlineManager = OfflineManager.getInstance();
@@ -61,16 +85,16 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+      <div className="max-w-7xl mx-auto px-1 sm:px-2 md:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-2 sm:py-3 md:py-4">
           <Logo size="md" showText={true} />
           
-          <div className="flex items-center space-x-2 sm:space-x-6">
+          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-6">
             {/* Offline Indicator */}
             {!isOnline && (
-              <div className="flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
+              <div className="flex items-center gap-1 px-1 sm:px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
                 <WifiOff className="w-3 h-3" />
-                <span>{t('common.offline')}</span>
+                <span className="hidden sm:inline">{t.offline}</span>
                 {pendingActions > 0 && (
                   <span className="bg-yellow-600 text-white px-1 rounded-full text-xs">
                     {pendingActions}
@@ -79,23 +103,23 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
               </div>
             )}
             
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-1 sm:space-x-4">
               <div className="text-center">
                 <div className="flex items-center space-x-1">
-                  <Award className="w-4 h-4 text-yellow-500" />
-                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{stats.totalPoints}</span>
+                  <Award className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
+                  <span className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">{stats.totalPoints}</span>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{t('common.points')}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-300 hidden sm:block">{t.points}</p>
               </div>
               
               <div className="text-center">
                 <div className="flex items-center space-x-1">
-                  <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
                     <span className="text-xs font-bold text-white">{stats.level}</span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('common.level')} {stats.level}</span>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">{t.level} {stats.level}</span>
                 </div>
-                <div className="w-16 sm:w-20 h-1 bg-gray-200 dark:bg-gray-600 rounded-full mt-1">
+                <div className="w-12 sm:w-20 h-1 bg-gray-200 dark:bg-gray-600 rounded-full mt-1">
                   <div 
                     className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300"
                     style={{ width: `${progressToNextLevel}%` }}

@@ -14,7 +14,7 @@ import {
 } from 'chart.js';
 import { Target, Activity, Heart } from 'lucide-react';
 import { Task, Habit, WellnessEntry } from '../types';
-import { useTranslation } from 'react-i18next';
+
 
 // Registruj Chart.js komponente
 ChartJS.register(
@@ -40,7 +40,89 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
   habits,
   wellnessEntries,
 }) => {
-  const { t } = useTranslation();
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations based on language
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          title: "Napredna analitika",
+          subtitle: "Detaljni uvid i trendovi",
+          week: "Nedelja",
+          month: "Mesec",
+          year: "Godina",
+          taskCompletionTrend: "Trend završavanja zadataka",
+          completedTasks: "Završeni zadaci",
+          totalTasks: "Ukupno zadataka",
+          habitsByCategory: "Navike po kategoriji",
+          totalStreaks: "Ukupno serija",
+          wellnessOverview: "Pregled dobrobiti",
+          averageScore: "Prosečan rezultat",
+          health: "Zdravlje",
+          productivity: "Produktivnost",
+          learning: "Učenje",
+          wellness: "Dobrobit",
+          fitness: "Fitness",
+          personal: "Lično",
+          mood: "Raspoloženje",
+          stress: "Stres",
+          energy: "Energija"
+        };
+      case 'zh':
+        return {
+          title: "高级分析",
+          subtitle: "详细洞察和趋势",
+          week: "周",
+          month: "月",
+          year: "年",
+          taskCompletionTrend: "任务完成趋势",
+          completedTasks: "已完成任务",
+          totalTasks: "总任务",
+          habitsByCategory: "按类别分类的习惯",
+          totalStreaks: "总连续",
+          wellnessOverview: "健康概览",
+          averageScore: "平均分数",
+          health: "健康",
+          productivity: "生产力",
+          learning: "学习",
+          wellness: "健康",
+          fitness: "健身",
+          personal: "个人",
+          mood: "心情",
+          stress: "压力",
+          energy: "能量"
+        };
+      default: // English
+        return {
+          title: "Advanced Analytics",
+          subtitle: "Detailed insights and trends",
+          week: "Week",
+          month: "Month",
+          year: "Year",
+          taskCompletionTrend: "Task Completion Trend",
+          completedTasks: "Completed Tasks",
+          totalTasks: "Total Tasks",
+          habitsByCategory: "Habits by Category",
+          totalStreaks: "Total Streaks",
+          wellnessOverview: "Wellness Overview",
+          averageScore: "Average Score",
+          health: "Health",
+          productivity: "Productivity",
+          learning: "Learning",
+          wellness: "Wellness",
+          fitness: "Fitness",
+          personal: "Personal",
+          mood: "Mood",
+          stress: "Stress",
+          energy: "Energy"
+        };
+    }
+  };
+
+  const text = getText();
+
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('week');
 
   // Generisi podatke za grafove
@@ -55,7 +137,14 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
       
-      labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      // Format date based on current language
+      let locale = 'en-US';
+      if (currentLanguage === 'sr') {
+        locale = 'sr-RS';
+      } else if (currentLanguage === 'zh') {
+        locale = 'zh-CN';
+      }
+      labels.push(date.toLocaleDateString(locale, { month: 'short', day: 'numeric' }));
       
       const dayTasks = tasks.filter(task => 
         task.createdAt.toISOString().split('T')[0] === dateStr
@@ -81,7 +170,17 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
     });
 
     return {
-      labels: habitCategories.map(cat => cat.charAt(0).toUpperCase() + cat.slice(1)),
+      labels: habitCategories.map(cat => {
+        switch(cat) {
+          case 'health': return text.health;
+          case 'productivity': return text.productivity;
+          case 'learning': return text.learning;
+          case 'wellness': return text.wellness;
+          case 'fitness': return text.fitness;
+          case 'personal': return text.personal;
+          default: return cat.charAt(0).toUpperCase() + cat.slice(1);
+        }
+      }),
       data: categoryData,
     };
   };
@@ -90,22 +189,22 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
 
   // Generisi podatke za wellness graf
   const generateWellnessData = () => {
-    const wellnessCategories = ['Mood', 'Stress', 'Energy'];
+    const wellnessCategories = [text.mood, text.stress, text.energy];
     const categoryData = wellnessCategories.map(category => {
       const categoryEntries = wellnessEntries.filter(entry => {
         switch(category) {
-          case 'Mood': return entry.mood;
-          case 'Stress': return entry.stress;
-          case 'Energy': return entry.energy;
+          case text.mood: return entry.mood;
+          case text.stress: return entry.stress;
+          case text.energy: return entry.energy;
           default: return 0;
         }
       });
       const average = categoryEntries.length > 0 
         ? categoryEntries.reduce((sum, entry) => {
             switch(category) {
-              case 'Mood': return sum + entry.mood;
-              case 'Stress': return sum + entry.stress;
-              case 'Energy': return sum + entry.energy;
+              case text.mood: return sum + entry.mood;
+              case text.stress: return sum + entry.stress;
+              case text.energy: return sum + entry.energy;
               default: return sum;
             }
           }, 0) / categoryEntries.length
@@ -122,53 +221,53 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
   const wellnessData = generateWellnessData();
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
         <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{t('advancedAnalytics.advancedAnalytics')}</h2>
-        <p className="text-gray-600">{t('advancedAnalytics.detailedInsights')}</p>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
+          <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{text.subtitle}</p>
         </div>
       </div>
       
       {/* Period selector */}
-      <div className="flex space-x-2">
+      <div className="flex space-x-1 sm:space-x-2">
         {(['week', 'month', 'year'] as const).map((period) => (
           <button
             key={period}
             onClick={() => setSelectedPeriod(period)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-2 sm:px-4 py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
               selectedPeriod === period
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
             }`}
           >
-            {period === 'week' ? t('advancedAnalytics.week') : 
-             period === 'month' ? t('advancedAnalytics.month') : 
-             t('advancedAnalytics.year')}
+            {period === 'week' ? text.week : 
+             period === 'month' ? text.month : 
+             text.year}
           </button>
         ))}
       </div>
 
       {/* Task Completion Chart */}
-      <div className="bg-white p-6 rounded-xl shadow-sm border">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Target className="w-5 h-5 text-blue-500" />
-          {t('advancedAnalytics.taskCompletionTrend')}
+      <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          <Target className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+          {text.taskCompletionTrend}
         </h3>
-        <div className="h-64">
+        <div className="h-48 sm:h-64">
           <Line
             data={{
               labels: taskData.labels,
               datasets: [
                 {
-                  label: t('advancedAnalytics.completedTasks'),
+                  label: text.completedTasks,
                   data: taskData.completedData,
                   borderColor: 'rgb(59, 130, 246)',
                   backgroundColor: 'rgba(59, 130, 246, 0.1)',
                   tension: 0.4,
                 },
                 {
-                  label: t('advancedAnalytics.totalTasks'),
+                  label: text.totalTasks,
                   data: taskData.totalData,
                   borderColor: 'rgb(156, 163, 175)',
                   backgroundColor: 'rgba(156, 163, 175, 0.1)',
@@ -182,6 +281,12 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
               plugins: {
                 legend: {
                   position: 'top' as const,
+                  labels: {
+                    font: {
+                      size: window.innerWidth < 640 ? 10 : 12
+                    },
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
+                  }
                 },
               },
               scales: {
@@ -189,8 +294,26 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
                   beginAtZero: true,
                   ticks: {
                     stepSize: 1,
+                    font: {
+                      size: window.innerWidth < 640 ? 10 : 12
+                    },
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
                   },
+                  grid: {
+                    color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                  }
                 },
+                x: {
+                  ticks: {
+                    font: {
+                      size: window.innerWidth < 640 ? 10 : 12
+                    },
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
+                  },
+                  grid: {
+                    color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                  }
+                }
               },
             }}
           />
@@ -198,18 +321,18 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       </div>
 
       {/* Habits by Category Chart */}
-      <div className="bg-white p-6 rounded-xl shadow-sm border">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Activity className="w-5 h-5 text-green-500" />
-          {t('advancedAnalytics.habitsByCategory')}
+      <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+          {text.habitsByCategory}
         </h3>
-        <div className="h-64">
+        <div className="h-48 sm:h-64">
           <Bar
             data={{
               labels: habitsData.labels,
               datasets: [
                 {
-                  label: t('advancedAnalytics.totalStreaks'),
+                  label: text.totalStreaks,
                   data: habitsData.data,
                   backgroundColor: [
                     'rgba(59, 130, 246, 0.8)',
@@ -235,8 +358,26 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
                   beginAtZero: true,
                   ticks: {
                     stepSize: 1,
+                    font: {
+                      size: window.innerWidth < 640 ? 10 : 12
+                    },
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
                   },
+                  grid: {
+                    color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                  }
                 },
+                x: {
+                  ticks: {
+                    font: {
+                      size: window.innerWidth < 640 ? 10 : 12
+                    },
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
+                  },
+                  grid: {
+                    color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                  }
+                }
               },
             }}
           />
@@ -244,18 +385,18 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       </div>
 
       {/* Wellness Overview Chart */}
-      <div className="bg-white p-6 rounded-xl shadow-sm border">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Heart className="w-5 h-5 text-pink-500" />
-          {t('advancedAnalytics.wellnessOverview')}
+      <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+          {text.wellnessOverview}
         </h3>
-        <div className="h-64">
+        <div className="h-48 sm:h-64">
           <Bar
             data={{
               labels: wellnessData.labels,
               datasets: [
                 {
-                  label: t('advancedAnalytics.averageScore'),
+                  label: text.averageScore,
                   data: wellnessData.data,
                   backgroundColor: [
                     'rgba(59, 130, 246, 0.8)',
@@ -280,8 +421,26 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
                   max: 5,
                   ticks: {
                     stepSize: 1,
+                    font: {
+                      size: window.innerWidth < 640 ? 10 : 12
+                    },
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
                   },
+                  grid: {
+                    color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                  }
                 },
+                x: {
+                  ticks: {
+                    font: {
+                      size: window.innerWidth < 640 ? 10 : 12
+                    },
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
+                  },
+                  grid: {
+                    color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                  }
+                }
               },
             }}
           />

@@ -34,19 +34,8 @@ function App() {
       
       setCurrentScreen('oauth-callback');
     } else {
-      // Auto-login check
-      const checkAutoLogin = async () => {
-        const currentUser = await AuthService.getCurrentUser();
-        const socialUser = socialAuthService.getCurrentSocialUser();
-        
-        if (currentUser || socialUser) {
-          setCurrentScreen('main');
-        } else {
-          setCurrentScreen('welcome');
-        }
-      };
-      
-      checkAutoLogin();
+      // Always show welcome page for now
+      setCurrentScreen('welcome');
     }
   }, []);
   
@@ -127,24 +116,6 @@ function App() {
     }
   };
 
-  const handleWeChatSignUp = async () => {
-    try {
-      const user = await socialAuthService.signInWithWeChat();
-      setCurrentScreen('main');
-    } catch (error) {
-      console.error('WeChat sign up error:', error);
-    }
-  };
-
-  const handleAlipaySignUp = async () => {
-    try {
-      const user = await socialAuthService.signInWithAlipay();
-      setCurrentScreen('main');
-    } catch (error) {
-      console.error('Alipay sign up error:', error);
-    }
-  };
-
   const handleLogout = async () => {
     try {
       await AuthService.signOut();
@@ -164,6 +135,8 @@ function App() {
         return (
           <Login 
             onLogin={handleLogin}
+            onGoogleLogin={handleGoogleLogin}
+            onAppleLogin={handleAppleLogin}
             onWeChatLogin={handleWeChatLogin}
             onAlipayLogin={handleAlipayLogin}
             onForgotPassword={handleForgotPassword}
@@ -175,8 +148,6 @@ function App() {
         return (
           <SignUp
             onSignUp={handleSignUp}
-            onWeChatSignUp={handleWeChatSignUp}
-            onAlipaySignUp={handleAlipaySignUp}
             onLogin={() => setCurrentScreen('login')}
             onBack={() => setCurrentScreen('login')}
           />

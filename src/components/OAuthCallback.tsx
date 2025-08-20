@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { exchangeCodeForToken, getUserInfo } from '../config/oauth';
-import { useTranslation } from 'react-i18next';
 
 interface OAuthCallbackProps {
   provider: 'google' | 'apple' | 'wechat' | 'alipay';
 }
 
 export const OAuthCallback: React.FC<OAuthCallbackProps> = ({ provider }) => {
-  const { t } = useTranslation();
 
   useEffect(() => {
     const handleOAuthCallback = async () => {
@@ -62,10 +60,10 @@ export const OAuthCallback: React.FC<OAuthCallbackProps> = ({ provider }) => {
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
         <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          {t('oauthCallback.processingLogin')}
+          Processing Login
         </h2>
         <p className="text-gray-600">
-          {t('oauthCallback.pleaseWait')}
+          Please wait...
         </p>
       </div>
     </div>

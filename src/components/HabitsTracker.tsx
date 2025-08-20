@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Check, Flame, Target, TrendingUp, Calendar, Trash2 } from 'lucide-react';
 import { Habit } from '../types';
 import { getTodayString, getWeekDates } from '../utils/dateUtils';
-import { useTranslation } from 'react-i18next';
+
 
 interface HabitsTrackerProps {
   habits: Habit[];
@@ -20,7 +20,107 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
   onToggleHabit,
   onDeleteHabit,
 }) => {
-  const { t } = useTranslation();
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations based on language
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          title: "Navike",
+          subtitle: "Dodajte svoju prvu naviku da započnete",
+          addHabit: "Dodaj naviku",
+          habits: "Navike",
+          streak: "Serija",
+          today: "Danas",
+          noHabits: "Još nema navika",
+          addFirstHabit: "Dodajte svoju prvu naviku da počnete praćenje",
+          enterHabitName: "Unesite naziv navike",
+          icon: "Ikona",
+          color: "Boja",
+          category: "Kategorija",
+          cancel: "Otkaži",
+          health: "Zdravlje",
+          productivity: "Produktivnost",
+          learning: "Učenje",
+          wellness: "Dobrobit",
+          fitness: "Fitness",
+          personal: "Lično",
+          time: "Vreme",
+          minutes: "Minuta",
+          glasses: "Čaše",
+          pages: "Stranice",
+          meals: "Obroci",
+          hours: "Sati",
+          daily: "dnevno",
+          deleteHabit: "Obriši naviku"
+        };
+      case 'zh':
+        return {
+          title: "习惯",
+          subtitle: "添加您的第一个习惯开始使用",
+          addHabit: "添加习惯",
+          habits: "习惯",
+          streak: "连续",
+          today: "今天",
+          noHabits: "暂无习惯",
+          addFirstHabit: "添加您的第一个习惯开始追踪",
+          enterHabitName: "输入习惯名称",
+          icon: "图标",
+          color: "颜色",
+          category: "类别",
+          cancel: "取消",
+          health: "健康",
+          productivity: "生产力",
+          learning: "学习",
+          wellness: "健康",
+          fitness: "健身",
+          personal: "个人",
+          time: "时间",
+          minutes: "分钟",
+          glasses: "杯",
+          pages: "页",
+          meals: "餐",
+          hours: "小时",
+          daily: "每日",
+          deleteHabit: "删除习惯"
+        };
+      default: // English
+        return {
+          title: "Habits",
+          subtitle: "Add your first habit to get started",
+          addHabit: "Add Habit",
+          habits: "Habits",
+          streak: "Streak",
+          today: "Today",
+          noHabits: "No habits yet",
+          addFirstHabit: "Add your first habit to start tracking",
+          enterHabitName: "Enter habit name",
+          icon: "Icon",
+          color: "Color",
+          category: "Category",
+          cancel: "Cancel",
+          health: "Health",
+          productivity: "Productivity",
+          learning: "Learning",
+          wellness: "Wellness",
+          fitness: "Fitness",
+          personal: "Personal",
+          time: "Time",
+          minutes: "Minutes",
+          glasses: "Glasses",
+          pages: "Pages",
+          meals: "Meals",
+          hours: "Hours",
+          daily: "daily",
+          deleteHabit: "Delete habit"
+        };
+    }
+  };
+
+  const text = getText();
+
   const [showForm, setShowForm] = useState(false);
   const [newHabit, setNewHabit] = useState({
     name: '',
@@ -85,73 +185,73 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
   const weekDates = getWeekDates();
 
   return (
-    <div className="space-y-6 pl-2 sm:pl-0">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{t('habitsTracker.habits')}</h2>
-          <p className="text-gray-600">{t('habitsTracker.addYourFirstHabit')}</p>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
+          <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{text.subtitle}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-all"
+          className="flex items-center space-x-1 sm:space-x-2 bg-green-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg hover:bg-green-700 transition-all text-xs sm:text-sm"
         >
-          <Plus className="w-4 h-4" />
-          <span className="text-sm">{t('habitsTracker.addHabit')}</span>
+          <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span>{text.addHabit}</span>
         </button>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
+        <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">{t('habitsTracker.habits')}</p>
-              <p className="text-2xl font-bold text-gray-900">{habits.length}</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.habits}</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{habits.length}</p>
             </div>
-            <Target className="w-8 h-8 text-blue-500" />
+            <Target className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">{t('habitsTracker.streak')}</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.streak}</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
                 {habits.filter(h => h.streak > 0).length}
               </p>
             </div>
-            <Flame className="w-8 h-8 text-orange-500" />
+            <Flame className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" />
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">{t('habitsTracker.today')}</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.today}</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
                 {habits.filter(h => h.completedDates.includes(today)).length}/{habits.length}
               </p>
             </div>
-            <TrendingUp className="w-8 h-8 text-green-500" />
+            <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">{t('habitsTracker.streak')}</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{text.streak}</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
                 {Math.max(...habits.map(h => h.streak), 0)}
               </p>
             </div>
-            <Calendar className="w-8 h-8 text-purple-500" />
+            <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
           </div>
         </div>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-sm border space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-4">
           <div>
             <input
               type="text"
-              placeholder={t('habitsTracker.habitName')}
+              placeholder={text.enterHabitName}
               value={newHabit.name}
               onChange={(e) => {
                 const name = e.target.value;
@@ -172,61 +272,105 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                   handleSubmit({ preventDefault: () => {} } as React.FormEvent);
                 }
               }}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-2 sm:px-3 py-1 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base"
               autoFocus
             />
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('habitsTracker.icon')}</label>
-              <div className="grid grid-cols-4 gap-2">
-                {habitIcons.map((icon) => (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-3">{text.icon}</label>
+            <div className="grid grid-cols-4 gap-3">
+              {habitIcons.map((icon) => {
+                const getHabitName = (icon: string) => {
+                  switch (icon) {
+                    case '💧': return 'Drink Water';
+                    case '🏃‍♂️': return 'Running';
+                    case '🧘‍♀️': return 'Meditation';
+                    case '📚': return 'Reading';
+                    case '🥗': return 'Healthy Eating';
+                    case '😴': return 'Sleep';
+                    case '✍️': return 'Writing';
+                    case '🎵': return 'Music';
+                    default: return '';
+                  }
+                };
+
+                const getHabitCategory = (icon: string) => {
+                  switch (icon) {
+                    case '💧': return 'health';
+                    case '🏃‍♂️': return 'fitness';
+                    case '🧘‍♀️': return 'wellness';
+                    case '📚': return 'learning';
+                    case '🥗': return 'health';
+                    case '😴': return 'wellness';
+                    case '✍️': return 'personal';
+                    case '🎵': return 'personal';
+                    default: return 'health';
+                  }
+                };
+
+                const getHabitUnit = (icon: string) => {
+                  switch (icon) {
+                    case '💧': return 'glasses';
+                    case '🏃‍♂️': return 'minutes';
+                    case '🧘‍♀️': return 'minutes';
+                    case '📚': return 'pages';
+                    case '🥗': return 'meals';
+                    case '😴': return 'hours';
+                    case '✍️': return 'pages';
+                    case '🎵': return 'minutes';
+                    default: return 'time';
+                  }
+                };
+
+                return (
                   <button
                     key={icon}
                     type="button"
-                    onClick={() => setNewHabit({ ...newHabit, icon })}
-                    className={`p-3 sm:p-2 text-xl rounded border-2 transition-colors ${
-                      newHabit.icon === icon ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300'
+                    onClick={() => setNewHabit({ 
+                      ...newHabit, 
+                      icon,
+                      name: getHabitName(icon),
+                      category: getHabitCategory(icon) as any,
+                      unit: getHabitUnit(icon)
+                    })}
+                    className={`p-4 text-2xl rounded-lg border-2 transition-all hover:scale-105 ${
+                      newHabit.icon === icon ? 'border-green-500 bg-green-50 shadow-md' : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     {icon}
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('habitsTracker.color')}</label>
-              <div className="grid grid-cols-4 gap-2 mt-2">
-                {habitColors.map((color) => (
-                  <button
-                    key={color}
-                    type="button"
-                    onClick={() => setNewHabit({ ...newHabit, color })}
-                    className={`w-10 h-10 sm:w-8 sm:h-8 rounded-full ${color} border-2 transition-all ${
-                      newHabit.color === color ? 'border-gray-800 scale-110' : 'border-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
+            <label className="block text-sm font-medium text-gray-700 mb-3 mt-6">{text.color}</label>
+            <div className="grid grid-cols-4 gap-3">
+              {habitColors.map((color) => (
+                <button
+                  key={color}
+                  type="button"
+                  onClick={() => setNewHabit({ ...newHabit, color })}
+                  className={`w-12 h-12 rounded-full ${color} border-2 transition-all hover:scale-105 ${
+                    newHabit.color === color ? 'border-gray-800 scale-110 shadow-lg' : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                />
+              ))}
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('habitsTracker.category')}</label>
-              <select
-                value={newHabit.category}
-                onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value as any })}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                <option value="health">{t('habitsTracker.categoryHealth')}</option>
-                <option value="productivity">{t('habitsTracker.categoryProductivity')}</option>
-                <option value="learning">{t('habitsTracker.categoryLearning')}</option>
-                <option value="wellness">{t('habitsTracker.categoryWellness')}</option>
-                <option value="fitness">{t('habitsTracker.categoryFitness')}</option>
-                <option value="personal">{t('habitsTracker.categoryPersonal')}</option>
-              </select>
-            </div>
+            
+            <label className="block text-sm font-medium text-gray-700 mb-3 mt-6">{text.category}</label>
+            <select
+              value={newHabit.category}
+              onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value as any })}
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white text-gray-900"
+            >
+              <option value="health">{text.health}</option>
+              <option value="productivity">{text.productivity}</option>
+              <option value="learning">{text.learning}</option>
+              <option value="wellness">{text.wellness}</option>
+              <option value="fitness">{text.fitness}</option>
+              <option value="personal">{text.personal}</option>
+            </select>
           </div>
 
           <div className="flex justify-between items-center">
@@ -243,10 +387,12 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                 onChange={(e) => setNewHabit({ ...newHabit, unit: e.target.value })}
                 className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-                <option value="time">{t('habitsTracker.unitTime')}</option>
-                <option value="minutes">{t('habitsTracker.unitMinutes')}</option>
-                <option value="glasses">{t('habitsTracker.unitGlasses')}</option>
-                <option value="pages">{t('habitsTracker.unitPages')}</option>
+                <option value="time">{text.time}</option>
+                <option value="minutes">{text.minutes}</option>
+                <option value="glasses">{text.glasses}</option>
+                <option value="pages">{text.pages}</option>
+                <option value="meals">{text.meals}</option>
+                <option value="hours">{text.hours}</option>
               </select>
             </div>
             
@@ -256,7 +402,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                 onClick={() => setShowForm(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
-                {t('common.cancel')}
+                {text.cancel}
               </button>
             </div>
           </div>
@@ -269,8 +415,8 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">🎯</span>
             </div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">{t('habitsTracker.noHabits')}</h3>
-            <p className="text-gray-600">{t('habitsTracker.addYourFirstHabit')}</p>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">{text.noHabits}</h3>
+            <p className="text-gray-600">{text.addFirstHabit}</p>
           </div>
         ) : (
           habits.map((habit) => (
@@ -298,7 +444,31 @@ interface HabitItemProps {
 }
 
 const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle, onDelete }) => {
-  const { t } = useTranslation();
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations for HabitItem
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          daily: "dnevno",
+          deleteHabit: "Obriši naviku"
+        };
+      case 'zh':
+        return {
+          daily: "每日",
+          deleteHabit: "删除习惯"
+        };
+      default: // English
+        return {
+          daily: "daily",
+          deleteHabit: "Delete habit"
+        };
+    }
+  };
+
+  const text = getText();
   const completedToday = habit.completedDates.includes(today);
 
   return (
@@ -309,9 +479,9 @@ const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle
             {habit.icon}
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">{habit.name}</h3>
+                          <h3 className="font-semibold text-gray-900 dark:text-white">{habit.name}</h3>
             <p className="text-sm text-gray-600">
-              {habit.target} {habit.unit} {t('habitsTracker.daily')}
+                              {habit.target} {habit.unit} {text.daily}
             </p>
           </div>
         </div>
@@ -341,7 +511,7 @@ const HabitItem: React.FC<HabitItemProps> = ({ habit, weekDates, today, onToggle
           <button
             onClick={() => onDelete(habit.id)}
             className="w-8 h-8 rounded-full border-2 border-red-300 hover:border-red-500 flex items-center justify-center transition-all hover:bg-red-50"
-            title={t('habitsTracker.deleteHabit')}
+                            title={text.deleteHabit}
           >
             <Trash2 className="w-4 h-4 text-red-500" />
           </button>

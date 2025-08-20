@@ -10,6 +10,21 @@ export class AuthService {
   static async signInWithEmail(email: string, password: string): Promise<AuthUser> {
     // Jednostavan localStorage login
     const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    // Dodaj demo korisnika ako ne postoji
+    if (users.length === 0) {
+      const demoUser = {
+        id: 'demo-user-1',
+        email: 'demo@example.com',
+        password: 'demo123',
+        displayName: 'Demo User',
+        photoURL: '',
+        createdAt: new Date().toISOString()
+      };
+      users.push(demoUser);
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+    
     const user = users.find((u: any) => u.email === email && u.password === password);
     
     if (user) {
@@ -22,7 +37,27 @@ export class AuthService {
         providerId: 'email'
       };
     } else {
-      throw new Error('Invalid credentials');
+      // Ako korisnik ne postoji, automatski ga kreiraj (demo mode)
+      const newUser = {
+        id: Date.now().toString(),
+        email,
+        password,
+        displayName: email.split('@')[0],
+        photoURL: '',
+        createdAt: new Date().toISOString()
+      };
+      
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem('currentUser', JSON.stringify(newUser));
+      
+      return {
+        uid: newUser.id,
+        email: newUser.email,
+        displayName: newUser.displayName,
+        photoURL: newUser.photoURL,
+        providerId: 'email'
+      };
     }
   }
 

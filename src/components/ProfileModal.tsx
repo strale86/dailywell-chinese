@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Mail, Calendar, Target, Settings, X } from 'lucide-react';
 // Removed react-datepicker imports to fix build error
-import { useTranslation } from 'react-i18next';
 
 interface UserProfile {
   firstName: string;
@@ -28,24 +27,156 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onLogout, stats }) => {
-  const { t, i18n } = useTranslation();
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations based on language
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          title: "Profil",
+          edit: "Uredi",
+          save: "Sačuvaj",
+          profilePicture: "Profilna slika",
+          userProfile: "Korisnički profil",
+          noEmailSet: "Email nije postavljen",
+          born: "Rođen",
+          birthDateNotSet: "Datum rođenja nije postavljen",
+          personalInformation: "Lične informacije",
+          firstName: "Ime",
+          lastName: "Prezime",
+          email: "Email",
+          dateOfBirth: "Datum rođenja",
+          gender: "Pol",
+          enterFirstName: "Unesite ime",
+          enterLastName: "Unesite prezime",
+          enterEmail: "Unesite email",
+          selectGender: "Izaberite pol",
+          male: "Muško",
+          female: "Žensko",
+          other: "Drugo",
+          preferNotToSay: "Ne želim da kažem",
+          notSet: "Nije postavljeno",
+          goals: "Ciljevi",
+          fitnessHealth: "Fitness i zdravlje",
+          productivity: "Produktivnost",
+          mindfulness: "Svesnost",
+          learning: "Učenje",
+          careerGrowth: "Rast karijere",
+          relationships: "Odnosi",
+          financialGoals: "Finansijski ciljevi",
+          creativeProjects: "Kreativni projekti",
+          noGoalsSet: "Nema postavljenih ciljeva",
+          progressSummary: "Sažetak napretka",
+          totalPoints: "Ukupno poena",
+          tasksCompleted: "Završeni zadaci",
+          pomodoroSessions: "Pomodoro sesije",
+          currentStreak: "Trenutna serija",
+          logout: "Odjavi se",
+          removeAvatar: "Ukloni avatar"
+        };
+      case 'zh':
+        return {
+          title: "个人资料",
+          edit: "编辑",
+          save: "保存",
+          profilePicture: "头像",
+          userProfile: "用户资料",
+          noEmailSet: "未设置邮箱",
+          born: "出生",
+          birthDateNotSet: "未设置出生日期",
+          personalInformation: "个人信息",
+          firstName: "名字",
+          lastName: "姓氏",
+          email: "邮箱",
+          dateOfBirth: "出生日期",
+          gender: "性别",
+          enterFirstName: "输入名字",
+          enterLastName: "输入姓氏",
+          enterEmail: "输入邮箱",
+          selectGender: "选择性别",
+          male: "男",
+          female: "女",
+          other: "其他",
+          preferNotToSay: "不愿透露",
+          notSet: "未设置",
+          goals: "目标",
+          fitnessHealth: "健身与健康",
+          productivity: "生产力",
+          mindfulness: "正念",
+          learning: "学习",
+          careerGrowth: "职业发展",
+          relationships: "人际关系",
+          financialGoals: "财务目标",
+          creativeProjects: "创意项目",
+          noGoalsSet: "未设置目标",
+          progressSummary: "进度总结",
+          totalPoints: "总积分",
+          tasksCompleted: "已完成任务",
+          pomodoroSessions: "番茄工作法会话",
+          currentStreak: "当前连续",
+          logout: "退出登录",
+          removeAvatar: "删除头像"
+        };
+      default: // English
+        return {
+          title: "Profile",
+          edit: "Edit",
+          save: "Save",
+          profilePicture: "Profile Picture",
+          userProfile: "User Profile",
+          noEmailSet: "No email set",
+          born: "Born",
+          birthDateNotSet: "Birth date not set",
+          personalInformation: "Personal Information",
+          firstName: "First Name",
+          lastName: "Last Name",
+          email: "Email",
+          dateOfBirth: "Date of Birth",
+          gender: "Gender",
+          enterFirstName: "Enter first name",
+          enterLastName: "Enter last name",
+          enterEmail: "Enter email",
+          selectGender: "Select Gender",
+          male: "Male",
+          female: "Female",
+          other: "Other",
+          preferNotToSay: "Prefer not to say",
+          notSet: "Not Set",
+          goals: "Goals",
+          fitnessHealth: "Fitness & Health",
+          productivity: "Productivity",
+          mindfulness: "Mindfulness",
+          learning: "Learning",
+          careerGrowth: "Career Growth",
+          relationships: "Relationships",
+          financialGoals: "Financial Goals",
+          creativeProjects: "Creative Projects",
+          noGoalsSet: "No goals set",
+          progressSummary: "Progress Summary",
+          totalPoints: "Total Points",
+          tasksCompleted: "Tasks Completed",
+          pomodoroSessions: "Pomodoro Sessions",
+          currentStreak: "Current Streak",
+          logout: "Logout",
+          removeAvatar: "Remove Avatar"
+        };
+    }
+  };
+
+  const text = getText();
   
-  // Koristimo jezik samo za formatiranje datuma; ne menjamo document.lang
-  const isChinese = i18n.language === 'zh';
+  // Language for date formatting
+  const isChinese = false;
   
   // Helper function to format date for display
   const formatDateForDisplay = (dateString: string) => {
-    if (!dateString) return t('profileModal.notSet');
+    if (!dateString) return text.notSet;
     
     const date = new Date(dateString);
-    if (i18n.language === 'zh') {
-      return date.toLocaleDateString('zh-CN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    }
-    return date.toLocaleDateString('en-US', {
+    const locale = currentLanguage === 'sr' ? 'sr-RS' : currentLanguage === 'zh' ? 'zh-CN' : 'en-US';
+    return date.toLocaleDateString(locale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -65,6 +196,21 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
   });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkDarkMode();
+    
+    // Observer za praćenje promena dark mode-a
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    
+    return () => observer.disconnect();
+  }, []);
 
   const handleSave = () => {
     setIsEditing(false);
@@ -92,54 +238,54 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-xl font-bold text-gray-900">{t('profileModal.profile')}</h2>
-          <div className="flex items-center space-x-2">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
+          <div className="flex items-center space-x-1 sm:space-x-2">
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center space-x-2 bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                className="flex items-center space-x-1 sm:space-x-2 bg-blue-600 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm"
               >
-                <Settings className="w-4 h-4" />
-                <span>{t('profileModal.edit')}</span>
+                <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span>{text.edit}</span>
               </button>
             ) : (
               <button
                 onClick={handleSave}
-                className="flex items-center space-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition-colors text-sm"
+                className="flex items-center space-x-1 sm:space-x-2 bg-green-600 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm"
               >
-                <span>{t('profileModal.save')}</span>
+                <span>{text.save}</span>
               </button>
             )}
             <button
               onClick={onClose}
-              className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
             >
-              <X className="w-5 h-5 text-gray-500" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-300" />
             </button>
           </div>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
           {/* Avatar Section */}
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <User className="w-5 h-5 mr-2 text-blue-600" />
-              {t('profileModal.profilePicture')}
+          <div className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-lg">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+              <User className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600" />
+              {text.profilePicture}
             </h3>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
               <div className="relative">
                 {profile.avatar ? (
                   <img
                     src={profile.avatar}
                     alt="Profile"
-                    className="w-20 h-20 rounded-full object-cover border-2 border-blue-200"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-blue-200"
                   />
                 ) : (
-                  <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold border-2 border-blue-200">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-lg sm:text-2xl font-bold border-2 border-blue-200">
                     {profile.firstName && profile.lastName 
                       ? `${profile.firstName[0]}${profile.lastName[0]}`.toUpperCase()
                       : 'U'
@@ -147,14 +293,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                   </div>
                 )}
                 
-                <label className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors cursor-pointer">
+                <label className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors cursor-pointer">
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleAvatarUpload}
                     className="hidden"
                   />
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
@@ -168,8 +314,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                       localStorage.setItem('dailywell-profile', JSON.stringify(updatedProfile));
                       window.dispatchEvent(new Event('storage'));
                     }}
-                    className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
-                    title={t('profileModal.removeAvatar')}
+                    className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
+                    title={text.removeAvatar}
                   >
                     ×
                   </button>
@@ -177,56 +323,56 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold text-gray-900">
+                <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                   {profile.firstName && profile.lastName 
                     ? `${profile.firstName} ${profile.lastName}`
-                    : t('profileModal.userProfile')
+                    : text.userProfile
                   }
                 </h4>
-                <p className="text-gray-600">{profile.email || t('profileModal.noEmailSet')}</p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-600 dark:text-gray-400">{profile.email || text.noEmailSet}</p>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500">
                   {profile.birthDate
-                    ? `${t('profileModal.born')}: ${new Date(profile.birthDate).toLocaleDateString(i18n.language === 'zh' ? 'zh-CN' : i18n.language)}`
-                    : t('profileModal.birthDateNotSet')}
+                    ? `${text.born}: ${new Date(profile.birthDate).toLocaleDateString('en-US')}`
+                    : text.birthDateNotSet}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <User className="w-5 h-5 mr-2 text-blue-600" />
-              {t('profileModal.personalInformation')}
+          <div className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-lg">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+              <User className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600" />
+              {text.personalInformation}
             </h3>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('profileModal.firstName')}</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{text.firstName}</label>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    value={profile.firstName}
-                    onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder={t('profileModal.enterFirstName')}
-                  />
+                                      <input
+                      type="text"
+                      value={profile.firstName}
+                      onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      placeholder={text.enterFirstName}
+                    />
                 ) : (
-                  <p className="text-gray-900">{profile.firstName || t('profileModal.notSet')}</p>
+                                      <p className="text-gray-900 dark:text-white">{profile.firstName || text.notSet}</p>
                 )}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('profileModal.lastName')}</label>
+                                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{text.lastName}</label>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    value={profile.lastName}
-                    onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder={t('profileModal.enterLastName')}
-                  />
+                                      <input
+                      type="text"
+                      value={profile.lastName}
+                      onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      placeholder={text.enterLastName}
+                    />
                 ) : (
-                  <p className="text-gray-900">{profile.lastName || t('profileModal.notSet')}</p>
+                                      <p className="text-gray-900 dark:text-white">{profile.lastName || text.notSet}</p>
                 )}
               </div>
             </div>
@@ -234,18 +380,18 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
                               <Mail className="w-4 h-4 mr-1" />
-              {t('profileModal.email')}
+              {text.email}
               </label>
               {isEditing ? (
-                <input
+                                <input
                   type="email"
                   value={profile.email}
                   onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder={t('profileModal.enterEmail')}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  placeholder={text.enterEmail}
                 />
               ) : (
-                                  <p className="text-gray-900">{profile.email || t('profileModal.notSet')}</p>
+                                  <p className="text-gray-900 dark:text-white">{profile.email || text.notSet}</p>
               )}
             </div>
 
@@ -253,62 +399,60 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
                                 <Calendar className="w-4 h-4 mr-1" />
-              {t('profileModal.birthDate')}
+              {text.dateOfBirth}
                 </label>
                 {isEditing ? (
                   <div>
                     <input
-                      type="date"
+                      type="text"
                       value={profile.birthDate}
                       onChange={(e) => setProfile({ ...profile, birthDate: e.target.value })}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${isChinese ? 'chinese-date-input' : ''}`}
-                      style={{
-                        direction: 'ltr',
-                        fontFamily: 'system-ui, -apple-system, sans-serif'
-                      }}
-                      placeholder={isChinese ? 'YYYY-MM-DD' : 'MM/DD/YYYY'}
+                      className="birth-date-input w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      placeholder={currentLanguage === 'zh' ? '年-月-日' : currentLanguage === 'sr' ? 'GGGG-MM-DD' : 'YYYY-MM-DD'}
                     />
-                    {isChinese && (
-                      <p className="date-format-hint">格式: YYYY-MM-DD</p>
-                    )}
+
                   </div>
                 ) : (
-                  <p className="text-gray-900">
+                  <p className="text-gray-900 dark:text-white">
                     {formatDateForDisplay(profile.birthDate)}
                   </p>
                 )}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('profileModal.gender')}</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{text.gender}</label>
                 {isEditing ? (
-                  <select
+                                    <select
                     value={profile.gender}
                     onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none"
+                    style={{ 
+                      backgroundColor: isDarkMode ? '#1f2937' : '#ffffff',
+                      color: isDarkMode ? '#ffffff' : '#111827'
+                    }}
                   >
-                    <option value="">{t('profileModal.selectGender')}</option>
-                                  <option value="male">{t('profileModal.male')}</option>
-              <option value="female">{t('profileModal.female')}</option>
-              <option value="other">{t('profileModal.other')}</option>
-              <option value="prefer-not-to-say">{t('profileModal.preferNotToSay')}</option>
+                    <option value="" style={{ backgroundColor: isDarkMode ? '#1f2937' : '#ffffff', color: isDarkMode ? '#ffffff' : '#111827' }}>{text.selectGender}</option>
+                    <option value="male" style={{ backgroundColor: isDarkMode ? '#1f2937' : '#ffffff', color: isDarkMode ? '#ffffff' : '#111827' }}>{text.male}</option>
+                    <option value="female" style={{ backgroundColor: isDarkMode ? '#1f2937' : '#ffffff', color: isDarkMode ? '#ffffff' : '#111827' }}>{text.female}</option>
+                    <option value="other" style={{ backgroundColor: isDarkMode ? '#1f2937' : '#ffffff', color: isDarkMode ? '#ffffff' : '#111827' }}>{text.other}</option>
+                    <option value="prefer-not-to-say" style={{ backgroundColor: isDarkMode ? '#1f2937' : '#ffffff', color: isDarkMode ? '#ffffff' : '#111827' }}>{text.preferNotToSay}</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900">{profile.gender || t('profileModal.notSet')}</p>
+                                      <p className="text-gray-900 dark:text-white">{profile.gender || text.notSet}</p>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Target className="w-5 h-5 mr-2 text-purple-600" />
-              {t('profileModal.goals')}
+          <div className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-lg">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+              <Target className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-purple-600" />
+              {text.goals}
             </h3>
             
             {isEditing ? (
               <div className="space-y-2">
-                {[t('profileModal.goalFitnessHealth'), t('profileModal.goalProductivity'), t('profileModal.goalMindfulness'), t('profileModal.goalLearning'), t('profileModal.goalCareerGrowth'), t('profileModal.goalRelationships'), t('profileModal.goalFinancialGoals'), t('profileModal.goalCreativeProjects')].map((goal) => (
+                {[text.fitnessHealth, text.productivity, text.mindfulness, text.learning, text.careerGrowth, text.relationships, text.financialGoals, text.creativeProjects].map((goal) => (
                   <label key={goal} className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -322,7 +466,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                       }}
                       className="rounded text-blue-600 focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-700">{goal}</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">{goal}</span>
                   </label>
                 ))}
               </div>
@@ -337,44 +481,44 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, onL
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500">{t('profileModal.noGoalsSet')}</p>
+                  <p className="text-gray-500 dark:text-gray-300">{text.noGoalsSet}</p>
                 )}
               </div>
             )}
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('profileModal.progressSummary')}</h3>
+          <div className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-lg">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">{text.progressSummary}</h3>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-50 p-3 rounded-lg text-center">
-                <p className="text-xl font-bold text-blue-700">{stats.totalPoints}</p>
-                <p className="text-xs text-blue-600">{t('profileModal.totalPoints')}</p>
+            <div className="grid grid-cols-2 gap-2 sm:gap-4">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-lg sm:text-xl font-bold text-blue-700 dark:text-blue-300">{stats.totalPoints}</p>
+                <p className="text-xs text-blue-600 dark:text-blue-400">{text.totalPoints}</p>
               </div>
-              <div className="bg-green-50 p-3 rounded-lg text-center">
-                <p className="text-xl font-bold text-green-700">{stats.tasksCompleted}</p>
-                <p className="text-xs text-green-600">{t('profileModal.tasksCompleted')}</p>
+              <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-lg sm:text-xl font-bold text-green-700 dark:text-green-300">{stats.tasksCompleted}</p>
+                <p className="text-xs text-green-600 dark:text-green-400">{text.tasksCompleted}</p>
               </div>
-              <div className="bg-yellow-50 p-3 rounded-lg text-center">
-                <p className="text-xl font-bold text-yellow-700">{stats.pomodoroSessions}</p>
-                <p className="text-xs text-yellow-600">{t('profileModal.pomodoroSessions')}</p>
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-lg sm:text-xl font-bold text-yellow-700 dark:text-yellow-300">{stats.pomodoroSessions}</p>
+                <p className="text-xs text-yellow-600 dark:text-yellow-400">{text.pomodoroSessions}</p>
               </div>
-              <div className="bg-red-50 p-3 rounded-lg text-center">
-                <p className="text-xl font-bold text-red-700">{stats.currentStreak}</p>
-                <p className="text-xs text-red-600">{t('profileModal.currentStreak')}</p>
+              <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-lg sm:text-xl font-bold text-red-700 dark:text-red-300">{stats.currentStreak}</p>
+                <p className="text-xs text-red-600 dark:text-red-400">{text.currentStreak}</p>
               </div>
             </div>
           </div>
         </div>
         
         {/* Logout Button */}
-        <div className="p-6 border-t border-gray-200">
-                      <button
-              onClick={onLogout}
-              className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-            >
-              {t('profileModal.logout')}
-            </button>
+        <div className="p-3 sm:p-4 md:p-6 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onClick={onLogout}
+            className="w-full px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-sm sm:text-base"
+          >
+            {text.logout}
+          </button>
         </div>
       </div>
     </div>

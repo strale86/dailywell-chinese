@@ -1,0 +1,10 @@
+[33ma61378b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix: removed navigation, improved profile modal, added translations
+[33mf75f9cf[m Add Google OAuth Client ID to environment variables
+[33mc3eefeb[m Fix asset paths and add multi-language support - 8 languages working
+[33m64268c6[m Chinese translations, OAuth integration, dark mode fixes, and deployment setup
+[33m7dd9194[m Add Chinese version Supabase database with separate tables
+[33mf6fe434[m Integrate Supabase database - tables created and auth service updated
+[33madb87ab[m Fix i18n integration and add missing translations for Welcome component
+[33md1dc87b[m Add multi-market support: English, Serbian, Chinese versions with i18n
+[33m1b9e906[m Initial commit
+[33ma65ca74[m Add MainApp component and fix build issues

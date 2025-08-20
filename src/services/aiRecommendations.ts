@@ -1,5 +1,79 @@
 import { Task, Habit, WellnessEntry, Goal, Note } from '../types';
 
+// Get current language from localStorage or default to English
+const getCurrentLanguage = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('selectedLanguage') || 'en';
+  }
+  return 'en';
+};
+
+// Static translations for AI recommendations
+const getRecommendationTexts = (language: string) => {
+  switch (language) {
+    case 'sr':
+      return {
+        improveTaskCompletion: "Poboljšaj stopu završavanja zadataka",
+        taskCompletionRate: "Vaša stopa završavanja zadataka je",
+        tryBreakingDown: "Pokušajte da razbijete veće zadatke na manje, upravljivije korake",
+        tryPomodoro: "Pokušajte Pomodoro tehniku za poboljšanje fokusa",
+        trackWellness: "Pratite svoje zdravlje",
+        startTracking: "Počnite da pratite svoje dnevno zdravlje da biste dobili personalizovane uvide i preporuke",
+        completeFirstCheckin: "Završite svoju prvu proveru zdravlja",
+        setMoreGoals: "Postavite više ciljeva",
+        roomForGoals: "Imate prostora za postavljanje više ciljeva. Razmislite o postavljanju ciljeva u različitim životnim oblastima",
+        addNewGoals: "Dodajte nove ciljeve u različitim kategorijama",
+        tryNewHabits: "Pokušajte nove navike",
+        basedOnHabits: "Na osnovu vaših trenutnih navika, možda će vam se svideti",
+        addSuggestedHabit: "Dodajte jednu od predloženih navika",
+        productivity: "Produktivnost",
+        wellness: "Zdravlje",
+        goals: "Ciljevi",
+        habits: "Navike"
+      };
+    case 'zh':
+      return {
+        improveTaskCompletion: "提高任务完成率",
+        taskCompletionRate: "您的任务完成率是",
+        tryBreakingDown: "尝试将较大的任务分解为更小、更易管理的步骤",
+        tryPomodoro: "尝试番茄工作法来提高专注力",
+        trackWellness: "跟踪您的健康",
+        startTracking: "开始跟踪您的日常健康以获得个性化洞察和建议",
+        completeFirstCheckin: "完成您的第一次健康检查",
+        setMoreGoals: "设定更多目标",
+        roomForGoals: "您有设定更多目标的空间。考虑在不同生活领域设定目标",
+        addNewGoals: "在不同类别中添加新目标",
+        tryNewHabits: "尝试新习惯",
+        basedOnHabits: "根据您当前的习惯，您可能会喜欢",
+        addSuggestedHabit: "添加建议的习惯之一",
+        productivity: "生产力",
+        wellness: "健康",
+        goals: "目标",
+        habits: "习惯"
+      };
+    default: // English
+      return {
+        improveTaskCompletion: "Improve Task Completion Rate",
+        taskCompletionRate: "Your task completion rate is",
+        tryBreakingDown: "Try breaking down larger tasks into smaller, more manageable steps",
+        tryPomodoro: "Try the Pomodoro technique to improve focus",
+        trackWellness: "Track Your Wellness",
+        startTracking: "Start tracking your daily wellness to get personalized insights and recommendations",
+        completeFirstCheckin: "Complete your first wellness check-in",
+        setMoreGoals: "Set More Goals",
+        roomForGoals: "You have room to set more goals. Consider setting goals in different life areas",
+        addNewGoals: "Add new goals in different categories",
+        tryNewHabits: "Try New Habits",
+        basedOnHabits: "Based on your current habits, you might enjoy",
+        addSuggestedHabit: "Add one of the suggested habits",
+        productivity: "Productivity",
+        wellness: "Wellness",
+        goals: "Goals",
+        habits: "Habits"
+      };
+  }
+};
+
 export interface AIRecommendation {
   id: string;
   type: 'habit' | 'task' | 'goal' | 'wellness' | 'productivity';
@@ -55,15 +129,18 @@ export class AIRecommendationService {
       : 0;
 
     if (completionRate < 0.6) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: Date.now().toString(),
         type: 'productivity',
-        title: '提高任务完成率',
-        description: `您的任务完成率是 ${Math.round(completionRate * 100)}%。尝试将较大的任务分解为更小、更易管理的步骤。`,
+        title: texts.improveTaskCompletion,
+        description: `${texts.taskCompletionRate} ${Math.round(completionRate * 100)}%. ${texts.tryBreakingDown}`,
         priority: 'high',
         confidence: 85,
-        category: 'productivity',
-        action: '尝试番茄工作法以提高专注力',
+        category: texts.productivity,
+        action: texts.tryPomodoro,
         createdAt: new Date()
       });
     }
@@ -76,12 +153,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 1).toString(),
         type: 'habit',
-        title: '建立一致的习惯',
-        description: `您有 ${lowStreakHabits.length} 个连续天数较低的习惯。一次专注于一个习惯以建立一致性。`,
+        title: 'Build Consistent Habits',
+        description: `You have ${lowStreakHabits.length} habits with low streaks. Focus on one habit at a time to build consistency.`,
         priority: 'medium',
         confidence: 75,
         category: 'habits',
-        action: '为您最重要的习惯设置每日提醒',
+        action: 'Set daily reminders for your most important habit',
         createdAt: new Date()
       });
     }
@@ -91,12 +168,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 2).toString(),
         type: 'habit',
-        title: '进展很好！',
-        description: `您在 ${highStreakHabits.length} 个习惯方面做得很好！考虑添加一个新的具有挑战性的习惯。`,
+        title: 'Great Progress!',
+        description: `You're doing great with ${highStreakHabits.length} habits! Consider adding a new challenging habit.`,
         priority: 'low',
         confidence: 90,
         category: 'motivation',
-        action: '添加一个与您当前习惯互补的新习惯',
+        action: 'Add a new habit that complements your current ones',
         createdAt: new Date()
       });
     }
@@ -104,15 +181,18 @@ export class AIRecommendationService {
 
   private analyzeWellnessTrends(wellnessEntries: WellnessEntry[]) {
     if (wellnessEntries.length < 3) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 3).toString(),
         type: 'wellness',
-        title: '跟踪您的健康',
-        description: '开始跟踪您的日常健康状态，以获得个性化的洞察和建议。',
+        title: texts.trackWellness,
+        description: texts.startTracking,
         priority: 'medium',
         confidence: 80,
-        category: 'wellness',
-        action: '完成您的第一次健康检查',
+        category: texts.wellness,
+        action: texts.completeFirstCheckin,
         createdAt: new Date()
       });
       return;
@@ -126,12 +206,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 4).toString(),
         type: 'wellness',
-        title: '提升您的心情',
-        description: `您的平均心情是 ${avgMood.toFixed(1)}/5。尝试通常能改善您心情的活动。`,
+        title: 'Boost Your Mood',
+        description: `Your average mood is ${avgMood.toFixed(1)}/5. Try activities that usually improve your mood.`,
         priority: 'high',
         confidence: 85,
         category: 'wellness',
-        action: '尝试10分钟冥想或散步',
+        action: 'Try 10 minutes of meditation or a walk',
         createdAt: new Date()
       });
     }
@@ -140,12 +220,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 5).toString(),
         type: 'wellness',
-        title: '减轻压力',
-        description: `您的压力水平很高 (${avgStress.toFixed(1)}/5)。考虑减压技巧。`,
+        title: 'Reduce Stress',
+        description: `Your stress level is high (${avgStress.toFixed(1)}/5). Consider stress-reduction techniques.`,
         priority: 'high',
         confidence: 90,
         category: 'wellness',
-        action: '练习深呼吸或休息一下',
+        action: 'Practice deep breathing or take a break',
         createdAt: new Date()
       });
     }
@@ -159,12 +239,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 6).toString(),
         type: 'goal',
-        title: '重振您的目标',
-        description: `您有 ${lowProgressGoals.length} 个进展缓慢的目标。将它们分解为更小的里程碑。`,
+        title: 'Revitalize Your Goals',
+        description: `You have ${lowProgressGoals.length} goals with slow progress. Break them down into smaller milestones.`,
         priority: 'medium',
         confidence: 70,
         category: 'goals',
-        action: '审查并更新您的目标里程碑',
+        action: 'Review and update your goal milestones',
         createdAt: new Date()
       });
     }
@@ -178,12 +258,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 7).toString(),
         type: 'productivity',
-        title: '生产力大师',
-        description: '您表现出很好的生产力模式！考虑与他人分享您的技巧。',
+        title: 'Productivity Master',
+        description: 'You show great productivity patterns! Consider sharing your techniques with others.',
         priority: 'low',
         confidence: 95,
         category: 'motivation',
-        action: '在笔记中记录您的生产力技巧',
+        action: 'Document your productivity techniques in notes',
         createdAt: new Date()
       });
     }
@@ -197,30 +277,36 @@ export class AIRecommendationService {
     // Suggest new habits based on existing ones
     const suggestedHabits = this.getSuggestedHabits(habitCategories);
     if (suggestedHabits.length > 0) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 8).toString(),
         type: 'habit',
-        title: '尝试新习惯',
-        description: `基于您当前的习惯，您可能会喜欢：${suggestedHabits.join(', ')}`,
+        title: texts.tryNewHabits,
+        description: `${texts.basedOnHabits}: ${suggestedHabits.join(', ')}`,
         priority: 'low',
         confidence: 65,
-        category: 'habits',
-        action: '添加其中一个建议的习惯',
+        category: texts.habits,
+        action: texts.addSuggestedHabit,
         createdAt: new Date()
       });
     }
 
     // Suggest goals based on current progress
     if (goals.length < 3) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 9).toString(),
         type: 'goal',
-        title: '设定更多目标',
-        description: '您还有设定更多目标的空间。考虑在不同生活领域设定目标。',
+        title: texts.setMoreGoals,
+        description: texts.roomForGoals,
         priority: 'medium',
         confidence: 75,
-        category: 'goals',
-        action: '在不同类别中添加新目标',
+        category: texts.goals,
+        action: texts.addNewGoals,
         createdAt: new Date()
       });
     }
@@ -233,16 +319,16 @@ export class AIRecommendationService {
     const suggestions: string[] = [];
     
     if (missingCategories.includes('fitness')) {
-      suggestions.push('每日运动');
+      suggestions.push('Daily Exercise');
     }
     if (missingCategories.includes('learning')) {
-      suggestions.push('阅读习惯');
+      suggestions.push('Reading Habit');
     }
     if (missingCategories.includes('wellness')) {
-      suggestions.push('正念练习');
+      suggestions.push('Mindfulness Practice');
     }
     if (missingCategories.includes('productivity')) {
-      suggestions.push('时间块管理');
+      suggestions.push('Time Blocking');
     }
     
     return suggestions.slice(0, 2); // Return max 2 suggestions

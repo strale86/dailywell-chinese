@@ -23,10 +23,28 @@ export const alipayConfig: OAuthConfig = {
 };
 
 // Build OAuth URL for different providers
-export function buildOAuthUrl(provider: 'wechat' | 'alipay', state: string): string {
-  const config = provider === 'wechat' ? wechatConfig : alipayConfig;
-  
-  if (provider === 'wechat') {
+export function buildOAuthUrl(provider: 'google' | 'apple' | 'wechat' | 'alipay', state: string): string {
+  if (provider === 'google') {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || import.meta.env.REACT_APP_GOOGLE_CLIENT_ID || 'your_google_client_id';
+    const redirectUri = `${window.location.origin}/oauth-callback?provider=google`;
+    return `https://accounts.google.com/o/oauth2/v2/auth?` +
+           `client_id=${clientId}&` +
+           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+           `response_type=code&` +
+           `scope=openid email profile&` +
+           `state=${state}&` +
+           `prompt=select_account`;
+  } else if (provider === 'apple') {
+    const clientId = import.meta.env.VITE_APPLE_CLIENT_ID || 'your_apple_client_id';
+    const redirectUri = `${window.location.origin}/oauth-callback?provider=apple`;
+    return `https://appleid.apple.com/auth/authorize?` +
+           `client_id=${clientId}&` +
+           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+           `response_type=code&` +
+           `scope=name email&` +
+           `state=${state}`;
+  } else if (provider === 'wechat') {
+    const config = wechatConfig;
     return `https://open.weixin.qq.com/connect/qrconnect?` +
            `appid=${config.clientId}&` +
            `redirect_uri=${encodeURIComponent(config.redirectUri)}&` +
@@ -34,6 +52,7 @@ export function buildOAuthUrl(provider: 'wechat' | 'alipay', state: string): str
            `scope=${config.scope}&` +
            `state=${state}#wechat_redirect`;
   } else if (provider === 'alipay') {
+    const config = alipayConfig;
     return `https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?` +
            `app_id=${config.clientId}&` +
            `redirect_uri=${encodeURIComponent(config.redirectUri)}&` +
@@ -45,10 +64,67 @@ export function buildOAuthUrl(provider: 'wechat' | 'alipay', state: string): str
 }
 
 // Exchange authorization code for access token
-export async function exchangeCodeForToken(provider: 'wechat' | 'alipay', code: string) {
-  const config = provider === 'wechat' ? wechatConfig : alipayConfig;
-  
-  if (provider === 'wechat') {
+export async function exchangeCodeForToken(provider: 'google' | 'apple' | 'wechat' | 'alipay', code: string) {
+  if (provider === 'google') {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || import.meta.env.REACT_APP_GOOGLE_CLIENT_ID || 'your_google_client_id';
+    const clientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET || import.meta.env.REACT_APP_GOOGLE_CLIENT_SECRET || 'your_google_client_secret';
+    const redirectUri = `${window.location.origin}/oauth-callback?provider=google`;
+    
+    const response = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        code: code,
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri
+      })
+    });
+    
+    const data = await response.json();
+    if (data.error) {
+      throw new Error(`Google OAuth error: ${data.error_description || data.error}`);
+    }
+    
+    return {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+      id_token: data.id_token
+    };
+  } else if (provider === 'apple') {
+    const clientId = import.meta.env.VITE_APPLE_CLIENT_ID || 'your_apple_client_id';
+    const clientSecret = import.meta.env.VITE_APPLE_CLIENT_SECRET || 'your_apple_client_secret';
+    const redirectUri = `${window.location.origin}/oauth-callback?provider=apple`;
+    
+    const response = await fetch('https://appleid.apple.com/auth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        code: code,
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri
+      })
+    });
+    
+    const data = await response.json();
+    if (data.error) {
+      throw new Error(`Apple OAuth error: ${data.error_description || data.error}`);
+    }
+    
+    return {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+      id_token: data.id_token
+    };
+  } else if (provider === 'wechat') {
+    const config = wechatConfig;
     const response = await fetch('https://api.weixin.qq.com/sns/oauth2/access_token', {
       method: 'POST',
       headers: {
@@ -75,6 +151,7 @@ export async function exchangeCodeForToken(provider: 'wechat' | 'alipay', code: 
   } else if (provider === 'alipay') {
     // Alipay requires server-side implementation due to security
     // This would typically be handled by your backend
+    const config = alipayConfig;
     const response = await fetch('/api/alipay/token', {
       method: 'POST',
       headers: {
@@ -99,8 +176,39 @@ export async function exchangeCodeForToken(provider: 'wechat' | 'alipay', code: 
 }
 
 // Get user information from provider
-export async function getUserInfo(provider: 'wechat' | 'alipay', accessToken: string, openid?: string) {
-  if (provider === 'wechat') {
+export async function getUserInfo(provider: 'google' | 'apple' | 'wechat' | 'alipay', accessToken: string, openid?: string) {
+  if (provider === 'google') {
+    const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    
+    const data = await response.json();
+    if (data.error) {
+      throw new Error(`Google API error: ${data.error_description || data.error}`);
+    }
+    
+    return {
+      id: data.id,
+      email: data.email,
+      name: data.name,
+      picture: data.picture,
+      given_name: data.given_name,
+      family_name: data.family_name
+    };
+  } else if (provider === 'apple') {
+    // Apple doesn't provide user info endpoint, we get it from ID token
+    // For demo purposes, return basic info
+    return {
+      id: `apple_${Date.now()}`,
+      email: 'user@privaterelay.appleid.com',
+      name: 'Apple User',
+      picture: '',
+      given_name: 'Apple',
+      family_name: 'User'
+    };
+  } else if (provider === 'wechat') {
     const response = await fetch(`https://api.weixin.qq.com/sns/userinfo?` +
       `access_token=${accessToken}&` +
       `openid=${openid}&` +

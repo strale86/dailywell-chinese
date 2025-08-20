@@ -1,6 +1,5 @@
 import React from 'react';
 import { Zap, Heart, Target } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -13,7 +12,31 @@ export const Logo: React.FC<LogoProps> = ({
   showText = true, 
   variant = 'default' 
 }) => {
-  const { t } = useTranslation();
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations based on language
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          title: "DailyWell",
+          subtitle: "Vaš dnevni wellness pratilac"
+        };
+      case 'zh':
+        return {
+          title: "DailyWell",
+          subtitle: "您的日常健康伴侣"
+        };
+      default: // English
+        return {
+          title: "DailyWell",
+          subtitle: "Your daily wellness companion"
+        };
+    }
+  };
+
+  const text = getText();
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-12 h-12',
@@ -21,9 +44,9 @@ export const Logo: React.FC<LogoProps> = ({
   };
 
   const textSizeClasses = {
-    sm: 'text-lg',
-    md: 'text-2xl',
-    lg: 'text-3xl'
+    sm: 'text-sm',
+    md: 'text-lg',
+    lg: 'text-2xl'
   };
 
   const iconSizeClasses = {
@@ -49,7 +72,7 @@ export const Logo: React.FC<LogoProps> = ({
       default:
         return {
           gradient: 'from-blue-500 via-purple-500 to-green-500',
-          text: 'text-gray-900',
+          text: 'text-gray-900 dark:text-white',
           icons: 'text-white'
         };
     }
@@ -76,15 +99,53 @@ export const Logo: React.FC<LogoProps> = ({
       {showText && (
         <div>
           <h1 className={`${textSizeClasses[size]} font-bold ${colors.text} tracking-tight`}>
-            {t('logo.title')}
+            {text.title}
           </h1>
           {size !== 'sm' && (
-            <p className={`text-xs ${variant === 'white' ? 'text-white/70' : 'text-gray-500'} font-medium`}>
-              {t('logo.subtitle')}
+            <p className={`text-xs ${variant === 'white' ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'} font-medium`}>
+              {text.subtitle}
             </p>
           )}
         </div>
       )}
+    </div>
+  );
+};
+
+// Simple logo without text (for icons, etc.)
+export const LogoIcon: React.FC<{ size?: 'sm' | 'md' | 'lg'; className?: string }> = ({ 
+  size = 'md', 
+  className = '' 
+}) => {
+  const sizeClasses = {
+    sm: 'w-8 h-8',
+    md: 'w-12 h-12',
+    lg: 'w-16 h-16'
+  };
+
+  const lightningSizes = {
+    sm: 'text-lg',
+    md: 'text-2xl',
+    lg: 'text-3xl'
+  };
+
+  return (
+    <div className={`
+      ${sizeClasses[size]} 
+      rounded-full 
+      bg-gradient-to-br from-green-400 to-blue-500 
+      shadow-lg 
+      flex items-center justify-center
+      relative
+      ${className}
+    `}>
+      {/* Subtle shadow overlay */}
+      <div className="absolute inset-0 rounded-full bg-black opacity-10"></div>
+      
+      {/* Lightning bolt */}
+      <span className={`${lightningSizes[size]} text-white font-bold relative z-10`}>
+        ⚡
+      </span>
     </div>
   );
 };

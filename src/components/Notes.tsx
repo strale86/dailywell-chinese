@@ -15,6 +15,68 @@ export const Notes: React.FC<NotesProps> = ({
   onUpdateNote,
   onDeleteNote,
 }) => {
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations based on language
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          title: "Beleske",
+          subtitle: "Zabeležite svoje misli i ideje",
+          addNote: "Dodaj belesku",
+          newNote: "Nova beleska",
+          titleLabel: "Naslov",
+          contentLabel: "Sadržaj",
+          titlePlaceholder: "Unesite naslov beleske",
+          contentPlaceholder: "Napišite svoju belesku ovde...",
+          cancel: "Otkaži",
+          saveNote: "Sačuvaj belesku",
+          noNotes: "Još nema beleski",
+          startCreating: "Počnite kreiranjem svoje prve beleske",
+          created: "Kreirano",
+          updated: "Ažurirano"
+        };
+      case 'zh':
+        return {
+          title: "笔记",
+          subtitle: "记录您的想法和创意",
+          addNote: "添加笔记",
+          newNote: "新笔记",
+          titleLabel: "标题",
+          contentLabel: "内容",
+          titlePlaceholder: "输入笔记标题",
+          contentPlaceholder: "在此写下您的笔记...",
+          cancel: "取消",
+          saveNote: "保存笔记",
+          noNotes: "暂无笔记",
+          startCreating: "开始创建您的第一个笔记",
+          created: "创建",
+          updated: "更新"
+        };
+      default: // English
+        return {
+          title: "Notes",
+          subtitle: "Capture your thoughts and ideas",
+          addNote: "Add Note",
+          newNote: "New Note",
+          titleLabel: "Title",
+          contentLabel: "Content",
+          titlePlaceholder: "Enter note title",
+          contentPlaceholder: "Write your note here...",
+          cancel: "Cancel",
+          saveNote: "Save Note",
+          noNotes: "No notes yet",
+          startCreating: "Start by creating your first note",
+          created: "Created",
+          updated: "Updated"
+        };
+    }
+  };
+
+  const text = getText();
+
   const [newNoteTitle, setNewNoteTitle] = useState('');
   const [newNoteContent, setNewNoteContent] = useState('');
   const [isAddingNote, setIsAddingNote] = useState(false);
@@ -32,26 +94,26 @@ export const Notes: React.FC<NotesProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Notes</h2>
-          <p className="text-gray-600">Capture your thoughts and ideas</p>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
+          <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{text.subtitle}</p>
         </div>
         <button
           onClick={() => setIsAddingNote(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-4 h-4" />
-          Add Note
+          {text.addNote}
         </button>
       </div>
 
       {/* Add Note Form */}
       {isAddingNote && (
-        <div className="bg-white p-6 rounded-xl shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">New Note</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{text.newNote}</h3>
             <button
               onClick={() => {
                 setIsAddingNote(false);
@@ -66,24 +128,24 @@ export const Notes: React.FC<NotesProps> = ({
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{text.titleLabel}</label>
               <input
                 type="text"
                 value={newNoteTitle}
                 onChange={(e) => setNewNoteTitle(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter note title"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+                placeholder={text.titlePlaceholder}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{text.contentLabel}</label>
               <textarea
                 value={newNoteContent}
                 onChange={(e) => setNewNoteContent(e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                placeholder="Write your note here..."
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+                placeholder={text.contentPlaceholder}
               />
             </div>
             
@@ -96,13 +158,13 @@ export const Notes: React.FC<NotesProps> = ({
                 }}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
-                Cancel
+                {text.cancel}
               </button>
               <button
                 onClick={handleAddNote}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Save Note
+                {text.saveNote}
               </button>
             </div>
           </div>
@@ -113,15 +175,15 @@ export const Notes: React.FC<NotesProps> = ({
       <div className="space-y-4">
         {notes.length === 0 ? (
           <div className="text-center py-12">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No notes yet</h3>
-            <p className="text-gray-600">Start by creating your first note</p>
+                          <FileText className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{text.noNotes}</h3>
+            <p className="text-gray-600">{text.startCreating}</p>
           </div>
         ) : (
           notes.map((note) => (
             <div key={note.id} className="bg-white p-6 rounded-xl shadow-sm border">
               <div className="flex justify-between items-start mb-3">
-                <h3 className="text-lg font-semibold text-gray-900">{note.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{note.title}</h3>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => onUpdateNote(note.id, { isEditing: !note.isEditing })}
@@ -142,8 +204,8 @@ export const Notes: React.FC<NotesProps> = ({
               
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <p className="text-xs text-gray-500">
-                  Created: {note.createdAt.toLocaleDateString()} | 
-                  Updated: {note.updatedAt.toLocaleDateString()}
+                  {text.created}: {note.createdAt.toLocaleDateString()} | 
+                  {text.updated}: {note.updatedAt.toLocaleDateString()}
                 </p>
               </div>
             </div>

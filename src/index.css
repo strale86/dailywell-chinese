@@ -63,15 +63,7 @@ body {
   color: #9ca3af !important;
 }
 
-/* Dark mode for navigation */
-.dark .bg-white.border-b {
-  background-color: #1f2937 !important;
-  border-color: #374151 !important;
-}
 
-.dark .border-gray-200 {
-  border-color: #374151 !important;
-}
 
 /* Dark mode for cards and containers */
 .dark .bg-gray-50 {
@@ -99,6 +91,29 @@ body {
 }
 
 .dark input::placeholder, .dark textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+/* Override for login form inputs in dark mode */
+.dark input[type="email"], 
+.dark input[type="password"], 
+.dark input[type="text"] {
+  background-color: rgba(55, 65, 81, 0.8) !important;
+  border-color: #6b7280 !important;
+  color: #f3f4f6 !important;
+}
+
+.dark input[type="email"]:focus, 
+.dark input[type="password"]:focus, 
+.dark input[type="text"]:focus {
+  background-color: rgba(249, 250, 251, 0.9) !important;
+  border-color: #8b5cf6 !important;
+  color: #1f2937 !important;
+}
+
+.dark input[type="email"]::placeholder, 
+.dark input[type="password"]::placeholder, 
+.dark input[type="text"]::placeholder {
   color: #9ca3af !important;
 }
 
@@ -131,47 +146,99 @@ body {
   border-color: rgba(249, 250, 251, 0.3);
 }
 
-/* Date input localization for Chinese */
-input[type="date"] {
-  direction: ltr;
-  font-family: system-ui, -apple-system, sans-serif;
+
+
+
+
+
+
+
+
+
+
+/* Hide date picker completely */
+input[type="text"]::-webkit-calendar-picker-indicator,
+input[type="text"]::-webkit-inner-spin-button,
+input[type="text"]::-webkit-clear-button {
+  display: none !important;
+  -webkit-appearance: none !important;
 }
 
-/* Chinese language specific date input styling */
-[lang="zh"] input[type="date"],
-[lang="zh-CN"] input[type="date"],
-.chinese-date-input {
-  direction: ltr;
-  font-family: system-ui, -apple-system, sans-serif;
+input[type="text"]::-webkit-datetime-edit,
+input[type="text"]::-webkit-datetime-edit-fields-wrapper,
+input[type="text"]::-webkit-datetime-edit-text,
+input[type="text"]::-webkit-datetime-edit-month-field,
+input[type="text"]::-webkit-datetime-edit-day-field,
+input[type="text"]::-webkit-datetime-edit-year-field {
+  display: none !important;
+  -webkit-appearance: none !important;
 }
 
-/* Force LTR for date input fields */
-.chinese-date-input::-webkit-datetime-edit-fields-wrapper {
-  direction: ltr !important;
+/* Force text input behavior */
+input[placeholder*="YYYY"]::-webkit-calendar-picker-indicator,
+input[placeholder*="date"]::-webkit-calendar-picker-indicator,
+
+/* Fix popup issues in dark mode */
+.dark .popup-overlay {
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
-.chinese-date-input::-webkit-datetime-edit {
-  direction: ltr !important;
+.dark .popup-content {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
 }
 
-/* Date input placeholder styling */
-input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-  direction: ltr;
+/* Ensure OAuth popup works in dark mode */
+.dark body {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
+/* Fix any white flash in dark mode */
+.dark * {
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+input[placeholder*="Date"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+  -webkit-appearance: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
-/* Chinese date format hint */
-.date-format-hint {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-top: 0.25rem;
+/* Additional calendar hiding rules */
+.birth-date-input::-webkit-calendar-picker-indicator {
+  display: none !important;
 }
 
-.dark .date-format-hint {
-  color: #9ca3af;
+/* Force hide calendar for any input with birth-related names */
+input[name*="birth"]::-webkit-calendar-picker-indicator,
+input[name*="date"]::-webkit-calendar-picker-indicator,
+input[placeholder*="birth"]::-webkit-calendar-picker-indicator,
+input[placeholder*="date"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+  -webkit-appearance: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hide calendar for any input that might be detected as date */
+input[type="text"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+
+
+
+/* Firefox date input hiding */
+input[type="text"]::-moz-datetime-edit {
+  display: none !important;
+}
+
+/* Edge/IE date input hiding */
+input[type="text"]::-ms-datetime-edit {
+  display: none !important;
 }
 
 /* Advanced Loading Animations */
