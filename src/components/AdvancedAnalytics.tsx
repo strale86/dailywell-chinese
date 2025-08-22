@@ -70,53 +70,29 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
           stress: "Stres",
           energy: "Energija"
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Análisis avanzado",
-          subtitle: "Insights detallados y tendencias",
-          week: "Semana",
-          month: "Mes",
-          year: "Año",
-          taskCompletionTrend: "Tendencia de finalización de tareas",
-          completedTasks: "Tareas completadas",
-          totalTasks: "Total de tareas",
-          habitsByCategory: "Hábitos por categoría",
-          totalStreaks: "Rachas totales",
-          wellnessOverview: "Resumen de bienestar",
-          averageScore: "Puntuación promedio",
-          health: "Salud",
-          productivity: "Productividad",
-          learning: "Aprendizaje",
-          wellness: "Bienestar",
-          fitness: "Fitness",
-          personal: "Personal",
-          mood: "Estado de ánimo",
-          stress: "Estrés",
-          energy: "Energía"
-        };
-      case 'fr':
-        return {
-          title: "Analyses avancées",
-          subtitle: "Aperçus détaillés et tendances",
-          week: "Semaine",
-          month: "Mois",
-          year: "Année",
-          taskCompletionTrend: "Tendance de finalisation des tâches",
-          completedTasks: "Tâches terminées",
-          totalTasks: "Total des tâches",
-          habitsByCategory: "Habitudes par catégorie",
-          totalStreaks: "Séries totales",
-          wellnessOverview: "Aperçu du bien-être",
-          averageScore: "Score moyen",
-          health: "Santé",
-          productivity: "Productivité",
-          learning: "Apprentissage",
-          wellness: "Bien-être",
-          fitness: "Fitness",
-          personal: "Personnel",
-          mood: "Humeur",
-          stress: "Stress",
-          energy: "Énergie"
+          title: "高级分析",
+          subtitle: "详细洞察和趋势",
+          week: "周",
+          month: "月",
+          year: "年",
+          taskCompletionTrend: "任务完成趋势",
+          completedTasks: "已完成任务",
+          totalTasks: "总任务数",
+          habitsByCategory: "按类别分类的习惯",
+          totalStreaks: "总连续天数",
+          wellnessOverview: "健康概览",
+          averageScore: "平均分数",
+          health: "健康",
+          productivity: "生产力",
+          learning: "学习",
+          wellness: "健康",
+          fitness: "健身",
+          personal: "个人",
+          mood: "心情",
+          stress: "压力",
+          energy: "能量"
         };
       default: // English
         return {
@@ -165,10 +141,8 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
       let locale = 'en-US';
       if (currentLanguage === 'sr') {
         locale = 'sr-RS';
-      } else if (currentLanguage === 'es') {
-        locale = 'es-ES';
-      } else if (currentLanguage === 'fr') {
-        locale = 'fr-FR';
+      } else if (currentLanguage === 'zh') {
+        locale = 'zh-CN';
       }
       labels.push(date.toLocaleDateString(locale, { month: 'short', day: 'numeric' }));
       

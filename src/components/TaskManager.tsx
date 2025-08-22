@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Plus, Check, Trash2, Flag, CheckSquare } from 'lucide-react';
 import { Task } from '../types';
 
@@ -25,7 +25,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
   // Get current language from localStorage or default to English
   const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (newTask.title.trim()) {
       onAddTask({
@@ -37,16 +37,16 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
       setNewTask({ title: '', description: '', priority: 'medium' });
       setShowForm(false);
     }
-  };
+  }, [newTask, onAddTask]);
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = useCallback((priority: string) => {
     switch (priority) {
       case 'high': return 'text-red-400';
       case 'medium': return 'text-yellow-400';
       case 'low': return 'text-green-400';
       default: return 'text-gray-400';
     }
-  };
+  }, []);
 
   const completedTasks = tasks.filter(task => task.completed);
   const pendingTasks = tasks.filter(task => !task.completed);
@@ -71,39 +71,22 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
           of: "od",
           completedText: "završeno"
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Tareas de hoy",
-          addTask: "Agregar tarea",
-          taskTitle: "Título de la tarea",
-          description: "Descripción (opcional)",
-          priority: "Prioridad",
-          lowPriority: "Baja prioridad",
-          mediumPriority: "Prioridad media",
-          highPriority: "Alta prioridad",
-          cancel: "Cancelar",
-          noTasks: "Aún no hay tareas",
-          addFirstTask: "¡Agrega tu primera tarea para comenzar!",
-          completed: "Completado",
-          of: "de",
-          completedText: "completado"
-        };
-      case 'fr':
-        return {
-          title: "Tâches d'aujourd'hui",
-          addTask: "Ajouter une tâche",
-          taskTitle: "Titre de la tâche",
-          description: "Description (optionnel)",
-          priority: "Priorité",
-          lowPriority: "Priorité basse",
-          mediumPriority: "Priorité moyenne",
-          highPriority: "Priorité haute",
-          cancel: "Annuler",
-          noTasks: "Aucune tâche pour le moment",
-          addFirstTask: "Ajoutez votre première tâche pour commencer !",
-          completed: "Terminé",
-          of: "sur",
-          completedText: "terminé"
+          title: "今日任务",
+          addTask: "添加任务",
+          taskTitle: "任务标题",
+          description: "描述 (可选)",
+          priority: "优先级",
+          lowPriority: "低优先级",
+          mediumPriority: "中优先级",
+          highPriority: "高优先级",
+          cancel: "取消",
+          noTasks: "暂无任务",
+          addFirstTask: "添加您的第一个任务开始吧！",
+          completed: "已完成",
+          of: "共",
+          completedText: "已完成"
         };
       default: // English
         return {
@@ -128,29 +111,29 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
   const text = getText();
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
+    <div className="space-y-4">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{completedTasks.length} {text.of} {tasks.length} {text.completedText}</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{text.title}</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{completedTasks.length} {text.of} {tasks.length} {text.completedText}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-2 sm:px-3 md:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm md:text-base flex-shrink-0"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium flex-shrink-0 touch-manipulation"
         >
           {text.addTask}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-lg border border-white/20 space-y-3 sm:space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 space-y-4">
           <div>
             <input
               type="text"
               placeholder={text.taskTitle}
               value={newTask.title}
               onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-              className="w-full px-2 sm:px-3 py-1 sm:py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent text-white placeholder-gray-300 text-xs sm:text-sm md:text-base"
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder-gray-500 text-base"
               autoFocus
             />
           </div>
@@ -159,7 +142,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               placeholder={text.description}
               value={newTask.description}
               onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-              className="w-full px-2 sm:px-3 py-1 sm:py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent resize-none text-white placeholder-gray-300 text-xs sm:text-sm md:text-base"
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-black placeholder-gray-500 text-base"
               rows={2}
             />
           </div>
@@ -167,7 +150,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
             <select
               value={newTask.priority}
               onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as 'low' | 'medium' | 'high' })}
-              className="px-2 sm:px-3 py-1 sm:py-2 bg-white/80 backdrop-blur-sm border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent w-full sm:w-auto text-white text-xs sm:text-sm md:text-base"
+              className="px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-auto text-black text-base"
             >
               <option value="low">{text.lowPriority}</option>
               <option value="medium">{text.mediumPriority}</option>
@@ -177,13 +160,13 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="px-3 sm:px-4 py-1 sm:py-2 text-white/80 hover:text-white transition-colors flex-1 sm:flex-none text-xs sm:text-sm md:text-base"
+                className="px-4 py-2 text-white/80 hover:text-white transition-colors flex-1 sm:flex-none text-base"
               >
                 {text.cancel}
               </button>
               <button
                 type="submit"
-                className="px-3 sm:px-4 py-1 sm:py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all flex-1 sm:flex-none border border-white/20 text-xs sm:text-sm md:text-base"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all flex-1 sm:flex-none text-base touch-manipulation"
               >
                 {text.addTask}
               </button>
@@ -192,12 +175,12 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
         </form>
       )}
 
-      <div className="space-y-3 sm:space-y-4">
+      <div className="space-y-3">
         {pendingTasks.length === 0 && completedTasks.length === 0 ? (
-          <div className="text-center py-8 sm:py-12">
-            <CheckSquare className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-gray-500 mx-auto mb-3 sm:mb-4" />
-            <h3 className="text-lg sm:text-xl font-medium text-gray-600 dark:text-gray-300 mb-2">{text.noTasks}</h3>
-            <p className="text-gray-500 text-xs sm:text-sm md:text-base">{text.addFirstTask}</p>
+          <div className="text-center py-12">
+            <CheckSquare className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300 mb-2">{text.noTasks}</h3>
+            <p className="text-gray-500 text-base">{text.addFirstTask}</p>
           </div>
         ) : (
           <>
@@ -212,8 +195,8 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
             ))}
             
             {completedTasks.length > 0 && (
-              <div className="pt-4 sm:pt-6 border-t border-white/20">
-                <h3 className="text-base sm:text-lg font-medium text-white/80 mb-3 sm:mb-4">{text.completed}</h3>
+              <div className="pt-6 border-t border-gray-300">
+                <h3 className="text-lg font-medium text-gray-700 mb-4">{text.completed}</h3>
                 {completedTasks.map((task) => (
                   <TaskItem
                     key={task.id}
@@ -240,34 +223,42 @@ interface TaskItemProps {
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriorityColor }) => {
+  const handleToggle = useCallback(() => {
+    onToggle(task.id);
+  }, [task.id, onToggle]);
+
+  const handleDelete = useCallback(() => {
+    onDelete(task.id);
+  }, [task.id, onDelete]);
+
   return (
-    <div className={`bg-white/10 backdrop-blur-sm p-3 sm:p-4 rounded-lg border border-white/20 transition-all hover:bg-white/20 ${
+    <div className={`bg-white/90 backdrop-blur-sm p-4 rounded-lg border border-gray-300 transition-all hover:bg-white ${
       task.completed ? 'opacity-75' : ''
     }`}>
-      <div className="flex items-start space-x-2 sm:space-x-3">
+      <div className="flex items-start space-x-3">
         <button
-          onClick={() => onToggle(task.id)}
-          className={`mt-1 w-5 h-5 sm:w-6 sm:h-6 rounded border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
+          onClick={handleToggle}
+          className={`mt-1 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors flex-shrink-0 touch-manipulation ${
             task.completed
               ? 'bg-green-400 border-green-400 text-white'
-              : 'border-white/50 hover:border-green-400'
+              : 'border-gray-400 hover:border-green-400'
           }`}
         >
-          {task.completed && <Check className="w-3 h-3 sm:w-4 sm:h-4" />}
+          {task.completed && <Check className="w-4 h-4" />}
         </button>
         
         <div className="flex-1 min-w-0">
-          <div className="flex items-center space-x-1 sm:space-x-2">
-            <h3 className={`font-medium text-xs sm:text-sm md:text-base ${
-              task.completed ? 'line-through text-white/50' : 'text-white'
+          <div className="flex items-center space-x-2">
+            <h3 className={`font-medium text-base ${
+              task.completed ? 'line-through text-gray-500' : 'text-gray-900'
             }`}>
               {task.title}
             </h3>
-            <Flag className={`w-3 h-3 sm:w-4 sm:h-4 ${getPriorityColor(task.priority)} flex-shrink-0`} />
+            <Flag className={`w-4 h-4 ${getPriorityColor(task.priority)} flex-shrink-0`} />
           </div>
           {task.description && (
-            <p className={`text-xs sm:text-sm mt-1 ${
-              task.completed ? 'text-white/40' : 'text-white/70'
+            <p className={`text-sm mt-1 ${
+              task.completed ? 'text-gray-400' : 'text-gray-700'
             }`}>
               {task.description}
             </p>
@@ -275,10 +266,10 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
         </div>
         
         <button
-          onClick={() => onDelete(task.id)}
-          className="text-white/50 hover:text-red-400 transition-colors flex-shrink-0 p-1"
+          onClick={handleDelete}
+          className="text-gray-500 hover:text-red-400 transition-colors flex-shrink-0 p-2 touch-manipulation"
         >
-          <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
+          <Trash2 className="w-5 h-5" />
         </button>
       </div>
     </div>

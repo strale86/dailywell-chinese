@@ -6,6 +6,31 @@ interface OAuthCallbackProps {
 }
 
 export const OAuthCallback: React.FC<OAuthCallbackProps> = ({ provider }) => {
+  // Get current language from localStorage or default to English
+  const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+  // Static translations based on language
+  const getText = () => {
+    switch (currentLanguage) {
+      case 'sr':
+        return {
+          processingLogin: "Obrađivanje prijave",
+          pleaseWait: "Molimo sačekajte..."
+        };
+      case 'zh':
+        return {
+          processingLogin: "处理登录中",
+          pleaseWait: "请稍候..."
+        };
+      default: // English
+        return {
+          processingLogin: "Processing Login",
+          pleaseWait: "Please wait..."
+        };
+    }
+  };
+
+  const text = getText();
 
   useEffect(() => {
     const handleOAuthCallback = async () => {
@@ -60,10 +85,10 @@ export const OAuthCallback: React.FC<OAuthCallbackProps> = ({ provider }) => {
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
         <h2 className="text-xl font-semibold text-gray-800 mb-2">
-          Processing Login
+          {text.processingLogin}
         </h2>
         <p className="text-gray-600">
-          Please wait...
+          {text.pleaseWait}
         </p>
       </div>
     </div>

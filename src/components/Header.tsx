@@ -20,17 +20,11 @@ const translations = {
     level: "Nivo",
     welcomeBack: "Dobrodošli nazad"
   },
-  es: {
-    offline: "Sin conexión",
-    points: "Puntos",
-    level: "Nivel",
-    welcomeBack: "Bienvenido de vuelta"
-  },
-  fr: {
-    offline: "Hors ligne",
-    points: "Points",
-    level: "Niveau",
-    welcomeBack: "Bon retour"
+  zh: {
+    offline: "离线",
+    points: "积分",
+    level: "等级",
+    welcomeBack: "欢迎回来"
   }
 };
 

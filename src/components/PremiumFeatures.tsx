@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Bell, Wifi, Settings, Star, Brain, Cloud, Users, Trophy, MessageCircle, Share2, BookOpen, Headphones, Dumbbell, Smartphone, QrCode } from 'lucide-react';
+import { Download, Bell, Wifi, Settings, Star, Brain, Cloud, Users, Trophy, MessageCircle, Share2, BookOpen, Headphones, Dumbbell, Smartphone, QrCode, CreditCard } from 'lucide-react';
 
 
 interface PremiumFeaturesProps {
@@ -14,6 +14,92 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
   // Get current language from localStorage or default to English
   const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
 
+  // Loading states for payment buttons
+  const [loading, setLoading] = useState<{ [key: string]: boolean }>({
+    pro: false,
+    premium: false
+  });
+
+  // QR Code state
+  const [qrCodes, setQrCodes] = useState<{ [key: string]: string }>({});
+  const [showQrCode, setShowQrCode] = useState<{ [key: string]: boolean }>({
+    pro: false,
+    premium: false
+  });
+
+  // QR Code generation handler
+  const generateQrCode = async (plan: string, amount: number) => {
+    try {
+      setLoading(prev => ({ ...prev, [plan]: true }));
+      
+      // Hide existing QR code first
+      setShowQrCode(prev => ({ ...prev, [plan]: false }));
+      
+      // Simulate QR code generation
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Create mini QR code like in corner
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 80;
+      canvas.height = 80;
+      
+      if (ctx) {
+        // Bela pozadina
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, 80, 80);
+        
+        // Zeleni QR kod
+        ctx.fillStyle = '#4CAF50';
+        
+        // Ugaoni markeri (mini)
+        ctx.fillRect(8, 8, 16, 16);
+        ctx.fillRect(56, 8, 16, 16);
+        ctx.fillRect(8, 56, 16, 16);
+        
+        // Beli unutrašnji kvadrati
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(11, 11, 10, 10);
+        ctx.fillRect(59, 11, 10, 10);
+        ctx.fillRect(11, 59, 10, 10);
+        
+        // Zeleni centri
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillRect(13, 13, 6, 6);
+        ctx.fillRect(61, 13, 6, 6);
+        ctx.fillRect(13, 61, 6, 6);
+        
+        // Srednji deo - mini pattern
+        ctx.fillStyle = '#4CAF50';
+        
+        // Glavni kvadrati
+        ctx.fillRect(40, 40, 8, 8);
+        ctx.fillRect(32, 40, 8, 8);
+        ctx.fillRect(40, 32, 8, 8);
+        ctx.fillRect(32, 32, 8, 8);
+        
+        // Dodatni kvadrati
+        ctx.fillRect(36, 36, 4, 4);
+        ctx.fillRect(44, 36, 4, 4);
+        ctx.fillRect(36, 44, 4, 4);
+        ctx.fillRect(44, 44, 4, 4);
+      }
+      
+      const qrCodeDataUrl = canvas.toDataURL();
+      
+      setQrCodes(prev => ({ ...prev, [plan]: qrCodeDataUrl }));
+      setShowQrCode(prev => ({ ...prev, [plan]: true }));
+      
+      console.log(`QR Code generated for ${plan} plan - ¥${amount}`);
+      
+    } catch (error) {
+      console.error('QR generation error:', error);
+      alert('QR code generation failed. Please try again.');
+    } finally {
+      setLoading(prev => ({ ...prev, [plan]: false }));
+    }
+  };
+
   // Static translations based on language
   const getText = () => {
     switch (currentLanguage) {
@@ -22,300 +108,122 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
           title: "Premium funkcije",
           subtitle: "Otključajte napredne funkcije i uvid",
           premium: "Premium",
-          dataExport: "Izvoz podataka",
-          dataExportDesc: "Izvezite svoje podatke u različitim formatima",
-          exportCSV: "Izvezi CSV",
-          exportJSON: "Izvezi JSON",
-          exportPDF: "Izvezi PDF",
-          backupSync: "Backup i sinhronizacija",
-          backupSyncDesc: "Cloud backup i sinhronizacija između uređaja",
-          autoBackup: "Automatski backup",
-          crossDeviceSync: "Sinhronizacija između uređaja",
-          versionHistory: "Istorija verzija",
-          advancedNotifications: "Napredne notifikacije",
-          advancedNotificationsDesc: "Prilagođeni podsetnici i pametna upozorenja",
-          habitReminders: "Podsetnici za navike",
-          goalProgressAlerts: "Upozorenja o napretku ciljeva",
-          pushNotifications: "Push notifikacije",
-          pushNotificationsDesc: "Notifikacije u realnom vremenu na vašem uređaju",
-          taskDueReminders: "Podsetnici za rokove zadataka",
-          habitStreakAlerts: "Upozorenja o seriji navika",
-          goalMilestoneNotifications: "Notifikacije o prekretnicama ciljeva",
-          friendChallengeUpdates: "Ažuriranja izazova prijatelja",
-          configureNotifications: "Konfiguriši notifikacije",
-          upgradeForPushNotifications: "Nadogradi za push notifikacije",
-          offlineMode: "Offline mod",
-          offlineModeDesc: "Radite bez internet konekcije",
-          offlineAccess: "Offline pristup",
-          syncWhenOnline: "Sinhronizuj kada ste online",
-          localStorage: "Lokalno skladištenje",
-          customizableDashboard: "Prilagodljiv dashboard",
-          customizableDashboardDesc: "Organizujte i rasporedite widgete",
-          taskWidget: "Widget zadataka",
-          habitsWidget: "Widget navika",
-          goalsWidget: "Widget ciljeva",
-          analyticsWidget: "Widget analitike",
-          aiRecommendations: "AI preporuke",
-          aiRecommendationsDesc: "Personalizovane sugestije na osnovu vaših podataka",
-          habitSuggestion: "Preporuka navike",
-          habitSuggestionDesc: "Na osnovu vaše jutarnje rutine, pokušajte da dodate 'Pij vodu' kao dnevnu naviku",
-          goalRecommendation: "Preporuka cilja",
-          goalRecommendationDesc: "Blizu ste završavanja vašeg cilja čitanja. Razmislite o postavljanju novog cilja!",
-          productivityTip: "Savet za produktivnost",
-          productivityTipDesc: "Vaše sesije fokusa su najproduktivnije ujutru. Zakažite važne zadatke tada.",
-          getNewRecommendations: "Dobavi nove preporuke",
-          upgradeForAiInsights: "Nadogradi za AI uvid",
-          socialFeatures: "Društvene funkcije",
-          socialFeaturesDesc: "Povežite se i takmičite sa prijateljima",
-          friendChallenges: "Izazovi prijatelja",
-          friendChallengesDesc: "Kreirajte i pridružite se izazovima sa prijateljima",
-          active: "Aktivno",
-          won: "Pobedeno",
-          community: "Zajednica",
-          communityDesc: "Pridružite se forumima i grupama",
-          groups: "Grupe",
-          posts: "Objave",
-          shareAchievements: "Podeli dostignuća",
-          shareAchievementsDesc: "Podelite svoj napredak na društvenim mrežama",
-          shared: "Podeljeno",
-          likes: "Lajkovi",
-          leaderboards: "Tabele rangiranja",
-          leaderboardsDesc: "Takmičite se na globalnim i prijateljskim tabelama rangiranja",
-          rank: "Rang",
-          points: "Poeni",
-          exploreCommunity: "Istraži zajednicu",
-          upgradeForSocialFeatures: "Nadogradi za društvene funkcije",
-          premiumContent: "Premium sadržaj",
-          premiumContentDesc: "Edukativni i wellness sadržaj",
-          wellnessArticles: "Članci o dobrobiti",
-          wellnessArticlesDesc: "Edukativni sadržaj o zdravlju i dobrobiti",
-          articles: "Članci",
-          weeklyUpdates: "Nedeljna ažuriranja",
-          guidedMeditations: "Vođene meditacije",
-          guidedMeditationsDesc: "Audio sesije za opuštanje i fokus",
-          sessions: "Sesije",
-          min: "min",
-          workoutPlans: "Planovi vežbanja",
-          workoutPlansDesc: "Strukturirani fitness programi i vežbe",
-          plans: "Planovi",
-          allLevels: "Svi nivoi",
-          browseContentLibrary: "Pregledaj biblioteku sadržaja",
-          upgradeForPremiumContent: "Nadogradi za premium sadržaj",
+          // Payment translations
           wechatPay: "WeChat Pay",
-          wechatPayDesc: "Skenirajte QR kod da nadogradite na Premium",
-          proPlan: "Pro plan",
-          premiumPlan: "Premium plan",
-          advancedAnalytics: "Napredna analitika",
-          allProFeatures: "Sve Pro funkcije",
+          wechatPayDesc: "Platite putem WeChat aplikacije",
           generateQrCode: "Generiši QR kod",
           generating: "Generisanje...",
-          scanWithWechat: "Skeniraj sa WeChat",
+          scanWithWechat: "Skenirajte sa WeChat",
           waitingForPayment: "Čekanje na plaćanje...",
           howToPay: "Kako platiti:",
-          howToPayStep1: "1. Otvorite WeChat aplikaciju na vašem telefonu",
-          howToPayStep2: "2. Tapnite 'Skeniraj' i skenirajte QR kod",
-          howToPayStep3: "3. Potvrdite iznos plaćanja",
-          howToPayStep4: "4. Premium funkcije će biti aktivirane trenutno"
+          howToPayStep1: "Kliknite 'Generiši QR kod'",
+          howToPayStep2: "Otvorite WeChat i skenirajte kod",
+          howToPayStep3: "Potvrdite iznos plaćanja",
+          howToPayStep4: "Potvrdite plaćanje",
+          proPlan: "Pro Plan",
+          premiumPlan: "Premium Plan",
+          advancedAnalytics: "Napredna analitika",
+          dataExportDesc: "Izvezite svoje podatke u različitim formatima"
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Funciones premium",
-          subtitle: "Desbloquea funciones avanzadas e insights",
-          premium: "Premium",
-          dataExport: "Exportación de datos",
-          dataExportDesc: "Exporta tus datos en varios formatos",
-          exportCSV: "Exportar CSV",
-          exportJSON: "Exportar JSON",
-          exportPDF: "Exportar PDF",
-          backupSync: "Respaldo y sincronización",
-          backupSyncDesc: "Respaldo en la nube y sincronización entre dispositivos",
-          autoBackup: "Respaldo automático",
-          crossDeviceSync: "Sincronización entre dispositivos",
-          versionHistory: "Historial de versiones",
-          advancedNotifications: "Notificaciones avanzadas",
-          advancedNotificationsDesc: "Recordatorios personalizados y alertas inteligentes",
-          habitReminders: "Recordatorios de hábitos",
-          goalProgressAlerts: "Alertas de progreso de objetivos",
-          pushNotifications: "Notificaciones push",
-          pushNotificationsDesc: "Notificaciones en tiempo real en tu dispositivo",
-          taskDueReminders: "Recordatorios de tareas vencidas",
-          habitStreakAlerts: "Alertas de racha de hábitos",
-          goalMilestoneNotifications: "Notificaciones de hitos de objetivos",
-          friendChallengeUpdates: "Actualizaciones de desafíos de amigos",
-          configureNotifications: "Configurar notificaciones",
-          upgradeForPushNotifications: "Actualizar para notificaciones push",
-          offlineMode: "Modo sin conexión",
-          offlineModeDesc: "Funciona sin conexión a internet",
-          offlineAccess: "Acceso sin conexión",
-          syncWhenOnline: "Sincronizar cuando esté en línea",
-          localStorage: "Almacenamiento local",
-          customizableDashboard: "Panel personalizable",
-          customizableDashboardDesc: "Organiza y organiza widgets",
-          taskWidget: "Widget de tareas",
-          habitsWidget: "Widget de hábitos",
-          goalsWidget: "Widget de objetivos",
-          analyticsWidget: "Widget de análisis",
-          aiRecommendations: "Recomendaciones de IA",
-          aiRecommendationsDesc: "Sugerencias personalizadas basadas en tus datos",
-          habitSuggestion: "Sugerencia de hábito",
-          habitSuggestionDesc: "Basado en tu rutina matutina, intenta agregar 'beber agua' como hábito diario",
-          goalRecommendation: "Recomendación de objetivo",
-          goalRecommendationDesc: "Estás cerca de completar tu objetivo de lectura. ¡Considera establecer un nuevo objetivo!",
-          productivityTip: "Consejo de productividad",
-          productivityTipDesc: "Tus sesiones de enfoque son más efectivas por la mañana. Programa tareas importantes en ese momento.",
-          getNewRecommendations: "Obtener nuevas recomendaciones",
-          upgradeForAiInsights: "Actualizar para insights de IA",
-          socialFeatures: "Funciones sociales",
-          socialFeaturesDesc: "Conéctate y compite con amigos",
-          friendChallenges: "Desafíos de amigos",
-          friendChallengesDesc: "Crea y únete a desafíos de amigos",
-          active: "Activo",
-          won: "Ganado",
-          community: "Comunidad",
-          communityDesc: "Únete a foros y grupos",
-          groups: "Grupos",
-          posts: "Publicaciones",
-          shareAchievements: "Compartir logros",
-          shareAchievementsDesc: "Comparte tu progreso en redes sociales",
-          shared: "Compartido",
-          likes: "Me gusta",
-          leaderboards: "Tablas de clasificación",
-          leaderboardsDesc: "Compite en tablas de clasificación globales y de amigos",
-          rank: "Rango",
-          points: "Puntos",
-          exploreCommunity: "Explorar comunidad",
-          upgradeForSocialFeatures: "Actualizar para funciones sociales",
-          premiumContent: "Contenido premium",
-          premiumContentDesc: "Contenido educativo y de bienestar",
-          wellnessArticles: "Artículos de bienestar",
-          wellnessArticlesDesc: "Contenido educativo sobre salud y bienestar",
-          articles: "Artículos",
-          weeklyUpdates: "Actualizaciones semanales",
-          guidedMeditations: "Meditaciones guiadas",
-          guidedMeditationsDesc: "Sesiones de audio para relajación y enfoque",
-          sessions: "Sesiones",
-          min: "min",
-          workoutPlans: "Planes de entrenamiento",
-          workoutPlansDesc: "Planes de fitness estructurados y ejercicios",
-          plans: "Planes",
-          allLevels: "Todos los niveles",
-          browseContentLibrary: "Explorar biblioteca de contenido",
-          upgradeForPremiumContent: "Actualizar para contenido premium",
-          wechatPay: "Pago WeChat",
-          wechatPayDesc: "Escanee el código QR para actualizar a premium",
-          proPlan: "Plan Pro",
-          premiumPlan: "Plan Premium",
-          advancedAnalytics: "Análisis avanzado",
-          allProFeatures: "Todas las funciones Pro",
-          generateQrCode: "Generar código QR",
-          generating: "Generando...",
-          scanWithWechat: "Escanear con WeChat",
-          waitingForPayment: "Esperando pago...",
-          howToPay: "Cómo pagar:",
+          title: "高级功能",
+          subtitle: "解锁高级功能和洞察",
+          premium: "高级版",
+          dataExport: "数据导出",
+          dataExportDesc: "以多种格式导出您的数据",
+          exportCSV: "导出CSV",
+          exportJSON: "导出JSON",
+          exportPDF: "导出PDF",
+          backupSync: "备份和同步",
+          backupSyncDesc: "云端备份和设备间同步",
+          autoBackup: "自动备份",
+          crossDeviceSync: "跨设备同步",
+          versionHistory: "版本历史",
+          advancedNotifications: "高级通知",
+          advancedNotificationsDesc: "个性化提醒和智能警报",
+          habitReminders: "习惯提醒",
+          goalProgressAlerts: "目标进度警报",
+          pushNotifications: "推送通知",
+          pushNotificationsDesc: "设备上的实时通知",
+          taskDueReminders: "任务到期提醒",
+          habitStreakAlerts: "习惯连续天数警报",
+          goalMilestoneNotifications: "目标里程碑通知",
+          friendChallengeUpdates: "朋友挑战更新",
+          configureNotifications: "配置通知",
+          upgradeForPushNotifications: "升级以获得推送通知",
+          offlineMode: "离线模式",
+          offlineModeDesc: "无需互联网连接即可工作",
+          offlineAccess: "离线访问",
+          syncWhenOnline: "在线时同步",
+          localStorage: "本地存储",
+          customizableDashboard: "可自定义仪表板",
+          customizableDashboardDesc: "组织和排列小部件",
+          taskWidget: "任务小部件",
+          habitsWidget: "习惯小部件",
+          goalsWidget: "目标小部件",
+          analyticsWidget: "分析小部件",
+          aiRecommendations: "AI推荐",
+          aiRecommendationsDesc: "基于您数据的个性化建议",
+          habitSuggestion: "习惯建议",
+          habitSuggestionDesc: "基于您的晨间习惯，尝试添加'喝水'作为日常习惯",
+          goalRecommendation: "目标建议",
+          goalRecommendationDesc: "您即将完成阅读目标。考虑设定新目标！",
+          productivityTip: "生产力提示",
+          productivityTipDesc: "您的专注会话在早上更有效。在那个时候安排重要任务。",
+          getNewRecommendations: "获取新建议",
+          upgradeForAiInsights: "升级以获得AI洞察",
+          socialFeatures: "社交功能",
+          socialFeaturesDesc: "与朋友联系和竞争",
+          friendChallenges: "朋友挑战",
+          friendChallengesDesc: "创建并加入朋友挑战",
+          active: "活跃",
+          won: "获胜",
+          community: "社区",
+          communityDesc: "加入论坛和群组",
+          groups: "群组",
+          posts: "帖子",
+          shareAchievements: "分享成就",
+          shareAchievementsDesc: "在社交媒体上分享您的进度",
+          shared: "已分享",
+          likes: "点赞",
+          leaderboards: "排行榜",
+          leaderboardsDesc: "在全球和朋友排行榜上竞争",
+          rank: "排名",
+          points: "积分",
+          exploreCommunity: "探索社区",
+          upgradeForSocialFeatures: "升级以获得社交功能",
+          premiumContent: "高级内容",
+          premiumContentDesc: "教育和健康内容",
+          wellnessArticles: "健康文章",
+          wellnessArticlesDesc: "关于健康和福祉的教育内容",
+          articles: "文章",
+          weeklyUpdates: "每周更新",
+          guidedMeditations: "引导冥想",
+          guidedMeditationsDesc: "放松和专注的音频会话",
+          sessions: "会话",
+          min: "分钟",
+          workoutPlans: "锻炼计划",
+          workoutPlansDesc: "结构化健身计划和锻炼",
+          plans: "计划",
+          allLevels: "所有级别",
+          browseContentLibrary: "浏览内容库",
+          upgradeForPremiumContent: "升级以获得高级内容",
+          wechatPay: "微信支付",
+          wechatPayDesc: "扫描二维码升级到高级版",
+          proPlan: "专业版",
+          premiumPlan: "高级版",
+          advancedAnalytics: "高级分析",
+          allProFeatures: "所有专业功能",
+          generateQrCode: "生成二维码",
+          generating: "生成中...",
+          scanWithWechat: "使用微信扫描",
+          waitingForPayment: "等待支付...",
+          howToPay: "如何支付：",
           howToPayStep1: "1. 在手机上打开微信应用",
           howToPayStep2: "2. 点击'扫一扫'并扫描二维码",
           howToPayStep3: "3. 确认支付金额",
           howToPayStep4: "4. 高级功能将立即激活"
-        };
-      case 'fr':
-        return {
-          title: "Fonctionnalités Premium",
-          subtitle: "Débloquez des fonctionnalités avancées et des insights",
-          premium: "Premium",
-          dataExport: "Exportation de données",
-          dataExportDesc: "Exportez vos données dans différents formats",
-          exportCSV: "Exporter CSV",
-          exportJSON: "Exporter JSON",
-          exportPDF: "Exporter PDF",
-          backupSync: "Sauvegarde et synchronisation",
-          backupSyncDesc: "Sauvegarde cloud et synchronisation multi-appareils",
-          autoBackup: "Sauvegarde automatique",
-          crossDeviceSync: "Synchronisation multi-appareils",
-          versionHistory: "Historique des versions",
-          advancedNotifications: "Notifications avancées",
-          advancedNotificationsDesc: "Rappels personnalisés et alertes intelligentes",
-          habitReminders: "Rappels d'habitudes",
-          goalProgressAlerts: "Alertes de progression d'objectifs",
-          pushNotifications: "Notifications en temps réel sur votre appareil",
-          pushNotificationsDesc: "Push en temps réel sur votre appareil",
-          taskDueReminders: "Rappels d'échéance de tâches",
-          habitStreakAlerts: "Alertes de série d'habitudes",
-          goalMilestoneNotifications: "Notifications de jalons d'objectifs",
-          friendChallengeUpdates: "Mises à jour de défis d'amis",
-          configureNotifications: "Configurer les notifications",
-          upgradeForPushNotifications: "Mettre à niveau pour les notifications push",
-          offlineMode: "Mode hors ligne",
-          offlineModeDesc: "Travaillez sans connexion internet",
-          offlineAccess: "Accès hors ligne",
-          syncWhenOnline: "Synchroniser quand en ligne",
-          localStorage: "Stockage local",
-          customizableDashboard: "Tableau de bord personnalisable",
-          customizableDashboardDesc: "Organisez et arrangez les widgets",
-          taskWidget: "Widget de tâches",
-          habitsWidget: "Widget d'habitudes",
-          goalsWidget: "Widget d'objectifs",
-          analyticsWidget: "Widget d'analyses",
-          aiRecommendations: "Recommandations IA",
-          aiRecommendationsDesc: "Suggestions personnalisées basées sur vos données",
-          habitSuggestion: "Suggestion d'habitude",
-          habitSuggestionDesc: "Basé sur votre routine matinale, essayez d'ajouter 'Boire de l'eau' comme habitude quotidienne",
-          goalRecommendation: "Recommandation d'objectif",
-          goalRecommendationDesc: "Vous êtes proche de terminer votre objectif de lecture. Considérez définir une nouvelle cible !",
-          productivityTip: "Conseil de productivité",
-          productivityTipDesc: "Vos sessions de concentration sont les plus productives le matin. Planifiez les tâches importantes à ce moment-là.",
-          getNewRecommendations: "Obtenir de nouvelles recommandations",
-          upgradeForAiInsights: "Mettre à niveau pour les insights IA",
-          socialFeatures: "Fonctionnalités sociales",
-          socialFeaturesDesc: "Connectez-vous et rivalisez avec des amis",
-          friendChallenges: "Défis d'amis",
-          friendChallengesDesc: "Créez et rejoignez des défis avec des amis",
-          active: "Actif",
-          won: "Gagné",
-          community: "Communauté",
-          communityDesc: "Rejoignez des forums et des groupes",
-          groups: "Groupes",
-          posts: "Publications",
-          shareAchievements: "Partager les réalisations",
-          shareAchievementsDesc: "Partagez vos progrès sur les réseaux sociaux",
-          shared: "Partagé",
-          likes: "J'aime",
-          leaderboards: "Classements",
-          leaderboardsDesc: "Rivalisez sur les classements globaux et entre amis",
-          rank: "Rang",
-          points: "Points",
-          exploreCommunity: "Explorer la communauté",
-          upgradeForSocialFeatures: "Mettre à niveau pour les fonctionnalités sociales",
-          premiumContent: "Contenu premium",
-          premiumContentDesc: "Contenu éducatif et de bien-être",
-          wellnessArticles: "Articles de bien-être",
-          wellnessArticlesDesc: "Contenu éducatif sur la santé et le bien-être",
-          articles: "Articles",
-          weeklyUpdates: "Mises à jour hebdomadaires",
-          guidedMeditations: "Méditations guidées",
-          guidedMeditationsDesc: "Sessions audio pour la relaxation et la concentration",
-          sessions: "Sessions",
-          min: "min",
-          workoutPlans: "Plans d'entraînement",
-          workoutPlansDesc: "Programmes de fitness structurés et exercices",
-          plans: "Plans",
-          allLevels: "Tous niveaux",
-          browseContentLibrary: "Parcourir la bibliothèque de contenu",
-          upgradeForPremiumContent: "Mettre à niveau pour le contenu premium",
-          wechatPay: "Paiement WeChat",
-          wechatPayDesc: "Scannez le code QR pour passer à Premium",
-          proPlan: "Plan Pro",
-          premiumPlan: "Plan Premium",
-          advancedAnalytics: "Analyses avancées",
-          allProFeatures: "Toutes les fonctionnalités Pro",
-          generateQrCode: "Générer le code QR",
-          generating: "Génération...",
-          scanWithWechat: "Scanner avec WeChat",
-          waitingForPayment: "En attente de paiement...",
-          howToPay: "Comment payer :",
-          howToPayStep1: "1. Ouvrez l'application WeChat sur votre téléphone",
-          howToPayStep2: "2. Appuyez sur 'Scanner' et scannez le code QR",
-          howToPayStep3: "3. Confirmez le montant du paiement",
-          howToPayStep4: "4. Les fonctionnalités Premium seront activées instantanément"
         };
       default: // English
         return {
@@ -422,54 +330,9 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
 
   const text = getText();
 
-  const [qrCodes, setQrCodes] = useState<{[key: string]: string}>({});
-  const [loading, setLoading] = useState<{[key: string]: boolean}>({});
-  const [paymentStatus, setPaymentStatus] = useState<{[key: string]: string}>({});
 
-  const generateQrCode = async (plan: string, amount: number) => {
-    setLoading(prev => ({ ...prev, [plan]: true }));
-    
-    try {
-      // In development, we'll use a mock response
-      // In production, this would call the Netlify function
-      const isDevelopment = process.env.NODE_ENV === 'development';
-      
-      if (isDevelopment) {
-        // Mock response for development
-        setTimeout(() => {
-          const mockQrUrl = `weixin://wxpay/bizpayurl?pr=mock_${Date.now()}`;
-          setQrCodes(prev => ({ ...prev, [plan]: mockQrUrl }));
-          setPaymentStatus(prev => ({ ...prev, [plan]: 'pending' }));
-          setLoading(prev => ({ ...prev, [plan]: false }));
-        }, 1000);
-        return;
-      }
 
-      const response = await fetch('/.netlify/functions/generate-qr', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          plan,
-          amount,
-          userId: 'user_' + Date.now() // Mock user ID
-        })
-      });
 
-      const data = await response.json();
-      
-      if (data.success) {
-        setQrCodes(prev => ({ ...prev, [plan]: data.qrCodeUrl }));
-        setPaymentStatus(prev => ({ ...prev, [plan]: 'pending' }));
-      }
-    } catch (error) {
-      console.error('Error generating QR code:', error);
-      setPaymentStatus(prev => ({ ...prev, [plan]: 'error' }));
-    } finally {
-      setLoading(prev => ({ ...prev, [plan]: false }));
-    }
-  };
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -1112,23 +975,34 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <li>• {text.dataExport}</li>
              </ul>
              <div className="text-center">
-               {!qrCodes['pro'] ? (
-                 <button
-                   onClick={() => generateQrCode('pro', 68)}
-                   disabled={loading['pro']}
-                   className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
-                 >
-                   {loading['pro'] ? text.generating : text.generateQrCode}
-                 </button>
-               ) : (
-                 <div className="bg-white dark:bg-gray-700 p-3 rounded-lg border border-green-200 dark:border-green-600 inline-block">
-                   <div className="w-32 h-32 bg-gray-100 dark:bg-gray-600 rounded-lg flex items-center justify-center">
-                     <QrCode className="w-16 h-16 text-green-500" />
+               <button
+                 onClick={() => generateQrCode('pro', 68)}
+                 disabled={loading['pro']}
+                 className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 font-medium"
+               >
+                 {loading['pro'] ? text.generating : `${text.generateQrCode} - ¥68`}
+               </button>
+               
+               {/* QR Code Display */}
+               {showQrCode['pro'] && qrCodes['pro'] && (
+                 <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
+                   <div className="text-center">
+                     <div className="flex justify-between items-center mb-2">
+                       <h5 className="text-sm font-medium text-gray-900">{text.scanWithWechat}</h5>
+                       <button
+                         onClick={() => setShowQrCode(prev => ({ ...prev, pro: false }))}
+                         className="text-gray-400 hover:text-gray-600"
+                       >
+                         ✕
+                       </button>
+                     </div>
+                     <img 
+                       src={qrCodes['pro']} 
+                       alt="WeChat QR Code" 
+                       className="mx-auto w-48 h-48 border border-gray-300 rounded-lg"
+                     />
+                     <p className="text-xs text-gray-500 mt-2">{text.waitingForPayment}</p>
                    </div>
-                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{text.scanWithWechat}</p>
-                   {paymentStatus['pro'] === 'pending' && (
-                     <p className="text-xs text-blue-500 dark:text-blue-400 mt-1">{text.waitingForPayment}</p>
-                   )}
                  </div>
                )}
              </div>
@@ -1147,23 +1021,34 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
                <li>• {text.customizableDashboard}</li>
              </ul>
              <div className="text-center">
-               {!qrCodes['premium'] ? (
-                 <button
-                   onClick={() => generateQrCode('premium', 128)}
-                   disabled={loading['premium']}
-                   className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
-                 >
-                   {loading['premium'] ? text.generating : text.generateQrCode}
-                 </button>
-               ) : (
-                 <div className="bg-white dark:bg-gray-700 p-3 rounded-lg border border-purple-200 dark:border-purple-600 inline-block">
-                   <div className="w-32 h-32 bg-gray-100 dark:bg-gray-600 rounded-lg flex items-center justify-center">
-                     <QrCode className="w-16 h-16 text-purple-500" />
+               <button
+                 onClick={() => generateQrCode('premium', 128)}
+                 disabled={loading['premium']}
+                 className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 font-medium"
+               >
+                 {loading['premium'] ? text.generating : `${text.generateQrCode} - ¥128`}
+               </button>
+               
+               {/* QR Code Display */}
+               {showQrCode['premium'] && qrCodes['premium'] && (
+                 <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
+                   <div className="text-center">
+                     <div className="flex justify-between items-center mb-2">
+                       <h5 className="text-sm font-medium text-gray-900">{text.scanWithWechat}</h5>
+                       <button
+                         onClick={() => setShowQrCode(prev => ({ ...prev, premium: false }))}
+                         className="text-gray-400 hover:text-gray-600"
+                       >
+                         ✕
+                       </button>
+                     </div>
+                     <img 
+                       src={qrCodes['premium']} 
+                       alt="WeChat QR Code" 
+                       className="mx-auto w-48 h-48 border border-gray-300 rounded-lg"
+                     />
+                     <p className="text-xs text-gray-500 mt-2">{text.waitingForPayment}</p>
                    </div>
-                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{text.scanWithWechat}</p>
-                   {paymentStatus['premium'] === 'pending' && (
-                     <p className="text-xs text-blue-500 dark:text-blue-400 mt-1">{text.waitingForPayment}</p>
-                   )}
                  </div>
                )}
              </div>
@@ -1173,12 +1058,12 @@ export const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({
          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
            <div className="text-center">
              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{text.howToPay}</p>
-             <ol className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-               <li>1. {text.howToPayStep1}</li>
-               <li>2. {text.howToPayStep2}</li>
-               <li>3. {text.howToPayStep3}</li>
-               <li>4. {text.howToPayStep4}</li>
-             </ol>
+             <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+               <p>{text.howToPayStep1}</p>
+               <p>{text.howToPayStep2}</p>
+               <p>{text.howToPayStep3}</p>
+               <p>{text.howToPayStep4}</p>
+             </div>
            </div>
          </div>
        </div>

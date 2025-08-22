@@ -40,38 +40,23 @@ export const AIRecommendations: React.FC<AIRecommendationsProps> = ({
           howAiWorks: "Kako AI preporuke rade",
           howAiWorksDesc: "Naš AI analizira vaše navike, zadatke, podatke o dobrobiti i ciljeve da bi pružio personalizovane preporuke za poboljšanje vaše dnevne rutine."
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Recomendaciones de IA",
-          subtitle: "Insights personalizados basados en tus datos de bienestar",
-          refresh: "Actualizar",
-          analyzing: "Analizando...",
-          lastUpdated: "Última actualización",
-          noRecommendations: "Aún no hay recomendaciones",
-          startUsingApp: "Comienza a usar la aplicación para obtener recomendaciones de IA personalizadas",
-          priority: "Prioridad",
-          confidence: "Confianza",
-          suggestedAction: "Acción sugerida",
-          category: "Categoría",
-          howAiWorks: "Cómo funcionan las recomendaciones de IA",
-          howAiWorksDesc: "Nuestra IA analiza tus hábitos, tareas, datos de bienestar y objetivos para proporcionar recomendaciones personalizadas para mejorar tu rutina diaria."
+          title: "AI 推荐",
+          subtitle: "基于您的健康数据的个性化洞察",
+          refresh: "刷新",
+          analyzing: "分析中...",
+          lastUpdated: "最后更新",
+          noRecommendations: "暂无推荐",
+          startUsingApp: "开始使用应用程序以获得个性化AI推荐",
+          priority: "优先级",
+          confidence: "置信度",
+          suggestedAction: "建议行动",
+          category: "类别",
+          howAiWorks: "AI推荐如何工作",
+          howAiWorksDesc: "我们的AI分析您的习惯、任务、健康数据和目标，为改善您的日常习惯提供个性化推荐。"
         };
-      case 'fr':
-        return {
-          title: "Recommandations IA",
-          subtitle: "Aperçus personnalisés basés sur vos données de bien-être",
-          refresh: "Actualiser",
-          analyzing: "Analyse en cours...",
-          lastUpdated: "Dernière mise à jour",
-          noRecommendations: "Aucune recommandation pour le moment",
-          startUsingApp: "Commencez à utiliser l'application pour obtenir des recommandations IA personnalisées",
-          priority: "Priorité",
-          confidence: "Confiance",
-          suggestedAction: "Action suggérée",
-          category: "Catégorie",
-          howAiWorks: "Comment fonctionnent les recommandations IA",
-          howAiWorksDesc: "Notre IA analyse vos habitudes, tâches, données de bien-être et objectifs pour fournir des recommandations personnalisées pour améliorer votre routine quotidienne."
-        };
+
       default: // English
         return {
           title: "AI Recommendations",

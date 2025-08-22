@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo, lazy, Suspense } from 'react';
 import { 
   BarChart3, 
   CheckSquare, 
@@ -56,33 +56,19 @@ const translations = {
     analytics: "Analitika",
     selectTab: "Izaberite tab da započnete"
   },
-  es: {
-    dashboard: "Panel",
-    tasks: "Tareas",
-    timer: "Temporizador",
-    habits: "Hábitos",
-    wellness: "Bienestar",
-    goals: "Objetivos",
-    stats: "Estadísticas",
-    premium: "Premium",
-    notes: "Notas",
-    ai: "Inteligencia Artificial",
-    analytics: "Análisis",
-    selectTab: "Selecciona una pestaña para comenzar"
-  },
-  fr: {
-    dashboard: "Tableau de bord",
-    tasks: "Tâches",
-    timer: "Minuteur",
-    habits: "Habitudes",
-    wellness: "Bien-être",
-    goals: "Objectifs",
-    stats: "Statistiques",
-    premium: "Premium",
-    notes: "Notes",
-    ai: "Intelligence Artificielle",
-    analytics: "Analyses",
-    selectTab: "Sélectionnez un onglet pour commencer"
+  zh: {
+    dashboard: "仪表板",
+    tasks: "任务",
+    timer: "计时器",
+    habits: "习惯",
+    wellness: "健康",
+    goals: "目标",
+    stats: "统计",
+    premium: "高级版",
+    notes: "笔记",
+    ai: "人工智能",
+    analytics: "分析",
+    selectTab: "选择一个标签开始"
   }
 };
 
@@ -140,30 +126,30 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
     });
   };
 
-  const handleTabChange = (tab: string) => {
+  const handleTabChange = useCallback((tab: string) => {
     setActiveTab(tab);
-  };
+  }, []);
 
-  const handleAddTask = (task: Omit<Task, 'id' | 'createdAt'>) => {
+  const handleAddTask = useCallback((task: Omit<Task, 'id' | 'createdAt'>) => {
     const newTask: Task = {
       ...task,
       id: Date.now().toString(),
       createdAt: new Date(),
     };
     setTasks(prev => [...prev, newTask]);
-  };
+  }, []);
 
-  const handleToggleTask = (id: string) => {
+  const handleToggleTask = useCallback((id: string) => {
     setTasks(prev => prev.map(task => 
       task.id === id ? { ...task, completed: !task.completed } : task
     ));
-  };
+  }, []);
 
-  const handleDeleteTask = (id: string) => {
+  const handleDeleteTask = useCallback((id: string) => {
     setTasks(prev => prev.filter(task => task.id !== id));
-  };
+  }, []);
 
-  const handleAddHabit = (habit: Omit<Habit, 'id' | 'streak' | 'completedDates'>) => {
+  const handleAddHabit = useCallback((habit: Omit<Habit, 'id' | 'streak' | 'completedDates'>) => {
     const newHabit: Habit = {
       ...habit,
       id: Date.now().toString(),
@@ -171,9 +157,9 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
       completedDates: [],
     };
     setHabits(prev => [...prev, newHabit]);
-  };
+  }, []);
 
-  const handleToggleHabit = (id: string, date: string) => {
+  const handleToggleHabit = useCallback((id: string, date: string) => {
     setHabits(prev => prev.map(habit => {
       if (habit.id === id) {
         const completedDates = habit.completedDates || [];
@@ -184,19 +170,19 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
       }
       return habit;
     }));
-  };
+  }, []);
 
-  const handleDeleteHabit = (id: string) => {
+  const handleDeleteHabit = useCallback((id: string) => {
     setHabits(prev => prev.filter(habit => habit.id !== id));
-  };
+  }, []);
 
-  const handleAddWellnessEntry = (entry: Omit<WellnessEntry, 'date'>) => {
+  const handleAddWellnessEntry = useCallback((entry: Omit<WellnessEntry, 'date'>) => {
     const newEntry: WellnessEntry = {
       ...entry,
       date: new Date().toISOString().split('T')[0],
     };
     setWellnessEntries(prev => [...prev, newEntry]);
-  };
+  }, []);
 
   const handlePomodoroSessionComplete = (session: Omit<PomodoroSession, 'id'>) => {
     const newSession: PomodoroSession = {
@@ -229,12 +215,14 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
   };
 
   const handleAddNote = (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => {
+    console.log('MainApp handleAddNote called', note);
     const newNote: Note = {
       ...note,
       id: Date.now().toString(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+    console.log('Adding note to state', newNote);
     setNotes(prev => [...prev, newNote]);
   };
 
@@ -337,10 +325,10 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
       
       {/* Navigation */}
       <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="container mx-auto px-1 sm:px-2 md:px-4">
-          <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 md:py-4">
+        <div className="container mx-auto px-2">
+          <div className="space-y-2 py-2">
             {/* Prvi red - 5 opcija */}
-            <div className="grid grid-cols-5 gap-0.5 sm:gap-1 md:gap-3">
+            <div className="grid grid-cols-5 gap-1">
               {[
                 { id: 'dashboard', label: t.dashboard, icon: BarChart3, color: '#EA580C' },
                 { id: 'tasks', label: t.tasks, icon: CheckSquare, color: '#10B981' },
@@ -351,25 +339,25 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id)}
-                  className={`flex flex-col items-center space-y-0.5 px-0.5 sm:px-1 md:px-2 py-1 sm:py-2 md:py-3 text-xs font-medium rounded-lg transition-colors ${
+                  className={`flex flex-col items-center space-y-1 px-2 py-3 text-xs font-medium rounded-lg transition-colors touch-manipulation ${
                     activeTab === tab.id
                       ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400'
                       : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <tab.icon 
-                    className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} 
+                    className="w-5 h-5" 
                     style={{ 
                       stroke: activeTab === tab.id ? '#2563EB' : tab.color
                     }}
                   />
-                  <span className="text-center leading-tight text-xs sm:text-xs md:text-xs">{tab.label}</span>
+                  <span className="text-center leading-tight text-xs">{tab.label}</span>
                 </button>
               ))}
             </div>
             
             {/* Drugi red - 6 opcija */}
-            <div className="grid grid-cols-6 gap-0.5 sm:gap-1 md:gap-3">
+            <div className="grid grid-cols-6 gap-1">
               {[
                 { id: 'goals', label: t.goals, icon: Flag, color: '#6366F1' },
                 { id: 'stats', label: t.stats, icon: TrendingUp, color: '#374151' },
@@ -381,20 +369,20 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id)}
-                  className={`flex flex-col items-center space-y-0.5 px-0.5 sm:px-1 md:px-2 py-1 sm:py-2 md:py-3 text-xs font-medium rounded-lg transition-colors ${
+                  className={`flex flex-col items-center space-y-1 px-1 py-3 text-xs font-medium rounded-lg transition-colors touch-manipulation ${
                     activeTab === tab.id
                       ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400'
                       : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <tab.icon 
-                    className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} 
+                    className="w-5 h-5" 
                     style={{ 
                       color: activeTab === tab.id ? '#2563EB' : tab.color,
                       fill: activeTab === tab.id ? '#2563EB' : tab.color
                     }}
                   />
-                  <span className="text-center leading-tight text-xs sm:text-xs md:text-xs">{tab.label}</span>
+                  <span className="text-center leading-tight text-xs">{tab.label}</span>
                 </button>
               ))}
             </div>
@@ -403,8 +391,14 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
       </nav>
       
       {/* Main content */}
-      <main className="container mx-auto px-1 sm:px-2 md:px-4 py-2 sm:py-4 md:py-6">
-        {renderActiveComponent()}
+      <main className="container mx-auto px-2 py-4">
+        <Suspense fallback={
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        }>
+          {renderActiveComponent()}
+        </Suspense>
       </main>
     </div>
   );

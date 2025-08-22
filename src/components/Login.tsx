@@ -36,7 +36,7 @@ export const Login: React.FC<LoginProps> = ({
         return {
           title: "Prijavite se",
           subtitle: "Dobrodošli nazad na vaš wellness put",
-          email: "Korisničko ime",
+          email: "Email adresa",
           password: "Lozinka",
           emailRequired: "Email je obavezan",
           validEmail: "Unesite validan email",
@@ -51,49 +51,30 @@ export const Login: React.FC<LoginProps> = ({
           alipayLogin: "Prijavite se sa Alipay",
           noAccount: "Nemate nalog?",
           signUp: "Registrujte se",
-          back: "Nazad"
+          back: "Nazad",
+          fillAllFields: "Popunite sva polja"
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Iniciar sesión",
-          subtitle: "Bienvenido de vuelta a tu viaje de bienestar",
-          email: "Nombre de usuario",
-          password: "Contraseña",
-          emailRequired: "El correo electrónico es requerido",
-          validEmail: "Por favor ingresa un correo electrónico válido",
-          passwordRequired: "La contraseña es requerida",
-          signIn: "Iniciar sesión",
-          signingIn: "Iniciando sesión...",
-          invalidCredentials: "Correo electrónico o contraseña inválidos",
-          forgotPassword: "¿Olvidaste tu contraseña?",
-          googleLogin: "Iniciar sesión con Google",
-          appleLogin: "Iniciar sesión con Apple",
-          wechatLogin: "Iniciar sesión con WeChat",
-          alipayLogin: "Iniciar sesión con Alipay",
-          noAccount: "¿No tienes una cuenta?",
-          signUp: "Registrarse",
-          back: "Atrás"
-        };
-      case 'fr':
-        return {
-          title: "Se connecter",
-          subtitle: "Bon retour à votre voyage de bien-être",
-          email: "Nom d'utilisateur",
-          password: "Mot de passe",
-          emailRequired: "L'e-mail est requis",
-          validEmail: "Veuillez entrer un e-mail valide",
-          passwordRequired: "Le mot de passe est requis",
-          signIn: "Se connecter",
-          signingIn: "Connexion en cours...",
-          invalidCredentials: "E-mail ou mot de passe invalide",
-          forgotPassword: "Mot de passe oublié ?",
-          googleLogin: "Se connecter avec Google",
-          appleLogin: "Se connecter avec Apple",
-          wechatLogin: "Se connecter avec WeChat",
-          alipayLogin: "Se connecter avec Alipay",
-          noAccount: "Vous n'avez pas de compte ?",
-          signUp: "S'inscrire",
-          back: "Retour"
+          title: "登录",
+          subtitle: "欢迎回到您的健康之旅",
+          email: "邮箱地址",
+          password: "密码",
+          emailRequired: "邮箱是必填项",
+          validEmail: "请输入有效的邮箱",
+          passwordRequired: "密码是必填项",
+          signIn: "登录",
+          signingIn: "登录中...",
+          invalidCredentials: "邮箱或密码无效",
+          forgotPassword: "忘记密码？",
+          googleLogin: "使用Google登录",
+          appleLogin: "使用Apple登录",
+          wechatLogin: "使用微信登录",
+          alipayLogin: "使用支付宝登录",
+          noAccount: "没有账户？",
+          signUp: "注册",
+          back: "返回",
+          fillAllFields: "请填写所有字段"
         };
       default: // English
         return {
@@ -114,7 +95,8 @@ export const Login: React.FC<LoginProps> = ({
           alipayLogin: "Sign in with Alipay",
           noAccount: "Don't have an account?",
           signUp: "Sign Up",
-          back: "Back"
+          back: "Back",
+          fillAllFields: "Please fill in all fields"
         };
     }
   };
@@ -283,7 +265,7 @@ export const Login: React.FC<LoginProps> = ({
         </div>
 
         {/* Login Form */}
-        <div className={`backdrop-blur-sm rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 border ${
+        <div className={`backdrop-blur-sm rounded-xl shadow-2xl p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 border ${
           isDarkMode 
             ? 'bg-gray-800/50 border-gray-600/30' 
             : 'bg-white/10 border-white/20'
@@ -298,7 +280,7 @@ export const Login: React.FC<LoginProps> = ({
               placeholder={text.email}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base ${
+              className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 backdrop-blur-sm border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base ${
                 isDarkMode 
                   ? 'bg-gray-700/80 text-gray-100 placeholder-gray-400' 
                   : 'bg-white/80'
@@ -321,7 +303,7 @@ export const Login: React.FC<LoginProps> = ({
               placeholder={text.password}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={`w-full pl-10 pr-12 py-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${
+              className={`w-full pl-10 pr-12 py-3 backdrop-blur-sm border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${
                 isDarkMode 
                   ? 'bg-gray-700/80 text-gray-100 placeholder-gray-400' 
                   : 'bg-white/80'
@@ -375,7 +357,7 @@ export const Login: React.FC<LoginProps> = ({
           <button
             onClick={handleEmailLogin}
             disabled={isLoading || !email || !password}
-            className={`w-full py-3 rounded-xl font-semibold text-white transition-all ${
+            className={`w-full py-3 rounded-full font-semibold text-white transition-all ${
               isLoading || !email || !password
                 ? 'bg-gray-400 cursor-not-allowed opacity-50' 
                 : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-xl'
@@ -387,104 +369,114 @@ export const Login: React.FC<LoginProps> = ({
                 {text.signingIn}
               </div>
             ) : !email || !password ? (
-                              'Fill in all fields'
+                              text.fillAllFields
             ) : (
               <span>{text.signIn}</span>
             )}
           </button>
 
-          {/* Divider */}
-          <div className="flex items-center my-6">
-            <div className="flex-1 border-t border-white/20"></div>
-            <span className="px-4 text-white/60 text-sm">or</span>
-            <div className="flex-1 border-t border-white/20"></div>
-          </div>
+          {/* Divider - Only show if there are social login options */}
+          {(currentLanguage !== 'zh' || currentLanguage === 'zh') && (
+            <div className="flex items-center my-6">
+              <div className="flex-1 border-t border-white/20"></div>
+              <span className="px-4 text-white/60 text-sm">or</span>
+              <div className="flex-1 border-t border-white/20"></div>
+            </div>
+          )}
 
           {/* Social Login Buttons */}
           <div className="space-y-3">
-            {/* Google Button */}
-            <button
-              onClick={handleGoogleLogin}
-              disabled={isGoogleLoading}
-              className={`w-full flex items-center justify-center space-x-3 py-3 px-4 rounded-xl font-medium transition-all border ${
-                isDarkMode 
-                  ? 'bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700' 
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-              }`}
-            >
-              {isGoogleLoading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <>
-                  <svg className="w-5 h-5" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                  </svg>
-                  <span>{text.googleLogin}</span>
-                </>
-              )}
-            </button>
+            {/* Google Button - Not for Chinese */}
+            {currentLanguage !== 'zh' && (
+              <button
+                onClick={handleGoogleLogin}
+                disabled={isGoogleLoading}
+                className={`w-full flex items-center justify-center space-x-3 py-3 px-4 rounded-full font-medium transition-all border ${
+                  isDarkMode 
+                    ? 'bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700' 
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                }`}
+              >
+                {isGoogleLoading ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : (
+                  <>
+                    <svg className="w-5 h-5" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>{text.googleLogin}</span>
+                  </>
+                )}
+              </button>
+            )}
 
-            {/* Apple Button */}
-            <button
-              onClick={handleAppleLogin}
-              disabled={isAppleLoading}
-              className={`w-full flex items-center justify-center space-x-3 py-3 px-4 rounded-xl font-medium transition-all ${
-                isDarkMode 
-                  ? 'bg-gray-900 text-white border border-gray-600 hover:bg-gray-800' 
-                  : 'bg-black text-white hover:bg-gray-800'
-              }`}
-            >
-              {isAppleLoading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <>
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                  </svg>
-                  <span>{text.appleLogin}</span>
-                </>
-              )}
-            </button>
+            {/* Apple Button - Not for Chinese */}
+            {currentLanguage !== 'zh' && (
+              <button
+                onClick={handleAppleLogin}
+                disabled={isAppleLoading}
+                className={`w-full flex items-center justify-center space-x-3 py-3 px-4 rounded-lg font-medium transition-all ${
+                  isDarkMode 
+                    ? 'bg-gray-900 text-white border border-gray-600 hover:bg-gray-800' 
+                    : 'bg-black text-white hover:bg-gray-800'
+                }`}
+              >
+                  {isAppleLoading ? (
+                    <Loader2 size={20} className="animate-spin" />
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                      </svg>
+                      <span>{text.appleLogin}</span>
+                    </>
+                  )}
+                </button>
+            )}
 
-            {/* WeChat Button */}
-            <button
-              onClick={handleWeChatLogin}
-              disabled={isWeChatLoading}
-              className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 transition-all"
-            >
-              {isWeChatLoading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <>
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 4.882-1.932 7.621-.55-.302-3.706-3.78-6.53-8.012-6.53zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-2.324 0c0-.651.52-1.18 1.162-1.18zm5.618 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-2.324 0c0-.651.52-1.18 1.162-1.18z"/>
-                    <path d="M24 14.487c0-3.386-3.4-6.136-7.589-6.136-4.288 0-7.767 2.75-7.767 6.136 0 3.386 3.479 6.136 7.767 6.136.856 0 1.682-.105 2.457-.299a.724.724 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .139.045c.135 0 .241-.111.241-.247 0-.06-.023-.12-.038-.177l-.325-1.233a.488.488 0 0 1 .177-.561C22.805 18.396 24 16.548 24 14.487zM16.07 12.797c-.535 0-.969-.44-.969-.982 0-.542.434-.982.969-.982s.969.44.969.982c0 .542-.434.982-.969.982zm4.618 0c-.535 0-.969-.44-.969-.982 0-.542.434-.982.969-.982s.969.44.969.982c0 .542-.434.982-.969.982z"/>
-                  </svg>
-                  <span>{text.wechatLogin}</span>
-                </>
-              )}
-            </button>
+            {/* WeChat Button - Only for Chinese */}
+            {currentLanguage === 'zh' && (
+              <button
+                onClick={handleWeChatLogin}
+                disabled={isWeChatLoading}
+                className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-all"
+              >
+                {isWeChatLoading ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : (
+                  <>
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 4.882-1.932 7.621-.55-.302-3.706-3.78-6.53-8.012-6.53zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-2.324 0c0-.651.52-1.18 1.162-1.18zm5.618 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-2.324 0c0-.651.52-1.18 1.162-1.18z"/>
+                      <path d="M24 14.487c0-3.386-3.4-6.136-7.589-6.136-4.288 0-7.767 2.75-7.767 6.136 0 3.386 3.479 6.136 7.767 6.136.856 0 1.682-.105 2.457-.299a.724.724 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .139.045c.135 0 .241-.111.241-.247 0-.06-.023-.12-.038-.177l-.325-1.233a.488.488 0 0 1 .177-.561C22.805 18.396 24 16.548 24 14.487zM16.07 12.797c-.535 0-.969-.44-.969-.982 0-.542.434-.982.969-.982s.969.44.969.982c0 .542-.434.982-.969.982zm4.618 0c-.535 0-.969-.44-.969-.982 0-.542.434-.982.969-.982s.969.44.969.982c0 .542-.434.982-.969.982z"/>
+                    </svg>
+                    <span>{text.wechatLogin}</span>
+                  </>
+                )}
+              </button>
+            )}
 
-            {/* Alipay Button */}
-            <button
-              onClick={handleAlipayLogin}
-              disabled={isAlipayLoading}
-              className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-all"
-            >
-              {isAlipayLoading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <>
-                  <div className="w-5 h-5 bg-white rounded flex items-center justify-center text-blue-600 font-bold text-xs">
-                    支
-                  </div>
-                  <span>{text.alipayLogin}</span>
-                </>
-              )}
-            </button>
+            {/* Alipay Button - Only for Chinese */}
+            {currentLanguage === 'zh' && (
+              <button
+                onClick={handleAlipayLogin}
+                disabled={isAlipayLoading}
+                className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
+              >
+                {isAlipayLoading ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : (
+                  <>
+                    <div className="w-5 h-5 bg-white rounded flex items-center justify-center text-blue-600 font-bold text-xs">
+                      支
+                    </div>
+                    <span>{text.alipayLogin}</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
 
           {/* Sign Up Link */}

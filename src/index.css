@@ -2,9 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Prevent blue square issues */
+/* Mobile-first optimizations */
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -12,6 +18,35 @@ body {
   padding: 0;
   background-color: #f9fafb;
   transition: background-color 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Mobile touch optimizations */
+button, input, textarea, select {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+/* Prevent zoom on input focus on iOS */
+@media screen and (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent blue square issues */
+* {
+  box-sizing: border-box;
 }
 
 /* Dark mode styles */
@@ -356,11 +391,6 @@ input[type="text"]::-ms-datetime-edit {
     min-height: 44px;
     min-width: 44px;
   }
-}
-
-/* Smooth scrolling for mobile */
-html {
-  scroll-behavior: smooth;
 }
 
 /* Better focus styles for mobile */

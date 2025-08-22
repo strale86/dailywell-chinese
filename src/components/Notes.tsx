@@ -38,39 +38,22 @@ export const Notes: React.FC<NotesProps> = ({
           created: "Kreirano",
           updated: "Ažurirano"
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Notas",
-          subtitle: "Captura tus pensamientos e ideas",
-          addNote: "Agregar nota",
-          newNote: "Nueva nota",
-          titleLabel: "Título",
-          contentLabel: "Contenido",
-          titlePlaceholder: "Ingresa el título de la nota",
-          contentPlaceholder: "Escribe tu nota aquí...",
-          cancel: "Cancelar",
-          saveNote: "Guardar nota",
-          noNotes: "Aún no hay notas",
-          startCreating: "Comienza creando tu primera nota",
-          created: "Creado",
-          updated: "Actualizado"
-        };
-      case 'fr':
-        return {
-          title: "Notes",
-          subtitle: "Capturez vos pensées et idées",
-          addNote: "Ajouter une note",
-          newNote: "Nouvelle note",
-          titleLabel: "Titre",
-          contentLabel: "Contenu",
-          titlePlaceholder: "Entrez le titre de la note",
-          contentPlaceholder: "Écrivez votre note ici...",
-          cancel: "Annuler",
-          saveNote: "Enregistrer la note",
-          noNotes: "Aucune note pour le moment",
-          startCreating: "Commencez par créer votre première note",
-          created: "Créé",
-          updated: "Mis à jour"
+          title: "笔记",
+          subtitle: "记录您的想法和创意",
+          addNote: "添加笔记",
+          newNote: "新笔记",
+          titleLabel: "标题",
+          contentLabel: "内容",
+          titlePlaceholder: "输入笔记标题",
+          contentPlaceholder: "在此写下您的笔记...",
+          cancel: "取消",
+          saveNote: "保存笔记",
+          noNotes: "暂无笔记",
+          startCreating: "开始创建您的第一个笔记",
+          created: "已创建",
+          updated: "已更新"
         };
       default: // English
         return {
@@ -99,7 +82,9 @@ export const Notes: React.FC<NotesProps> = ({
   const [isAddingNote, setIsAddingNote] = useState(false);
 
   const handleAddNote = () => {
+    console.log('handleAddNote called', { title: newNoteTitle, content: newNoteContent });
     if (newNoteTitle.trim() && newNoteContent.trim()) {
+      console.log('Adding note...');
       onAddNote({
         title: newNoteTitle.trim(),
         content: newNoteContent.trim(),
@@ -107,6 +92,8 @@ export const Notes: React.FC<NotesProps> = ({
       setNewNoteTitle('');
       setNewNoteContent('');
       setIsAddingNote(false);
+    } else {
+      console.log('Note validation failed - empty title or content');
     }
   };
 
@@ -150,7 +137,7 @@ export const Notes: React.FC<NotesProps> = ({
                 type="text"
                 value={newNoteTitle}
                 onChange={(e) => setNewNoteTitle(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black border-gray-300"
                 placeholder={text.titlePlaceholder}
               />
             </div>
@@ -161,7 +148,7 @@ export const Notes: React.FC<NotesProps> = ({
                 value={newNoteContent}
                 onChange={(e) => setNewNoteContent(e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white text-black border-gray-300"
                 placeholder={text.contentPlaceholder}
               />
             </div>
@@ -178,7 +165,10 @@ export const Notes: React.FC<NotesProps> = ({
                 {text.cancel}
               </button>
               <button
-                onClick={handleAddNote}
+                onClick={() => {
+                  console.log('Save button clicked');
+                  handleAddNote();
+                }}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 {text.saveNote}

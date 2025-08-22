@@ -29,47 +29,65 @@ const getRecommendationTexts = (language: string) => {
         productivity: "Produktivnost",
         wellness: "Zdravlje",
         goals: "Ciljevi",
-        habits: "Navike"
+        habits: "Navike",
+        // Additional translations for hardcoded texts
+        boostYourMood: "Poboljšajte svoje raspoloženje",
+        boostYourMoodDesc: "Vaše prosečno raspoloženje je {mood}/5. Pokušajte aktivnosti koje obično poboljšavaju vaše raspoloženje.",
+        reduceStress: "Smanjite stres",
+        reduceStressDesc: "Vaš nivo stresa je visok ({stress}/5). Razmislite o tehnikama za smanjenje stresa.",
+        revitalizeGoals: "Oživite svoje ciljeve",
+        revitalizeGoalsDesc: "Imate {count} ciljeva sa sporim napretkom. Razbijte ih na manje milje.",
+        productivityMaster: "Majstor produktivnosti",
+        productivityMasterDesc: "Pokazujete odlične obrasce produktivnosti! Razmislite o deljenju svojih tehnika sa drugima.",
+        tryMeditation: "Pokušajte 10 minuta meditacije ili šetnju",
+        practiceBreathing: "Vežbajte duboko disanje ili napravite pauzu",
+        reviewMilestones: "Pregledajte i ažurirajte svoje milje ciljeva",
+        documentTechniques: "Dokumentujte svoje tehnike produktivnosti u beleškama",
+        motivation: "Motivacija",
+        // Habit suggestions
+        dailyExercise: "Dnevno vežbanje",
+        readingHabit: "Navika čitanja",
+        mindfulnessPractice: "Praksa svesnosti",
+        timeBlocking: "Blokiranje vremena"
       };
-    case 'es':
+    case 'zh':
       return {
-        improveTaskCompletion: "Mejorar tasa de finalización de tareas",
-        taskCompletionRate: "Tu tasa de finalización de tareas es",
-        tryBreakingDown: "Intenta dividir tareas más grandes en pasos más pequeños y manejables",
-        tryPomodoro: "Prueba la técnica Pomodoro para mejorar el enfoque",
-        trackWellness: "Rastrea tu bienestar",
-        startTracking: "Comienza a rastrear tu bienestar diario para obtener insights personalizados y recomendaciones",
-        completeFirstCheckin: "Completa tu primera verificación de bienestar",
-        setMoreGoals: "Establece más objetivos",
-        roomForGoals: "Tienes espacio para establecer más objetivos. Considera establecer objetivos en diferentes áreas de la vida",
-        addNewGoals: "Agrega nuevos objetivos en diferentes categorías",
-        tryNewHabits: "Prueba nuevos hábitos",
-        basedOnHabits: "Basado en tus hábitos actuales, podrías disfrutar",
-        addSuggestedHabit: "Agrega uno de los hábitos sugeridos",
-        productivity: "Productividad",
-        wellness: "Bienestar",
-        goals: "Objetivos",
-        habits: "Hábitos"
-      };
-    case 'fr':
-      return {
-        improveTaskCompletion: "Améliorer le taux de finalisation des tâches",
-        taskCompletionRate: "Votre taux de finalisation des tâches est",
-        tryBreakingDown: "Essayez de diviser les tâches plus importantes en étapes plus petites et gérables",
-        tryPomodoro: "Essayez la technique Pomodoro pour améliorer la concentration",
-        trackWellness: "Suivez votre bien-être",
-        startTracking: "Commencez à suivre votre bien-être quotidien pour obtenir des insights personnalisés et des recommandations",
-        completeFirstCheckin: "Terminez votre première vérification de bien-être",
-        setMoreGoals: "Définissez plus d'objectifs",
-        roomForGoals: "Vous avez de la place pour définir plus d'objectifs. Considérez définir des objectifs dans différents domaines de la vie",
-        addNewGoals: "Ajoutez de nouveaux objectifs dans différentes catégories",
-        tryNewHabits: "Essayez de nouvelles habitudes",
-        basedOnHabits: "Basé sur vos habitudes actuelles, vous pourriez apprécier",
-        addSuggestedHabit: "Ajoutez l'une des habitudes suggérées",
-        productivity: "Productivité",
-        wellness: "Bien-être",
-        goals: "Objectifs",
-        habits: "Habitudes"
+        improveTaskCompletion: "提高任务完成率",
+        taskCompletionRate: "您的任务完成率是",
+        tryBreakingDown: "尝试将较大的任务分解为更小、更易管理的步骤",
+        tryPomodoro: "尝试番茄工作法来提高专注力",
+        trackWellness: "跟踪您的健康",
+        startTracking: "开始跟踪您的日常健康，获得个性化洞察和推荐",
+        completeFirstCheckin: "完成您的第一次健康检查",
+        setMoreGoals: "设定更多目标",
+        roomForGoals: "您有空间设定更多目标。考虑在不同生活领域设定目标",
+        addNewGoals: "在不同类别中添加新目标",
+        tryNewHabits: "尝试新习惯",
+        basedOnHabits: "基于您当前的习惯，您可能会喜欢",
+        addSuggestedHabit: "添加一个建议的习惯",
+        productivity: "生产力",
+        wellness: "健康",
+        goals: "目标",
+        habits: "习惯",
+        // Additional translations for hardcoded texts
+        boostYourMood: "提升您的心情",
+        boostYourMoodDesc: "您的平均心情是 {mood}/5。尝试通常能改善心情的活动。",
+        reduceStress: "减轻压力",
+        reduceStressDesc: "您的压力水平很高 ({stress}/5)。考虑减压技巧。",
+        revitalizeGoals: "重振您的目标",
+        revitalizeGoalsDesc: "您有 {count} 个目标进展缓慢。将它们分解为更小的里程碑。",
+        productivityMaster: "生产力大师",
+        productivityMasterDesc: "您表现出出色的生产力模式！考虑与他人分享您的技巧。",
+        tryMeditation: "尝试10分钟冥想或散步",
+        practiceBreathing: "练习深呼吸或休息一下",
+        reviewMilestones: "审查并更新您的目标里程碑",
+        documentTechniques: "在笔记中记录您的生产力技巧",
+        motivation: "激励",
+        // Habit suggestions
+        dailyExercise: "每日运动",
+        readingHabit: "阅读习惯",
+        mindfulnessPractice: "正念练习",
+        timeBlocking: "时间块管理"
       };
     default: // English
       return {
@@ -89,7 +107,26 @@ const getRecommendationTexts = (language: string) => {
         productivity: "Productivity",
         wellness: "Wellness",
         goals: "Goals",
-        habits: "Habits"
+        habits: "Habits",
+        // Additional translations for hardcoded texts
+        boostYourMood: "Boost Your Mood",
+        boostYourMoodDesc: "Your average mood is {mood}/5. Try activities that usually improve your mood.",
+        reduceStress: "Reduce Stress",
+        reduceStressDesc: "Your stress level is high ({stress}/5). Consider stress-reduction techniques.",
+        revitalizeGoals: "Revitalize Your Goals",
+        revitalizeGoalsDesc: "You have {count} goals with slow progress. Break them down into smaller milestones.",
+        productivityMaster: "Productivity Master",
+        productivityMasterDesc: "You show great productivity patterns! Consider sharing your techniques with others.",
+        tryMeditation: "Try 10 minutes of meditation or a walk",
+        practiceBreathing: "Practice deep breathing or take a break",
+        reviewMilestones: "Review and update your goal milestones",
+        documentTechniques: "Document your productivity techniques in notes",
+        motivation: "Motivation",
+        // Habit suggestions
+        dailyExercise: "Daily Exercise",
+        readingHabit: "Reading Habit",
+        mindfulnessPractice: "Mindfulness Practice",
+        timeBlocking: "Time Blocking"
       };
   }
 };
@@ -232,12 +269,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 4).toString(),
         type: 'wellness',
-        title: 'Boost Your Mood',
-        description: `Your average mood is ${avgMood.toFixed(1)}/5. Try activities that usually improve your mood.`,
+        title: texts.boostYourMood,
+        description: texts.boostYourMoodDesc.replace('{mood}', avgMood.toFixed(1)),
         priority: 'high',
         confidence: 85,
         category: texts.wellness,
-        action: 'Try 10 minutes of meditation or a walk',
+        action: texts.tryMeditation,
         createdAt: new Date()
       });
     }
@@ -249,12 +286,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 5).toString(),
         type: 'wellness',
-        title: 'Reduce Stress',
-        description: `Your stress level is high (${avgStress.toFixed(1)}/5). Consider stress-reduction techniques.`,
+        title: texts.reduceStress,
+        description: texts.reduceStressDesc.replace('{stress}', avgStress.toFixed(1)),
         priority: 'high',
         confidence: 90,
         category: texts.wellness,
-        action: 'Practice deep breathing or take a break',
+        action: texts.practiceBreathing,
         createdAt: new Date()
       });
     }
@@ -271,12 +308,12 @@ export class AIRecommendationService {
       this.recommendations.push({
         id: (Date.now() + 6).toString(),
         type: 'goal',
-        title: 'Revitalize Your Goals',
-        description: `You have ${lowProgressGoals.length} goals with slow progress. Break them down into smaller milestones.`,
+        title: texts.revitalizeGoals,
+        description: texts.revitalizeGoalsDesc.replace('{count}', lowProgressGoals.length.toString()),
         priority: 'medium',
         confidence: 70,
         category: texts.goals,
-        action: 'Review and update your goal milestones',
+        action: texts.reviewMilestones,
         createdAt: new Date()
       });
     }
@@ -287,15 +324,18 @@ export class AIRecommendationService {
     const completedHabits = habits.filter(habit => habit.completedDates.length > 0);
     
     if (completedTasks.length > 10 && completedHabits.length > 3) {
+      const currentLanguage = getCurrentLanguage();
+      const texts = getRecommendationTexts(currentLanguage);
+      
       this.recommendations.push({
         id: (Date.now() + 7).toString(),
         type: 'productivity',
-        title: 'Productivity Master',
-        description: 'You show great productivity patterns! Consider sharing your techniques with others.',
+        title: texts.productivityMaster,
+        description: texts.productivityMasterDesc,
         priority: 'low',
         confidence: 95,
-        category: 'motivation',
-        action: 'Document your productivity techniques in notes',
+        category: texts.motivation,
+        action: texts.documentTechniques,
         createdAt: new Date()
       });
     }
@@ -345,22 +385,25 @@ export class AIRecommendationService {
   }
 
   private getSuggestedHabits(existingCategories: string[]): string[] {
+    const currentLanguage = getCurrentLanguage();
+    const texts = getRecommendationTexts(currentLanguage);
+    
     const allCategories = ['health', 'productivity', 'learning', 'wellness', 'fitness', 'personal'];
     const missingCategories = allCategories.filter(cat => !existingCategories.includes(cat));
     
     const suggestions: string[] = [];
     
     if (missingCategories.includes('fitness')) {
-      suggestions.push('Daily Exercise');
+      suggestions.push(texts.dailyExercise);
     }
     if (missingCategories.includes('learning')) {
-      suggestions.push('Reading Habit');
+      suggestions.push(texts.readingHabit);
     }
     if (missingCategories.includes('wellness')) {
-      suggestions.push('Mindfulness Practice');
+      suggestions.push(texts.mindfulnessPractice);
     }
     if (missingCategories.includes('productivity')) {
-      suggestions.push('Time Blocking');
+      suggestions.push(texts.timeBlocking);
     }
     
     return suggestions.slice(0, 2); // Return max 2 suggestions

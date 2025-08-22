@@ -12,7 +12,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
   // Get language from localStorage or default to English
   useEffect(() => {
     const savedLanguage = localStorage.getItem('selectedLanguage');
-    if (savedLanguage && ['en', 'es', 'fr', 'sr'].includes(savedLanguage)) {
+    if (savedLanguage && ['en', 'sr', 'zh'].includes(savedLanguage)) {
       setSelectedLanguage(savedLanguage);
     } else {
       setSelectedLanguage('en');
@@ -22,8 +22,6 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸', short: 'EN' },
-    { code: 'es', name: 'Español', flag: '🇪🇸', short: 'ES' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷', short: 'FR' },
     { code: 'sr', name: 'Српски', flag: '🇷🇸', short: 'SR' },
     { code: 'zh', name: '中文', flag: '🇨🇳', short: 'ZH' }
   ];
@@ -60,35 +58,20 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
       getStarted: "Započnite",
       joinMessage: "Pridružite se hiljadama korisnika koji poboljšavaju svoj dnevni wellness"
     },
-    es: {
+    zh: {
       title: "DailyWell",
-      subtitle: "Tu compañero diario de bienestar",
-      heading: "Transforma tu rutina diaria",
-      description: "Construye hábitos saludables, rastrea tu progreso y logra tus objetivos de bienestar con nuestra aplicación integral de compañero diario.",
+      subtitle: "您的日常健康伴侣",
+      heading: "改变您的日常习惯",
+      description: "建立健康习惯，跟踪您的进度，并通过我们全面的日常伴侣应用程序实现您的健康目标。",
       features: {
-        tasks: "Gestión de tareas y productividad",
-        habits: "Seguimiento de hábitos y series",
-        wellness: "Verificaciones de bienestar",
-        timer: "Temporizador de enfoque (Pomodoro)",
-        analytics: "Análisis de progreso"
+        tasks: "任务管理与生产力",
+        habits: "习惯跟踪与系列", 
+        wellness: "健康检查",
+        timer: "专注计时器 (番茄钟)",
+        analytics: "进度分析"
       },
-      getStarted: "Comenzar",
-      joinMessage: "Únete a miles de usuarios mejorando su bienestar diario"
-    },
-    fr: {
-      title: "DailyWell",
-      subtitle: "Votre compagnon quotidien de bien-être",
-      heading: "Transformez votre routine quotidienne",
-      description: "Construisez des habitudes saines, suivez vos progrès et atteignez vos objectifs de bien-être avec notre application complète de compagnon quotidien.",
-      features: {
-        tasks: "Gestion des tâches et productivité",
-        habits: "Suivi des habitudes et séries",
-        wellness: "Vérifications de bien-être",
-        timer: "Minuteur de concentration (Pomodoro)",
-        analytics: "Analyse des progrès"
-      },
-      getStarted: "Commencer",
-      joinMessage: "Rejoignez des milliers d'utilisateurs améliorant leur bien-être quotidien"
+      getStarted: "开始使用",
+      joinMessage: "加入数千名改善日常健康的用户"
     }
   };
 
@@ -121,7 +104,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
         
         {/* Language Switcher */}
         <div className="mt-6 flex flex-col items-center">
-                     <p className="text-white/80 text-sm mb-2">Choose Language / Izaberite jezik / Elegir idioma / Choisir la langue</p>
+                     <p className="text-white/80 text-sm mb-2">Choose Language / Izaberite jezik</p>
           <div className="flex space-x-2 mb-2">
             {languages.map((lang) => (
               <button

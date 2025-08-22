@@ -42,45 +42,25 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
           pages: "Stranica",
           hours: "Sati"
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Establecimiento de objetivos",
-          subtitle: "Establece y rastrea tus objetivos personales",
-          addGoal: "Agregar objetivo",
-          enterGoalTitle: "Ingresa el título del objetivo",
-          cancel: "Cancelar",
-          noGoals: "Aún no hay objetivos",
-          startSettingGoals: "Comienza a establecer tus objetivos para rastrear el progreso",
-          health: "Salud",
-          productivity: "Productividad",
-          learning: "Aprendizaje",
-          wellness: "Bienestar",
-          fitness: "Fitness",
-          personal: "Personal",
-          times: "Veces",
-          days: "Días",
-          pages: "Páginas",
-          hours: "Horas"
-        };
-      case 'fr':
-        return {
-          title: "Définition d'objectifs",
-          subtitle: "Définissez et suivez vos objectifs personnels",
-          addGoal: "Ajouter un objectif",
-          enterGoalTitle: "Entrez le titre de l'objectif",
-          cancel: "Annuler",
-          noGoals: "Aucun objectif pour le moment",
-          startSettingGoals: "Commencez à définir vos objectifs pour suivre les progrès",
-          health: "Santé",
-          productivity: "Productivité",
-          learning: "Apprentissage",
-          wellness: "Bien-être",
-          fitness: "Fitness",
-          personal: "Personnel",
-          times: "Fois",
-          days: "Jours",
-          pages: "Pages",
-          hours: "Heures"
+          title: "目标设定",
+          subtitle: "设定并跟踪您的个人目标",
+          addGoal: "添加目标",
+          enterGoalTitle: "输入目标标题",
+          cancel: "取消",
+          noGoals: "暂无目标",
+          startSettingGoals: "开始设定您的目标来跟踪进度",
+          health: "健康",
+          productivity: "生产力",
+          learning: "学习",
+          wellness: "健康",
+          fitness: "健身",
+          personal: "个人",
+          times: "次",
+          days: "天",
+          pages: "页",
+          hours: "小时"
         };
       default: // English
         return {
@@ -119,7 +99,9 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('handleSubmit called', { title: newGoal.title, category: newGoal.category });
     if (newGoal.title.trim()) {
+      console.log('Adding goal...');
       onAddGoal(newGoal);
       setNewGoal({
         title: '',
@@ -130,6 +112,8 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
         deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       });
       setShowForm(false);
+    } else {
+      console.log('Goal validation failed - empty title');
     }
   };
 
@@ -151,25 +135,25 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
 
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-sm border space-y-4">
-                     <input
-             type="text"
-             placeholder={text.enterGoalTitle}
-             value={newGoal.title}
-             onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-             onKeyPress={(e) => {
-               if (e.key === 'Enter' && newGoal.title.trim()) {
-                 handleSubmit(e);
-               }
-             }}
-             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-             autoFocus
-           />
+          <input
+            type="text"
+            placeholder={text.enterGoalTitle}
+            value={newGoal.title}
+            onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && newGoal.title.trim()) {
+                handleSubmit(e);
+              }
+            }}
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black border-gray-300"
+            autoFocus
+          />
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <select
               value={newGoal.category}
               onChange={(e) => setNewGoal({ ...newGoal, category: e.target.value as any })}
-              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black border-gray-300"
             >
               <option value="health">{text.health}</option>
               <option value="productivity">{text.productivity}</option>
@@ -184,13 +168,13 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
               min="1"
               value={newGoal.target}
               onChange={(e) => setNewGoal({ ...newGoal, target: parseInt(e.target.value) || 1 })}
-              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black border-gray-300"
             />
             
             <select
               value={newGoal.unit}
               onChange={(e) => setNewGoal({ ...newGoal, unit: e.target.value })}
-              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black border-gray-300"
             >
               <option value="times">{text.times}</option>
               <option value="days">{text.days}</option>
@@ -199,13 +183,19 @@ export const GoalSetting: React.FC<GoalSettingProps> = ({
             </select>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={() => setShowForm(false)}
               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
               {text.cancel}
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              {text.addGoal}
             </button>
           </div>
         </form>

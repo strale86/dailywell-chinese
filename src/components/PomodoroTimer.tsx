@@ -36,49 +36,27 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete 
           timeToWork: "Vreme je da se vratite na posao!",
           timeForBreak: "Vreme je za pauzu!"
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Temporizador de enfoque",
-          subtitle: "Mantén el enfoque con la técnica Pomodoro",
-          breakTime: "Tiempo de descanso",
-          focusTime: "Tiempo de enfoque",
-          workingOn: "¿En qué estás trabajando?",
-          pause: "Pausar",
-          start: "Comenzar",
-          reset: "Reiniciar",
-          sessionsToday: "Sesiones hoy",
-          focusTimeLabel: "Tiempo de enfoque",
-          focusTips: "Consejos de enfoque",
-          tip1: "• Trabaja en sesiones enfocadas de 25 minutos",
-          tip2: "• Toma descansos de 5 minutos entre sesiones",
-          tip3: "• Elimina distracciones durante el tiempo de enfoque",
-          tip4: "• Rastrea tu progreso y celebra los éxitos",
-          breakFinished: "¡Descanso terminado!",
-          pomodoroCompleted: "¡Pomodoro completado!",
-          timeToWork: "¡Hora de volver al trabajo!",
-          timeForBreak: "¡Hora de descansar!"
-        };
-      case 'fr':
-        return {
-          title: "Minuteur de concentration",
-          subtitle: "Restez concentré avec la technique Pomodoro",
-          breakTime: "Temps de pause",
-          focusTime: "Temps de concentration",
-          workingOn: "Sur quoi travaillez-vous ?",
-          pause: "Pause",
-          start: "Commencer",
-          reset: "Réinitialiser",
-          sessionsToday: "Sessions aujourd'hui",
-          focusTimeLabel: "Temps de concentration",
-          focusTips: "Conseils de concentration",
-          tip1: "• Travaillez en sessions concentrées de 25 minutes",
-          tip2: "• Prenez des pauses de 5 minutes entre les sessions",
-          tip3: "• Éliminez les distractions pendant le temps de concentration",
-          tip4: "• Suivez vos progrès et célébrez vos succès",
-          breakFinished: "Pause terminée !",
-          pomodoroCompleted: "Pomodoro terminé !",
-          timeToWork: "Il est temps de retourner au travail !",
-          timeForBreak: "Il est temps de faire une pause !"
+          title: "专注计时器",
+          subtitle: "使用番茄工作法保持专注",
+          breakTime: "休息时间",
+          focusTime: "专注时间",
+          workingOn: "您正在做什么？",
+          pause: "暂停",
+          start: "开始",
+          reset: "重置",
+          sessionsToday: "今日会话",
+          focusTimeLabel: "专注时间",
+          focusTips: "专注技巧",
+          tip1: "• 以25分钟的专注会话工作",
+          tip2: "• 在会话之间休息5分钟",
+          tip3: "• 在专注时间消除干扰",
+          tip4: "• 跟踪您的进度并庆祝成功",
+          breakFinished: "休息结束！",
+          pomodoroCompleted: "番茄工作法完成！",
+          timeToWork: "该回去工作了！",
+          timeForBreak: "该休息了！"
         };
       default: // English
         return {

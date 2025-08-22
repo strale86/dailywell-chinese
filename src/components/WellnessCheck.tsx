@@ -36,6 +36,24 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
           resetTitle: "Vrati na podrazumevane vrednosti",
           recentEntries: "Skorašnji unosi",
           wellnessArticles: "Članci o dobrobiti",
+          // Mood descriptions
+          verySad: "Veoma tužno",
+          sad: "Tužno",
+          moodNeutral: "Neutralno",
+          happy: "Srećno",
+          veryHappy: "Veoma srećno",
+          // Stress descriptions
+          veryRelaxed: "Veoma opušteno",
+          relaxed: "Opušteno",
+          stressNeutral: "Neutralno",
+          stressed: "Stresno",
+          veryStressed: "Veoma stresno",
+          // Energy descriptions
+          veryTired: "Veoma umorno",
+          tired: "Umorno",
+          energyNeutral: "Neutralno",
+          energetic: "Energetično",
+          veryEnergetic: "Veoma energetično",
           // Motivational quotes
           quote1: "Danas je nova prilika da budeš bolji nego juče.",
           quote2: "Mali napredak je i dalje napredak.",
@@ -50,66 +68,55 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
           quote11: "Veruj da možeš i na pola si puta.",
           quote12: "Budućnost zavisi od onoga što radiš danas."
         };
-      case 'es':
+      case 'zh':
         return {
-          title: "Verificación de bienestar",
-          subtitle: "¿Cómo te sientes hoy?",
-          todaysCheck: "Verificación de hoy",
-          mood: "Estado de ánimo",
-          stressLevel: "Nivel de estrés",
-          energyLevel: "Nivel de energía",
-          notes: "Notas (Opcional)",
-          notesPlaceholder: "¿Cómo te sientes hoy? ¿Algún pensamiento o reflexión...",
-          updateCheckin: "Actualizar verificación",
-          saveCheckin: "Guardar verificación",
-          reset: "Reiniciar",
-          resetTitle: "Reiniciar a valores predeterminados",
-          recentEntries: "Entradas recientes",
-          wellnessArticles: "Artículos de bienestar",
+          title: "健康检查",
+          subtitle: "今天感觉如何？",
+          todaysCheck: "今日检查",
+          mood: "心情",
+          stressLevel: "压力水平",
+          energyLevel: "能量水平",
+          notes: "备注 (可选)",
+          notesPlaceholder: "今天感觉如何？任何想法或反思...",
+          updateCheckin: "更新检查",
+          saveCheckin: "保存检查",
+          reset: "重置",
+          resetTitle: "重置为默认值",
+          recentEntries: "最近记录",
+          wellnessArticles: "健康文章",
+          // Mood descriptions
+          verySad: "非常难过",
+          sad: "难过",
+          moodNeutral: "一般",
+          happy: "开心",
+          veryHappy: "非常开心",
+          // Stress descriptions
+          veryRelaxed: "非常放松",
+          relaxed: "放松",
+          stressNeutral: "一般",
+          stressed: "有压力",
+          veryStressed: "压力很大",
+          // Energy descriptions
+          veryTired: "非常疲惫",
+          tired: "疲惫",
+          energyNeutral: "一般",
+          energetic: "精力充沛",
+          veryEnergetic: "非常精力充沛",
           // Motivational quotes
-          quote1: "Hoy es una nueva oportunidad para ser mejor que ayer.",
-          quote2: "El progreso pequeño sigue siendo progreso.",
-          quote3: "Eres capaz de más de lo que sabes.",
-          quote4: "Cada día es un nuevo comienzo.",
-          quote5: "Enfócate en el progreso, no en la perfección.",
-          quote6: "El único límite es el que te pones a ti mismo.",
-          quote7: "Sueña, desea, hazlo.",
-          quote8: "Las grandes cosas nunca vienen de zonas de confort.",
-          quote9: "No esperes la oportunidad, créala.",
-          quote10: "El éxito es la suma de pequeños esfuerzos repetidos diariamente.",
-          quote11: "Cree que puedes y ya estás a medio camino.",
-          quote12: "El futuro depende de lo que hagas hoy."
+          quote1: "今天是比昨天更好的新机会。",
+          quote2: "小进步仍然是进步。",
+          quote3: "您的能力超出您的想象。",
+          quote4: "每一天都是新的开始。",
+          quote5: "专注于进步，而不是完美。",
+          quote6: "唯一的限制是您为自己设定的限制。",
+          quote7: "梦想它，渴望它，实现它。",
+          quote8: "伟大的事情永远不会来自舒适区。",
+          quote9: "不要等待机会，创造机会。",
+          quote10: "成功是每天重复的小努力的总和。",
+          quote11: "相信您能行，您就已经成功了一半。",
+          quote12: "未来取决于您今天做什么。"
         };
-      case 'fr':
-        return {
-          title: "Vérification du bien-être",
-          subtitle: "Comment vous sentez-vous aujourd'hui ?",
-          todaysCheck: "Vérification d'aujourd'hui",
-          mood: "Humeur",
-          stressLevel: "Niveau de stress",
-          energyLevel: "Niveau d'énergie",
-          notes: "Notes (Optionnel)",
-          notesPlaceholder: "Comment vous sentez-vous aujourd'hui ? Des pensées ou réflexions...",
-          updateCheckin: "Mettre à jour la vérification",
-          saveCheckin: "Enregistrer la vérification",
-          reset: "Réinitialiser",
-          resetTitle: "Réinitialiser aux valeurs par défaut",
-          recentEntries: "Entrées récentes",
-          wellnessArticles: "Articles de bien-être",
-          // Motivational quotes
-          quote1: "Aujourd'hui est une nouvelle opportunité d'être meilleur qu'hier.",
-          quote2: "Le petit progrès reste un progrès.",
-          quote3: "Vous êtes capable de plus que vous ne le pensez.",
-          quote4: "Chaque jour est un nouveau commencement.",
-          quote5: "Concentrez-vous sur le progrès, pas sur la perfection.",
-          quote6: "La seule limite est celle que vous vous fixez.",
-          quote7: "Rêvez-le, souhaitez-le, faites-le.",
-          quote8: "Les grandes choses ne viennent jamais des zones de confort.",
-          quote9: "N'attendez pas l'opportunité, créez-la.",
-          quote10: "Le succès est la somme de petits efforts répétés quotidiennement.",
-          quote11: "Croyez que vous pouvez et vous êtes à mi-chemin.",
-          quote12: "L'avenir dépend de ce que vous faites aujourd'hui."
-        };
+
       default: // English
         return {
           title: "Wellness Check",
@@ -126,6 +133,24 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
           resetTitle: "Reset to default values",
           recentEntries: "Recent Entries",
           wellnessArticles: "Wellness Articles",
+          // Mood descriptions
+          verySad: "Very Sad",
+          sad: "Sad",
+          moodNeutral: "Neutral",
+          happy: "Happy",
+          veryHappy: "Very Happy",
+          // Stress descriptions
+          veryRelaxed: "Very Relaxed",
+          relaxed: "Relaxed",
+          stressNeutral: "Neutral",
+          stressed: "Stressed",
+          veryStressed: "Very Stressed",
+          // Energy descriptions
+          veryTired: "Very Tired",
+          tired: "Tired",
+          energyNeutral: "Neutral",
+          energetic: "Energetic",
+          veryEnergetic: "Very Energetic",
           // Motivational quotes
           quote1: "Today is a new opportunity to be better than yesterday.",
           quote2: "Small progress is still progress.",
@@ -187,6 +212,42 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
   
   const quote = getRandomQuote();
 
+  // Function to get mood description text
+  const getMoodText = (value: number) => {
+    switch (value) {
+      case 1: return text.verySad;
+      case 2: return text.sad;
+      case 3: return text.moodNeutral;
+      case 4: return text.happy;
+      case 5: return text.veryHappy;
+      default: return '';
+    }
+  };
+
+  // Function to get stress description text
+  const getStressText = (value: number) => {
+    switch (value) {
+      case 1: return text.veryRelaxed;
+      case 2: return text.relaxed;
+      case 3: return text.stressNeutral;
+      case 4: return text.stressed;
+      case 5: return text.veryStressed;
+      default: return '';
+    }
+  };
+
+  // Function to get energy description text
+  const getEnergyText = (value: number) => {
+    switch (value) {
+      case 1: return text.veryTired;
+      case 2: return text.tired;
+      case 3: return text.energyNeutral;
+      case 4: return text.energetic;
+      case 5: return text.veryEnergetic;
+      default: return '';
+    }
+  };
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <div>
@@ -210,17 +271,21 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
               {moodEmojis.map((emoji, index) => {
                 const value = index + 1;
                 return (
-                  <button
-                    key={value}
-                    onClick={() => setCurrentEntry({ ...currentEntry, mood: value })}
-                    className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
-                      currentEntry.mood === value
-                        ? 'bg-yellow-100 dark:bg-yellow-900/30 scale-125'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
-                    }`}
-                  >
-                    {emoji}
-                  </button>
+                  <div key={value} className="flex flex-col items-center">
+                    <button
+                      onClick={() => setCurrentEntry({ ...currentEntry, mood: value })}
+                      className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
+                        currentEntry.mood === value
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 scale-125'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
+                      }`}
+                    >
+                      {emoji}
+                    </button>
+                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
+                      {getMoodText(value)}
+                    </span>
+                  </div>
                 );
               })}
             </div>
@@ -235,17 +300,21 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
               {stressEmojis.map((emoji, index) => {
                 const value = index + 1;
                 return (
-                  <button
-                    key={value}
-                    onClick={() => setCurrentEntry({ ...currentEntry, stress: value })}
-                    className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
-                      currentEntry.stress === value
-                        ? 'bg-red-100 dark:bg-red-900/30 scale-125'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
-                    }`}
-                  >
-                    {emoji}
-                  </button>
+                  <div key={value} className="flex flex-col items-center">
+                    <button
+                      onClick={() => setCurrentEntry({ ...currentEntry, stress: value })}
+                      className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
+                        currentEntry.stress === value
+                          ? 'bg-red-100 dark:bg-red-900/30 scale-125'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
+                      }`}
+                    >
+                      {emoji}
+                    </button>
+                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
+                      {getStressText(value)}
+                    </span>
+                  </div>
                 );
               })}
             </div>
@@ -260,17 +329,21 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
               {energyEmojis.map((emoji, index) => {
                 const value = index + 1;
                 return (
-                  <button
-                    key={value}
-                    onClick={() => setCurrentEntry({ ...currentEntry, energy: value })}
-                    className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
-                      currentEntry.energy === value
-                        ? 'bg-green-100 dark:bg-green-900/30 scale-125'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
-                    }`}
-                  >
-                    {emoji}
-                  </button>
+                  <div key={value} className="flex flex-col items-center">
+                    <button
+                      onClick={() => setCurrentEntry({ ...currentEntry, energy: value })}
+                      className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
+                        currentEntry.energy === value
+                          ? 'bg-green-100 dark:bg-green-900/30 scale-125'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
+                      }`}
+                    >
+                      {emoji}
+                    </button>
+                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
+                      {getEnergyText(value)}
+                    </span>
+                  </div>
                 );
               })}
             </div>
