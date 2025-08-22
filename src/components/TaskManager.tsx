@@ -129,7 +129,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4 shadow-sm">
           <div>
             <input
               type="text"
@@ -163,7 +163,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="px-4 py-2 text-white/80 hover:text-white transition-colors flex-1 sm:flex-none text-base"
+                className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors flex-1 sm:flex-none text-base"
               >
                 {text.cancel}
               </button>
