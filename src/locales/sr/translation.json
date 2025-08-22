@@ -17,7 +17,7 @@
   "login": {
     "title": "Dobrodošli nazad",
     "subtitle": "Prijavite se da nastavite svoj wellness put",
-    "email": "Email adresa",
+    "email": "Korisničko ime",
     "password": "Lozinka",
     "emailRequired": "Email je obavezan",
     "validEmail": "Unesite validan email",
@@ -40,7 +40,7 @@
     "subtitle": "Započnite svoj wellness put danas",
     "firstName": "Ime",
     "lastName": "Prezime",
-    "email": "Email adresa",
+    "email": "Korisničko ime",
     "password": "Lozinka",
     "confirmPassword": "Potvrdite lozinku",
     "firstNameRequired": "Ime je obavezno",

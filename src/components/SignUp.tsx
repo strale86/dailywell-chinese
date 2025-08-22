@@ -35,7 +35,7 @@ export const SignUp: React.FC<SignUpProps> = ({
           subtitle: "Započnite svoj wellness put danas",
           firstName: "Ime",
           lastName: "Prezime",
-          email: "Email adresa",
+          email: "Korisničko ime",
           password: "Lozinka",
           confirmPassword: "Potvrdite lozinku",
           birthDate: "Datum rođenja",
@@ -109,7 +109,6 @@ export const SignUp: React.FC<SignUpProps> = ({
             "12": "十二月"
           }
         };
-
       default: // English
         return {
           title: "Create Account",
