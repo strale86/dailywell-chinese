@@ -69,7 +69,8 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
           addFirstTask: "Dodajte svoj prvi zadatak da započnete!",
           completed: "Završeno",
           of: "od",
-          completedText: "završeno"
+          completedText: "završeno",
+          submit: "Submit"
         };
       case 'zh':
         return {
@@ -86,7 +87,8 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
           addFirstTask: "添加您的第一个任务开始吧！",
           completed: "已完成",
           of: "共",
-          completedText: "已完成"
+          completedText: "已完成",
+          submit: "提交"
         };
       default: // English
         return {
@@ -103,7 +105,8 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
           addFirstTask: "Add your first task to get started!",
           completed: "Completed",
           of: "of",
-          completedText: "completed"
+          completedText: "completed",
+          submit: "Submit"
         };
     }
   };
@@ -166,9 +169,9 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all flex-1 sm:flex-none text-base touch-manipulation"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all flex-1 sm:flex-none text-base touch-manipulation font-semibold"
               >
-                {text.addTask}
+                {text.submit}
               </button>
             </div>
           </div>
