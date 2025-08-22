@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Heart, Target } from 'lucide-react';
+import { Zap, Heart, Target, Sparkles, Globe, CheckCircle } from 'lucide-react';
 
 interface WelcomeProps {
   onGetStarted: () => void;
@@ -8,6 +8,7 @@ interface WelcomeProps {
 export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Get language from localStorage or default to English
   useEffect(() => {
@@ -35,13 +36,14 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
       description: "Build healthy habits, track your progress, and achieve your wellness goals with our comprehensive daily companion app.",
       features: {
         tasks: "Task Management & Productivity",
-        habits: "Habit Tracking & Serije", 
+        habits: "Habit Tracking & Series", 
         wellness: "Wellness Check-ins",
         timer: "Focus Timer (Pomodoro)",
         analytics: "Progress Analytics"
       },
       getStarted: "Get Started",
-      joinMessage: "Join thousands of users improving their daily wellness"
+      joinMessage: "Join thousands of users improving their daily wellness",
+      chooseLanguage: "Choose Language / Izaberite jezik / 选择语言"
     },
     sr: {
       title: "DailyWell",
@@ -56,7 +58,8 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
         analytics: "Analitika napretka"
       },
       getStarted: "Započnite",
-      joinMessage: "Pridružite se hiljadama korisnika koji poboljšavaju svoj dnevni wellness"
+      joinMessage: "Pridružite se hiljadama korisnika koji poboljšavaju svoj dnevni wellness",
+      chooseLanguage: "Choose Language / Izaberite jezik / 选择语言"
     },
     zh: {
       title: "DailyWell",
@@ -71,7 +74,8 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
         analytics: "进度分析"
       },
       getStarted: "开始使用",
-      joinMessage: "加入数千名改善日常健康的用户"
+      joinMessage: "加入数千名改善日常健康的用户",
+      chooseLanguage: "Choose Language / Izaberite jezik / 选择语言"
     }
   };
 
@@ -80,6 +84,13 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
     localStorage.setItem('selectedLanguage', languageCode);
     // Refresh the page to apply language changes to all components
     window.location.reload();
+  };
+
+  const handleGetStarted = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      onGetStarted();
+    }, 300);
   };
 
   const t = translations[selectedLanguage as keyof typeof translations] || translations.en;
@@ -93,28 +104,33 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-yellow-500/20 rounded-full blur-3xl animate-pulse delay-2000" />
       
       {/* Header with logo */}
-      <div className="relative z-10 flex flex-col items-center pt-20 pb-12">
-        <div className="relative mb-6">
+      <div className="relative z-10 flex flex-col items-center pt-20 pb-12 fade-in-up">
+        <div className="relative mb-6 scale-in">
           <Zap size={40} className="text-yellow-500 drop-shadow-lg" />
-          <Heart size={20} className="absolute -top-2 -right-2 text-pink-500" />
-          <Target size={20} className="absolute -bottom-2 -left-2 text-blue-600" />
+          <Heart size={20} className="absolute -top-2 -right-2 text-pink-500 animate-pulse" />
+          <Target size={20} className="absolute -bottom-2 -left-2 text-blue-600 animate-pulse delay-1000" />
+          <Sparkles size={16} className="absolute top-1 -left-1 text-purple-400 animate-pulse delay-2000" />
         </div>
-        <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">{t.title}</h1>
-        <p className="text-lg text-white/90 text-center">{t.subtitle}</p>
+        <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg slide-in-right">{t.title}</h1>
+        <p className="text-lg text-white/90 text-center fade-in-up">{t.subtitle}</p>
         
-        {/* Language Switcher */}
-        <div className="mt-6 flex flex-col items-center">
-                     <p className="text-white/80 text-sm mb-2">Choose Language / Izaberite jezik</p>
+        {/* Language Switcher with Animation */}
+        <div className="mt-6 flex flex-col items-center slide-in-right">
+          <p className="text-white/80 text-sm mb-2 flex items-center gap-2">
+            <Globe className="w-4 h-4" />
+            {t.chooseLanguage}
+          </p>
           <div className="flex space-x-2 mb-2">
-            {languages.map((lang) => (
+            {languages.map((lang, index) => (
               <button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
-                className={`px-4 py-2 rounded-lg border-2 transition-all duration-200 hover:scale-105 flex items-center space-x-2 ${
+                className={`px-4 py-2 rounded-lg border-2 transition-all duration-200 hover:scale-105 flex items-center space-x-2 card-hover hover-lift ${
                   selectedLanguage === lang.code
                     ? 'border-white bg-white/20 text-white'
                     : 'border-white/30 bg-white/10 hover:bg-white/20 text-white/80'
                 }`}
+                style={{ animationDelay: `${index * 100}ms` }}
                 title={lang.name}
               >
                 <span className="text-sm font-medium">{lang.name}</span>
@@ -123,7 +139,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
             ))}
           </div>
           {detectedLanguage && (
-            <p className="text-white/70 text-sm">
+            <p className="text-white/70 text-sm scale-in">
               Detected: {languages.find(l => l.code === detectedLanguage)?.name || detectedLanguage}
             </p>
           )}
@@ -132,60 +148,54 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
 
       {/* Main content */}
       <div className="relative z-10 max-w-4xl mx-auto px-6">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 fade-in-up">
           <h2 className="text-3xl font-bold text-white mb-4 drop-shadow-lg">{t.heading}</h2>
           <p className="text-lg text-white/90 leading-relaxed">
             {t.description}
           </p>
         </div>
 
-        {/* Features */}
+        {/* Features with Hover Effects */}
         <div className="grid gap-6 mb-12">
-          <div className="flex items-center p-4 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/20">
-            <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mr-4">
-              <span className="text-green-300 font-bold">✓</span>
+          {[
+            { icon: CheckCircle, text: t.features.tasks, color: 'green' },
+            { icon: Target, text: t.features.habits, color: 'purple' },
+            { icon: Heart, text: t.features.wellness, color: 'red' },
+            { icon: Zap, text: t.features.timer, color: 'yellow' },
+            { icon: Target, text: t.features.analytics, color: 'blue' }
+          ].map((feature, index) => (
+            <div 
+              key={index}
+              className="flex items-center p-4 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 card-hover hover-lift transition-all duration-300"
+              style={{ animationDelay: `${index * 200}ms` }}
+            >
+              <div className={`w-10 h-10 bg-${feature.color}-500/20 rounded-full flex items-center justify-center mr-4`}>
+                <feature.icon className={`w-5 h-5 text-${feature.color}-300`} />
+              </div>
+              <span className="text-white font-medium">{feature.text}</span>
             </div>
-            <span className="text-white font-medium">{t.features.tasks}</span>
-          </div>
-          
-          <div className="flex items-center p-4 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/20">
-            <div className="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center mr-4">
-              <span className="text-purple-300 font-bold">🔄</span>
-            </div>
-            <span className="text-white font-medium">{t.features.habits}</span>
-          </div>
-          
-          <div className="flex items-center p-4 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/20">
-            <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mr-4">
-              <span className="text-red-300 font-bold">❤️</span>
-            </div>
-            <span className="text-white font-medium">{t.features.wellness}</span>
-          </div>
-          
-          <div className="flex items-center p-4 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/20">
-            <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mr-4">
-              <span className="text-yellow-300 font-bold">⏱️</span>
-            </div>
-            <span className="text-white font-medium">{t.features.timer}</span>
-          </div>
-          
-          <div className="flex items-center p-4 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg border border-white/20">
-            <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mr-4">
-              <span className="text-blue-300 font-bold">📊</span>
-            </div>
-            <span className="text-white font-medium">{t.features.analytics}</span>
-          </div>
+          ))}
         </div>
 
-        {/* Call to action */}
+        {/* Call to action with Loading State */}
         <div className="text-center">
           <button
-            onClick={onGetStarted}
-            className="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+            onClick={handleGetStarted}
+            disabled={isLoading}
+            className={`bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 btn-primary ${
+              isLoading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-50'
+            }`}
           >
-            {t.getStarted}
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="loading-spinner mr-2"></div>
+                Loading...
+              </div>
+            ) : (
+              t.getStarted
+            )}
           </button>
-          <p className="text-white/70 mt-4 text-sm">
+          <p className="text-white/70 mt-4 text-sm fade-in-up">
             {t.joinMessage}
           </p>
         </div>

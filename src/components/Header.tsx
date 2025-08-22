@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Award, Wifi, WifiOff } from 'lucide-react';
+import { User, Award, Wifi, WifiOff, Crown, Star, Zap } from 'lucide-react';
 import { UserStats } from '../types';
 import { Logo } from './Logo';
 import { ProfileModal } from './ProfileModal';
@@ -12,19 +12,25 @@ const translations = {
     offline: "Offline",
     points: "Points",
     level: "Level",
-    welcomeBack: "Welcome back"
+    welcomeBack: "Welcome back",
+    pendingActions: "Pending actions",
+    online: "Online"
   },
   sr: {
     offline: "Offline",
     points: "Bodovi",
     level: "Nivo",
-    welcomeBack: "Dobrodošli nazad"
+    welcomeBack: "Dobrodošli nazad",
+    pendingActions: "Akcije na čekanju",
+    online: "Online"
   },
   zh: {
     offline: "离线",
     points: "积分",
     level: "等级",
-    welcomeBack: "欢迎回来"
+    welcomeBack: "欢迎回来",
+    pendingActions: "待处理操作",
+    online: "在线"
   }
 };
 
@@ -84,27 +90,36 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
   }, [offlineManager]);
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 fade-in-up">
       <div className="max-w-7xl mx-auto px-1 sm:px-2 md:px-6 lg:px-8">
         <div className="flex justify-between items-center py-2 sm:py-3 md:py-4">
           <Logo size="md" showText={true} />
           
           <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-6">
-            {/* Offline Indicator */}
-            {!isOnline && (
-              <div className="flex items-center gap-1 px-1 sm:px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
-                <WifiOff className="w-3 h-3" />
-                <span className="hidden sm:inline">{t.offline}</span>
-                {pendingActions > 0 && (
-                  <span className="bg-yellow-600 text-white px-1 rounded-full text-xs">
-                    {pendingActions}
-                  </span>
-                )}
-              </div>
-            )}
+            {/* Online/Offline Status with Animation */}
+            <div className="flex items-center gap-1 px-1 sm:px-2 py-1 rounded-full text-xs transition-all duration-300 hover-lift">
+              {!isOnline ? (
+                <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 rounded-full px-2 py-1 animate-pulse">
+                  <WifiOff className="w-3 h-3" />
+                  <span className="hidden sm:inline">{t.offline}</span>
+                  {pendingActions > 0 && (
+                    <span className="bg-yellow-600 text-white px-1 rounded-full text-xs scale-in">
+                      {pendingActions}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-1 bg-green-100 text-green-800 rounded-full px-2 py-1">
+                  <Wifi className="w-3 h-3" />
+                  <span className="hidden sm:inline">{t.online}</span>
+                </div>
+              )}
+            </div>
             
+            {/* Stats Display with Hover Effects */}
             <div className="flex items-start space-x-1 sm:space-x-4">
-              <div className="text-center">
+              {/* Points Card */}
+              <div className="text-center card-hover hover-lift">
                 <div className="flex items-center space-x-1">
                   <Award className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
                   <span className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">{stats.totalPoints}</span>
@@ -112,27 +127,33 @@ export const Header: React.FC<HeaderProps> = ({ stats, onLogout }) => {
                 <p className="text-xs text-gray-500 dark:text-gray-300 hidden sm:block">{t.points}</p>
               </div>
               
-              <div className="text-center">
+              {/* Level Card with Progress */}
+              <div className="text-center card-hover hover-lift">
                 <div className="flex items-center space-x-1">
                   <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">{stats.level}</span>
+                    {stats.level >= 10 ? (
+                      <Crown className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
+                    ) : stats.level >= 5 ? (
+                      <Star className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
+                    ) : (
+                      <Zap className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
+                    )}
                   </div>
                   <span className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">{t.level} {stats.level}</span>
                 </div>
                 <div className="w-12 sm:w-20 h-1 bg-gray-200 dark:bg-gray-600 rounded-full mt-1">
                   <div 
-                    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300"
+                    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300 progress-bar"
                     style={{ width: `${progressToNextLevel}%` }}
                   />
                 </div>
               </div>
             </div>
             
-
-            
+            {/* Profile Avatar with Animation */}
             <div 
               onClick={() => setIsProfileOpen(true)}
-              className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center cursor-pointer overflow-hidden"
+              className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center cursor-pointer overflow-hidden card-hover hover-lift transition-all duration-200 hover:scale-105"
             >
               {profile?.avatar ? (
                 <img

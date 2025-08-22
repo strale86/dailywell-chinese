@@ -98,8 +98,6 @@ html {
   color: #9ca3af !important;
 }
 
-
-
 /* Dark mode for cards and containers */
 .dark .bg-gray-50 {
   background-color: #374151 !important;
@@ -181,16 +179,6 @@ html {
   border-color: rgba(249, 250, 251, 0.3);
 }
 
-
-
-
-
-
-
-
-
-
-
 /* Hide date picker completely */
 input[type="text"]::-webkit-calendar-picker-indicator,
 input[type="text"]::-webkit-inner-spin-button,
@@ -212,27 +200,6 @@ input[type="text"]::-webkit-datetime-edit-year-field {
 /* Force text input behavior */
 input[placeholder*="YYYY"]::-webkit-calendar-picker-indicator,
 input[placeholder*="date"]::-webkit-calendar-picker-indicator,
-
-/* Fix popup issues in dark mode */
-.dark .popup-overlay {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
-.dark .popup-content {
-  background-color: #1f2937 !important;
-  color: #f9fafb !important;
-}
-
-/* Ensure OAuth popup works in dark mode */
-.dark body {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
-}
-
-/* Fix any white flash in dark mode */
-.dark * {
-  transition: background-color 0.1s ease, color 0.1s ease;
-}
 input[placeholder*="Date"]::-webkit-calendar-picker-indicator {
   display: none !important;
   -webkit-appearance: none !important;
@@ -264,8 +231,6 @@ input[type="text"]::-webkit-calendar-picker-indicator {
   -webkit-appearance: none !important;
 }
 
-
-
 /* Firefox date input hiding */
 input[type="text"]::-moz-datetime-edit {
   display: none !important;
@@ -276,7 +241,49 @@ input[type="text"]::-ms-datetime-edit {
   display: none !important;
 }
 
-/* Advanced Loading Animations */
+/* OPTIMIZOVANE ANIMACIJE - Brze i efikasne */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
 @keyframes shimmer {
   0% {
     background-position: -200px 0;
@@ -284,6 +291,23 @@ input[type="text"]::-ms-datetime-edit {
   100% {
     background-position: calc(200px + 100%) 0;
   }
+}
+
+/* Brze animacije klase */
+.fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+.pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .shimmer {
@@ -298,87 +322,89 @@ input[type="text"]::-ms-datetime-edit {
   animation: shimmer 1.5s infinite;
 }
 
-/* Pulse animations */
-.pulse-slow {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Hover efekti - optimizovani */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pulse-fast {
-  animation: pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Bounce animations */
-.bounce-slow {
-  animation: bounce 1.5s infinite;
+.dark .hover-lift:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-.bounce-fast {
-  animation: bounce 0.8s infinite;
+/* Smooth transitions za sve interaktivne elemente */
+button, input, select, textarea, .card, .nav-item {
+  transition: all 0.2s ease;
 }
 
-/* Spin animations */
-.spin-slow {
-  animation: spin 2s linear infinite;
+/* Loading animacije - optimizovane */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-.spin-fast {
-  animation: spin 0.8s linear infinite;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Fade animations */
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+/* Progress bar animacija */
+.progress-bar {
+  transition: width 0.3s ease;
 }
 
-.fade-out {
-  animation: fadeOut 0.5s ease-in-out;
+/* Card hover efekti */
+.card-hover {
+  transition: all 0.2s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+.dark .card-hover:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* Loading dots */
-.loading-dots {
-  display: inline-block;
+/* Button animacije */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
 }
 
-.loading-dots::after {
+.btn-primary::before {
   content: '';
-  animation: loadingDots 1.5s infinite;
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
 }
 
-@keyframes loadingDots {
-  0%, 20% {
-    content: '';
-  }
-  40% {
-    content: '.';
-  }
-  60% {
-    content: '..';
-  }
-  80%, 100% {
-    content: '...';
-  }
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+/* Notification animacija */
+.notification {
+  animation: slideInRight 0.3s ease-out;
+}
+
+/* Success animacija */
+.success-checkmark {
+  animation: scaleIn 0.3s ease-out;
 }
 
 /* Mobile-friendly touch targets */
@@ -413,4 +439,94 @@ button:focus, input:focus, select:focus, textarea:focus {
 
 .dark #root {
   background-color: #111827;
+}
+
+/* PERFORMANSE OPTIMIZACIJE */
+/* Hardware acceleration za animacije */
+.animate-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Optimizovane transformacije */
+.transform-optimized {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Smooth scrolling za sve elemente */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimizovane slike */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Responsive optimizacije */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .mobile-card {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+@media (min-width: 769px) {
+  .desktop-optimized {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  .desktop-card {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Accessibility poboljšanja */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus visible za bolju pristupačnost */
+.focus-visible:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode podrška */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid currentColor;
+  }
+  
+  button {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion podrška */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
