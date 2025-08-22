@@ -163,14 +163,15 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting habit:', newHabit); // Debug log
     if (newHabit.name.trim()) {
       onAddHabit(newHabit);
       setNewHabit({
         name: '',
         icon: '💧',
         color: 'bg-blue-500',
-        target: 10,
-        unit: 'time',
+        target: 1,
+        unit: 'glasses',
         category: 'health' as const,
         startDate: getTodayString(),
         totalCompletions: 0,
@@ -427,13 +428,20 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               </select>
             </div>
             
-            <div className="flex justify-end">
+            <div className="flex justify-between items-center">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
                 {text.cancel}
+              </button>
+              <button
+                type="submit"
+                disabled={!newHabit.name.trim()}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              >
+                {text.addHabit}
               </button>
             </div>
           </div>
