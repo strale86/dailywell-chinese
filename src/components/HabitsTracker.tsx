@@ -272,6 +272,8 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                   handleSubmit({ preventDefault: () => {} } as React.FormEvent);
                 }
               }}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
               className="w-full px-3 py-2 bg-white/90 backdrop-blur-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 text-base"
               autoFocus
             />
@@ -375,22 +377,46 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
 
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
-              <input
-                type="number"
-                min="1"
-                max="50"
-                value={newHabit.target}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const numValue = value === '' ? 1 : Math.min(Math.max(parseInt(value) || 1, 1), 50);
-                  setNewHabit({ ...newHabit, target: numValue });
-                }}
-                className="w-16 px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-black border-gray-300"
-              />
+              <div className="flex items-center border rounded-lg overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setNewHabit({ ...newHabit, target: Math.max(1, newHabit.target - 1) })}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  className="w-8 h-8 bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg transition-colors"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  min="1"
+                  max="50"
+                  value={newHabit.target}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const numValue = value === '' ? 1 : Math.min(Math.max(parseInt(value) || 1, 1), 50);
+                    setNewHabit({ ...newHabit, target: numValue });
+                  }}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchEnd={(e) => e.stopPropagation()}
+                  onFocus={(e) => e.target.select()}
+                  className="w-12 px-2 py-1 border-0 focus:outline-none focus:ring-0 bg-white text-black text-center"
+                  style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setNewHabit({ ...newHabit, target: Math.min(50, newHabit.target + 1) })}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  className="w-8 h-8 bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg transition-colors"
+                >
+                  +
+                </button>
+              </div>
               <select
                 value={newHabit.unit}
                 onChange={(e) => setNewHabit({ ...newHabit, unit: e.target.value })}
+                onTouchStart={(e) => e.stopPropagation()}
                 className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-black border-gray-300"
+                style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
               >
                 <option value="time">{text.time}</option>
                 <option value="minutes">{text.minutes}</option>
