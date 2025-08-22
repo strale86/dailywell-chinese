@@ -184,6 +184,10 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
     setWellnessEntries(prev => [...prev, newEntry]);
   }, []);
 
+  const handleDeleteWellnessEntry = useCallback((date: string) => {
+    setWellnessEntries(prev => prev.filter(entry => entry.date !== date));
+  }, []);
+
   const handlePomodoroSessionComplete = (session: Omit<PomodoroSession, 'id'>) => {
     const newSession: PomodoroSession = {
       ...session,
@@ -277,6 +281,7 @@ export const MainApp: React.FC<MainAppProps> = ({ onLogout }) => {
           <WellnessCheck
             entries={wellnessEntries}
             onAddEntry={handleAddWellnessEntry}
+            onDeleteEntry={handleDeleteWellnessEntry}
           />
         );
       case 'goals':

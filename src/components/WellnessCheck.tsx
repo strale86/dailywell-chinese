@@ -7,13 +7,14 @@ import { getTodayString } from '../utils/dateUtils';
 interface WellnessCheckProps {
   entries: WellnessEntry[];
   onAddEntry: (entry: WellnessEntry) => void;
+  onDeleteEntry?: (date: string) => void;
 }
 
 const moodEmojis = ['😞', '😕', '😐', '😊', '😍'];
 const stressEmojis = ['😌', '😊', '😐', '😰', '😵'];
 const energyEmojis = ['😴', '😪', '😐', '😃', '⚡'];
 
-export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntry }) => {
+export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntry, onDeleteEntry }) => {
   // Get current language from localStorage or default to English
   const currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
 
@@ -34,6 +35,8 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
           saveCheckin: "Sačuvaj proveru",
           reset: "Resetuj",
           resetTitle: "Vrati na podrazumevane vrednosti",
+          delete: "Obriši",
+          deleteTitle: "Obriši današnji unos",
           recentEntries: "Skorašnji unosi",
           wellnessArticles: "Članci o dobrobiti",
           // Mood descriptions
@@ -82,6 +85,8 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
           saveCheckin: "保存检查",
           reset: "重置",
           resetTitle: "重置为默认值",
+          delete: "删除",
+          deleteTitle: "删除今日记录",
           recentEntries: "最近记录",
           wellnessArticles: "健康文章",
           // Mood descriptions
@@ -131,6 +136,8 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
           saveCheckin: "Save Check-in",
           reset: "Reset",
           resetTitle: "Reset to default values",
+          delete: "Delete",
+          deleteTitle: "Delete today's entry",
           recentEntries: "Recent Entries",
           wellnessArticles: "Wellness Articles",
           // Mood descriptions
@@ -267,14 +274,14 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
               <Smile className="w-5 h-5 text-yellow-500 dark:text-yellow-400" />
               <label className="font-medium text-gray-700 dark:text-white">{text.mood}</label>
             </div>
-            <div className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg">
+            <div className="grid grid-cols-5 gap-2 bg-white dark:bg-gray-800 p-4 rounded-lg">
               {moodEmojis.map((emoji, index) => {
                 const value = index + 1;
                 return (
                   <div key={value} className="flex flex-col items-center">
                     <button
                       onClick={() => setCurrentEntry({ ...currentEntry, mood: value })}
-                      className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
+                      className={`text-2xl sm:text-2xl p-2 rounded-full transition-all ${
                         currentEntry.mood === value
                           ? 'bg-yellow-100 dark:bg-yellow-900/30 scale-125'
                           : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
@@ -282,7 +289,7 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
                     >
                       {emoji}
                     </button>
-                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
+                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center leading-tight">
                       {getMoodText(value)}
                     </span>
                   </div>
@@ -296,14 +303,14 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
               <Brain className="w-5 h-5 text-red-500 dark:text-red-400" />
               <label className="font-medium text-gray-700 dark:text-white">{text.stressLevel}</label>
             </div>
-            <div className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg">
+            <div className="grid grid-cols-5 gap-2 bg-white dark:bg-gray-800 p-4 rounded-lg">
               {stressEmojis.map((emoji, index) => {
                 const value = index + 1;
                 return (
                   <div key={value} className="flex flex-col items-center">
                     <button
                       onClick={() => setCurrentEntry({ ...currentEntry, stress: value })}
-                      className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
+                      className={`text-2xl sm:text-2xl p-2 rounded-full transition-all ${
                         currentEntry.stress === value
                           ? 'bg-red-100 dark:bg-red-900/30 scale-125'
                           : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
@@ -311,7 +318,7 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
                     >
                       {emoji}
                     </button>
-                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
+                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center leading-tight">
                       {getStressText(value)}
                     </span>
                   </div>
@@ -325,14 +332,14 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
               <Zap className="w-5 h-5 text-green-500 dark:text-green-400" />
               <label className="font-medium text-gray-700 dark:text-white">{text.energyLevel}</label>
             </div>
-            <div className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg">
+            <div className="grid grid-cols-5 gap-2 bg-white dark:bg-gray-800 p-4 rounded-lg">
               {energyEmojis.map((emoji, index) => {
                 const value = index + 1;
                 return (
                   <div key={value} className="flex flex-col items-center">
                     <button
                       onClick={() => setCurrentEntry({ ...currentEntry, energy: value })}
-                      className={`text-2xl sm:text-2xl p-3 sm:p-2 rounded-full transition-all ${
+                      className={`text-2xl sm:text-2xl p-2 rounded-full transition-all ${
                         currentEntry.energy === value
                           ? 'bg-green-100 dark:bg-green-900/30 scale-125'
                           : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-110'
@@ -340,7 +347,7 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
                     >
                       {emoji}
                     </button>
-                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
+                    <span className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center leading-tight">
                       {getEnergyText(value)}
                     </span>
                   </div>
@@ -381,6 +388,30 @@ export const WellnessCheck: React.FC<WellnessCheckProps> = ({ entries, onAddEntr
             >
               {text.reset}
             </button>
+            {todayEntry && (
+              <button
+                onClick={() => {
+                  // Remove today's entry from entries array
+                  const updatedEntries = entries.filter(entry => entry.date !== today);
+                  // Clear current entry
+                  setCurrentEntry({
+                    date: today,
+                    mood: 3,
+                    stress: 3,
+                    energy: 3,
+                    notes: '',
+                  });
+                  // Update parent component
+                  if (typeof onDeleteEntry === 'function') {
+                    onDeleteEntry(today);
+                  }
+                }}
+                className="px-4 py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all text-sm sm:text-base"
+                title={text.deleteTitle}
+              >
+                {text.delete}
+              </button>
+            )}
           </div>
         </div>
       </div>
