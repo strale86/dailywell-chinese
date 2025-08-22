@@ -136,7 +136,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               placeholder={text.taskTitle}
               value={newTask.title}
               onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black placeholder-gray-500 text-base"
+              className="w-full px-3 py-2 bg-white dark:bg-white border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-black placeholder-gray-500 dark:placeholder-gray-400 text-base"
               autoFocus
             />
           </div>
@@ -145,7 +145,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
               placeholder={text.description}
               value={newTask.description}
               onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-black placeholder-gray-500 text-base"
+              className="w-full px-3 py-2 bg-white dark:bg-white border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-black dark:text-black placeholder-gray-500 dark:placeholder-gray-400 text-base"
               rows={2}
             />
           </div>
@@ -153,7 +153,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
             <select
               value={newTask.priority}
               onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as 'low' | 'medium' | 'high' })}
-              className="px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-auto text-black text-base"
+              className="px-3 py-2 bg-white dark:bg-white border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-auto text-black dark:text-black text-base"
             >
               <option value="low">{text.lowPriority}</option>
               <option value="medium">{text.mediumPriority}</option>
@@ -198,8 +198,8 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
             ))}
             
             {completedTasks.length > 0 && (
-              <div className="pt-6 border-t border-gray-300">
-                <h3 className="text-lg font-medium text-gray-700 mb-4">{text.completed}</h3>
+              <div className="pt-6 border-t border-gray-300 dark:border-gray-700">
+                <h3 className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">{text.completed}</h3>
                 {completedTasks.map((task) => (
                   <TaskItem
                     key={task.id}
@@ -235,7 +235,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
   }, [task.id, onDelete]);
 
   return (
-    <div className={`bg-white/90 backdrop-blur-sm p-4 rounded-lg border border-gray-300 transition-all hover:bg-white ${
+    <div className={`bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-700 transition-all hover:bg-gray-50 dark:hover:bg-gray-700 ${
       task.completed ? 'opacity-75' : ''
     }`}>
       <div className="flex items-start space-x-3">
@@ -253,7 +253,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-2">
             <h3 className={`font-medium text-base ${
-              task.completed ? 'line-through text-gray-500' : 'text-gray-900'
+              task.completed ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white'
             }`}>
               {task.title}
             </h3>
@@ -261,7 +261,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
           </div>
           {task.description && (
             <p className={`text-sm mt-1 ${
-              task.completed ? 'text-gray-400' : 'text-gray-700'
+              task.completed ? 'text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'
             }`}>
               {task.description}
             </p>
@@ -270,7 +270,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, getPriori
         
         <button
           onClick={handleDelete}
-          className="text-gray-500 hover:text-red-400 transition-colors flex-shrink-0 p-2 touch-manipulation"
+          className="text-gray-500 dark:text-gray-400 hover:text-red-400 dark:hover:text-red-300 transition-colors flex-shrink-0 p-2 touch-manipulation"
         >
           <Trash2 className="w-5 h-5" />
         </button>

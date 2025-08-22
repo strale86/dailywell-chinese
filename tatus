@@ -327,3 +327,6 @@
 [33maae42bb[m Rešen problem sa aplikacijom
 [33mb2446d4[m[33m ([m[1;31mchinese/main[m[33m, [m[1;31mchinese/HEAD[m[33m)[m Dodati kineski prevodi u Login, SignUp i Welcome komponente
 [33m5fc1f30[m Ažurirani srpski prevodi za username i password
+[33m429b806[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Popravljen input za broj u Habits sekciji - dodana dugmad + i - za mobilne uređaje
+[33md29e63a[m Trigger Netlify deploy
+[33m610014d[m Popravljeni srpski prevodi: Premium sekcija i Dashboard days tekst

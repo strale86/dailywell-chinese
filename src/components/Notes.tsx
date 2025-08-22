@@ -124,9 +124,9 @@ export const Notes: React.FC<NotesProps> = ({
                 setNewNoteTitle('');
                 setNewNoteContent('');
               }}
-              className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
             >
-              <X className="w-5 h-5 text-gray-500" />
+              <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
             </button>
           </div>
           
@@ -137,7 +137,7 @@ export const Notes: React.FC<NotesProps> = ({
                 type="text"
                 value={newNoteTitle}
                 onChange={(e) => setNewNoteTitle(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black border-gray-300"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-white text-black dark:text-black border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
                 placeholder={text.titlePlaceholder}
               />
             </div>
@@ -148,7 +148,7 @@ export const Notes: React.FC<NotesProps> = ({
                 value={newNoteContent}
                 onChange={(e) => setNewNoteContent(e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white text-black border-gray-300"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white dark:bg-white text-black dark:text-black border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
                 placeholder={text.contentPlaceholder}
               />
             </div>
@@ -160,7 +160,7 @@ export const Notes: React.FC<NotesProps> = ({
                   setNewNoteTitle('');
                   setNewNoteContent('');
                 }}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
               >
                 {text.cancel}
               </button>
@@ -184,11 +184,11 @@ export const Notes: React.FC<NotesProps> = ({
           <div className="text-center py-12">
                           <FileText className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{text.noNotes}</h3>
-            <p className="text-gray-600">{text.startCreating}</p>
+            <p className="text-gray-600 dark:text-gray-400">{text.startCreating}</p>
           </div>
         ) : (
           notes.map((note) => (
-            <div key={note.id} className="bg-white p-6 rounded-xl shadow-sm border">
+            <div key={note.id} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex justify-between items-start mb-3">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{note.title}</h3>
                 <div className="flex items-center gap-2">
@@ -207,10 +207,10 @@ export const Notes: React.FC<NotesProps> = ({
                 </div>
               </div>
               
-              <p className="text-gray-700 whitespace-pre-wrap">{note.content}</p>
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{note.content}</p>
               
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   {text.created}: {note.createdAt.toLocaleDateString()} | 
                   {text.updated}: {note.updatedAt.toLocaleDateString()}
                 </p>

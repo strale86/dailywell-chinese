@@ -280,7 +280,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               }}
               onTouchStart={(e) => e.stopPropagation()}
               onTouchEnd={(e) => e.stopPropagation()}
-              className="w-full px-3 py-2 bg-white/90 backdrop-blur-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 text-base"
+              className="w-full px-3 py-2 bg-white dark:bg-white border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-black placeholder-gray-500 dark:placeholder-gray-400 text-base"
               autoFocus
             />
           </div>
@@ -433,7 +433,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               </select>
             </div>
             
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center pt-4 border-t border-gray-200">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
@@ -444,9 +444,10 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               <button
                 type="submit"
                 disabled={!newHabit.name.trim() || isAdding}
-                className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-semibold text-lg"
+                className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-semibold text-lg shadow-md border-2 border-green-700"
+                style={{ minWidth: '120px' }}
               >
-                {isAdding ? 'Dodavanje...' : 'Submit'}
+                {isAdding ? 'Dodavanje...' : 'SUBMIT'}
               </button>
             </div>
           </div>
