@@ -122,6 +122,7 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
   const text = getText();
 
   const [showForm, setShowForm] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const [newHabit, setNewHabit] = useState({
     name: '',
     icon: '💧',
@@ -163,9 +164,16 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitting habit:', newHabit); // Debug log
-    if (newHabit.name.trim()) {
+    if (newHabit.name.trim() && !isAdding) {
+      setIsAdding(true);
+      
+      // Optimizovano - odmah zatvaramo formu
+      setShowForm(false);
+      
+      // Dodajemo naviku
       onAddHabit(newHabit);
+      
+      // Resetujemo formu
       setNewHabit({
         name: '',
         icon: '💧',
@@ -178,7 +186,9 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
         bestStreak: 0,
         isActive: true,
       });
-      setShowForm(false);
+      
+      // Resetujemo loading state
+      setTimeout(() => setIsAdding(false), 100);
     }
   };
 
@@ -264,13 +274,8 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
                 });
               }}
               onKeyPress={(e) => {
-                if (e.key === 'Enter' && newHabit.name.trim()) {
+                if (e.key === 'Enter' && newHabit.name.trim() && !isAdding) {
                   handleSubmit(e);
-                }
-              }}
-              onBlur={() => {
-                if (newHabit.name.trim()) {
-                  handleSubmit({ preventDefault: () => {} } as React.FormEvent);
                 }
               }}
               onTouchStart={(e) => e.stopPropagation()}
@@ -438,10 +443,10 @@ export const HabitsTracker: React.FC<HabitsTrackerProps> = ({
               </button>
               <button
                 type="submit"
-                disabled={!newHabit.name.trim()}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                disabled={!newHabit.name.trim() || isAdding}
+                className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-semibold text-lg"
               >
-                {text.addHabit}
+                {isAdding ? 'Dodavanje...' : 'Submit'}
               </button>
             </div>
           </div>
