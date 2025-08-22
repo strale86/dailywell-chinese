@@ -74,7 +74,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
           todaysStatus: "Današnji status",
           streak: "Serija",
           level: "Nivo",
-          points: "Bodovi"
+          points: "Bodovi",
+          days: "dana"
         };
       case 'zh':
         return {
@@ -105,7 +106,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
           todaysStatus: "今日状态",
           streak: "连续",
           level: "等级",
-          points: "积分"
+          points: "积分",
+          days: "天"
         };
       default: // English
         return {
@@ -136,7 +138,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
           todaysStatus: "Today's Status",
           streak: "Streak",
           level: "Level",
-          points: "Points"
+          points: "Points",
+          days: "days"
         };
     }
   };
@@ -311,7 +314,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm opacity-90">{text.streak}</p>
-              <p className="text-2xl font-bold">{stats.currentStreak} days</p>
+              <p className="text-2xl font-bold">{stats.currentStreak} {text.days}</p>
             </div>
             <TrendingUp className="w-8 h-8" />
           </div>
